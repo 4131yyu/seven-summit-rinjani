@@ -2,6 +2,18 @@
 
 A frontend-only promotional website for the Seven Summit Rinjani outdoor adventure concept.
 
+## Design Direction
+
+The primary visual reference is [Visit Indonesia](https://www.indonesia.travel/us/en).
+The site adopts its overall destination-discovery approach while keeping Seven
+Summit Rinjani's own brand identity, palette, copy, and assets. The archived
+Roamly image in `docs/references/landing_reference.jpeg` is no longer the main
+reference.
+
+The future landing-page hero will use a team-supplied cinematic Rinjani MP4 and
+a WebP poster fallback. Until both final assets are supplied, no media should
+be presented as authentic Rinjani footage.
+
 ## Project Features
 
 - Public landing page.
@@ -93,7 +105,7 @@ All completed phases and known issues must be recorded in PROJECT_STATUS.md.
 
 ## Asset Documentation
 
-See docs/ASSET_GUIDE.md for image, video, Rive, and audio requirements.
+See docs/ASSETS_GUIDE.md for image, video, Rive, and audio requirements.
 
 ## Important Notice
 

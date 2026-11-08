@@ -118,28 +118,33 @@ Rive:
 
 ## 5. Visual Design Direction
 
-Use the supplied Roamly landing-page reference as the main visual direction.
+Use Visit Indonesia as the main visual direction (option B: adapt its overall
+visual approach while retaining the Seven Summit Rinjani identity).
 
-Reference image:
-docs/references/landing-reference.jpg
+Primary reference:
+https://www.indonesia.travel/us/en
 
-Use the reference as inspiration, not as an exact copy.
+The local `docs/references/landing_reference.jpeg` is an archived Roamly
+reference from an earlier decision. It is not the primary design reference and
+must not drive the Phase 3 layout.
+
+Use the reference as inspiration, not as an exact copy. Do not reuse Visit
+Indonesia branding, copy, logos, or media.
 
 Brand identity:
 Seven Summit Rinjani.
 
 Visual characteristics:
 - Premium outdoor adventure.
-- Cinematic mountain photography.
-- Editorial travel layout.
-- Elegant glassmorphism.
-- Rounded containers and destination cards.
-- Large, bold headlines.
-- Clean typography.
-- Subtle animation.
-- Spacious layouts.
-- Strong image hierarchy.
-- Natural and earthy colors.
+- Immersive destination storytelling with strong visual hierarchy.
+- Clear, editorial sections that introduce place and experience before
+  discovery content.
+- Full-width cinematic media with readable overlays and restrained motion.
+- A horizontal destination selector in the hero, inspired by Visit Indonesia's
+  discovery-oriented approach.
+- Spacious layouts, clean typography, and natural earthy colors.
+- Seven Summit Rinjani branding, palette, language, and outdoor focus remain
+  distinct from the reference.
 
 Color palette:
 
@@ -161,6 +166,7 @@ Avoid:
 - Tiny text.
 - Inconsistent spacing.
 - Unrelated stock photos presented as authentic Rinjani locations.
+- Copying Visit Indonesia's brand assets, content, or exact interface.
 
 The design must be responsive on desktop, tablet, and mobile.
 
@@ -175,30 +181,34 @@ The landing page is public and must be accessible without login.
 - Seven Summit logo on the left.
 - Explore, About, and Contact navigation.
 - Sign In and Explore Now actions on the right.
-- Transparent or subtle glass appearance over the hero image.
+- Transparent or subtle glass appearance over the hero media.
 - Responsive mobile navigation.
 
 ### Hero Section
 
-- Large cinematic Mount Rinjani background or hero image.
+- Use the cinematic Rinjani MP4 supplied by the team when it is available.
+- Provide a poster-image fallback when video cannot load, playback is reduced,
+  or video is unavailable.
 - Headline: "Discover the Seven Summits of Rinjani".
 - Short supporting description.
 - Primary CTA: "Explore the Summits".
-- Large rounded image container inspired by the Roamly reference.
 - Maintain readable text contrast.
-- Use a documented placeholder until the final hero image is supplied.
+- Video must be muted by default, use `playsInline`, and must not contain
+  forced sound autoplay.
+- Use a documented fallback until final hero video and poster are supplied.
 
-### Floating Explore Panel
+### Hero Destination Selector
 
-Create a floating information/search-style panel inspired by the reference.
+Create a horizontal destination selector inspired by Visit Indonesia's
+destination-discovery experience.
 
 It can show:
 - Destination selection.
-- Adventure category.
-- Difficulty information when verified.
-- Explore action.
+- A concise exploration label.
+- An accessible action to continue exploring.
 
-This is a visual exploration panel. It does not require a real search backend.
+It is a visual exploration control, not a real search backend. Do not show
+unverified difficulty information.
 
 ### Brand Highlights
 
@@ -210,6 +220,16 @@ Do not invent:
 - Partnerships.
 - Safety guarantees.
 - Tourism claims.
+
+### Landing Page Content Order
+
+The landing page must not show the seven-destination gallery immediately after
+the hero. Its initial order is:
+
+1. Hero video and destination selector.
+2. Introduction to Rinjani.
+3. Tourism and outdoor experience section.
+4. Seven-destination gallery.
 
 ### Explore Seven Summits
 
@@ -536,6 +556,7 @@ Expected categories:
 - images/destinations/
 - images/gallery/
 - videos/destinations/
+- videos/hero/
 - mascot/animations/
 - mascot/images/
 - mascot/audio/
@@ -555,7 +576,8 @@ Rules:
 - Use meaningful alt text.
 - Optimize images.
 - Lazy-load large media.
-- Document asset requirements in docs/ASSET_GUIDE.md.
+- Document asset requirements in `docs/ASSETS_GUIDE.md` until the project
+  owner decides the canonical filename.
 
 ## 13. Booking Form
 
@@ -670,7 +692,7 @@ Requirements:
 ## 18. Error Handling
 
 Handle:
-- Missing hero images.
+- Missing hero video or poster image.
 - Missing destination images.
 - Missing videos.
 - Missing Rive animation.
@@ -744,7 +766,8 @@ Do not assume conversation history is available in another session or account.
 The project is complete when:
 
 - Public landing page is responsive.
-- Landing design follows the supplied reference direction.
+- Landing design follows the Visit Indonesia-inspired direction without copying
+  its brand or assets.
 - Navigation works.
 - Demo login works.
 - Public pages remain accessible without login.

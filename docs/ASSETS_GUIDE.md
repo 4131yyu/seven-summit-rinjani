@@ -4,22 +4,34 @@ This document describes the expected media assets for the website.
 
 All media assets are stored in public/assets/.
 
-## 1. Hero Images
+## 1. Hero Video and Poster
 
 Directory:
+
+public/assets/videos/hero/
+
+Expected file:
+
+- rinjani-hero.mp4
+
+Recommended:
+- Landscape orientation.
+- 16:9 or wider.
+- Cinematic footage supplied or approved by the project team.
+- MP4 container with web-friendly encoding and optimized file size.
+- Muted playback only; no forced sound autoplay.
+- Authentic Rinjani footage only.
+
+Poster directory:
 
 public/assets/images/hero/
 
 Expected file:
 
-- rinjani-hero.webp
+- rinjani-hero-poster.webp
 
-Recommended:
-- Landscape orientation.
-- 16:9 or wider.
-- High-resolution photography.
-- Optimized WebP.
-- Authentic Rinjani imagery.
+The poster is the visual fallback when the hero video is unavailable, fails to
+load, or should not play. Do not create a fake video or poster file.
 
 ## 2. Destination Images
 
