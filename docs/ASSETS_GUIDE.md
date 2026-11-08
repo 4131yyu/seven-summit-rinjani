@@ -4,6 +4,17 @@ This document describes the expected media assets for the website.
 
 All media assets are stored in public/assets/.
 
+## Background Music
+
+Current supplied file:
+
+- public/audio/bg_music/Akbar Chalay & Mingse - Astaga Bercanda (Lirik_Lyrics) - 7clouds Indonesia.mp3
+
+The application attempts unmuted autoplay at a reduced volume. Browsers can
+still block it, in which case visitors can start playback using the visible
+music-disc control. Confirm that the project has permission to use this track
+before publication.
+
 ## 1. Hero Video and Poster
 
 Directory:
@@ -28,7 +39,7 @@ public/assets/images/hero/
 
 Expected file:
 
-- rinjani-hero-poster.webp
+- gunung.webp
 
 The poster is the visual fallback when the hero video is unavailable, fails to
 load, or should not play. Do not create a fake video or poster file.

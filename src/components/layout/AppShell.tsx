@@ -1,5 +1,8 @@
 import { NavLink, Outlet, useLocation } from "react-router";
 
+import { assetPaths } from "../../config/assets";
+import { BackgroundMusic } from "./BackgroundMusic";
+
 const navigationItems = [
   { label: "Jelajah", href: "#galeri-destinasi" },
   { label: "Tentang", href: "#tentang" },
@@ -44,6 +47,7 @@ export function AppShell() {
       <main id="konten-utama">
         <Outlet />
       </main>
+      <BackgroundMusic src={assetPaths.backgroundMusic} />
     </div>
   );
 }

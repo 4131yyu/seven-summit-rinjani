@@ -8,7 +8,7 @@
 - Main instructions: AGENTS.md
 - Primary language: Indonesian
 - Current phase: Phase 5 — Mascot architecture and fallback
-- Project status: Dummy login complete; hero poster, destination media, and mascot assets pending
+- Project status: Dummy login and hero MP4/poster integration complete; destination media and mascot assets pending
 
 ## Technology Stack
 
@@ -88,9 +88,11 @@ List actual supplied assets here.
 Available asset:
 
 - `public/assets/videos/hero/rinjani-hero.mp4` — supplied team hero video.
+- `public/assets/images/hero/gunung.webp` — supplied team hero poster for
+  reduced-motion and failed-video fallback.
 
-No final hero poster, destination imagery, destination video, mascot animation,
-mascot image, or mascot voice has been confirmed yet.
+No destination imagery, destination video, mascot animation, mascot image, or
+mascot voice has been confirmed yet.
 
 The canonical asset guide is `docs/ASSETS_GUIDE.md`.
 
@@ -111,8 +113,8 @@ Phase 2 provides a working React/Vite/TypeScript application foundation:
 - Hero media attempts the configured MP4, then the configured poster, and
   finally a clearly labelled CSS placeholder if neither file is available.
 - The supplied `rinjani-hero.mp4` is now served as the default hero background.
-  Reduced-motion users do not render autoplay video; they receive the poster or
-  the labelled fallback when the poster is absent.
+  Reduced-motion users do not render autoplay video; they receive
+  `gunung.webp`, then the labelled fallback only if the poster is unavailable.
 - The hero now uses a centered `max-w-7xl` container, with its placeholder
   destination selector restored at the bottom. The landing navigation has a
   subtle translucent layer to remain readable above supplied video footage.
@@ -121,8 +123,6 @@ Phase 2 provides a working React/Vite/TypeScript application foundation:
 
 - Final media assets are not supplied; all future media components need a
   non-broken fallback.
-- The approved WebP hero poster is still required for the non-video and failed
-  video fallback state.
 - No verified data exists yet for the seven destinations; factual content must
   remain placeholder content until credible sources are provided or verified.
 - The selector uses temporary labels `Destinasi 01` through `Destinasi 07`.
@@ -130,8 +130,7 @@ Phase 2 provides a working React/Vite/TypeScript application foundation:
 
 ## Pending Tasks
 
-1. Receive and verify the approved WebP hero poster and verified destination
-   media.
+1. Receive and verify destination media.
 2. Replace only the relevant labelled placeholders after each asset and its
    destination mapping has been verified.
 3. Phase 3C: perform responsive, performance, and accessibility testing.
@@ -211,10 +210,27 @@ Do not rely solely on prior conversation history.
 - Phase 4 checks passed: `npm.cmd run lint`, `npm.cmd run build`,
   `GET /login` through the Vite development server (HTTP 200), and
   `git diff --check`.
+- Phase 3C hero poster integration: verified the supplied
+  `public/assets/images/hero/gunung.webp` and updated the centralized asset
+  path. It now provides the existing HeroMedia fallback for reduced-motion and
+  failed-video states.
+- Phase 3C poster checks passed: `npm.cmd run lint`, `npm.cmd run build`,
+  and the production build contains `gunung.webp` at the expected path and
+  87,432-byte size.
+
+- Background music integration: added a global, keyboard-accessible ambient
+  music control using the supplied MP3 in public/audio/bg_music. It loops only
+  after an explicit visitor action because browsers can block unmuted autoplay.
+  The hero video remains muted.
+- Background music checks passed: npm.cmd run lint, npm.cmd run build, and the
+  production build contains the expected 6,650,775-byte MP3.
+- Background music update: the app now attempts unmuted autoplay at 35% volume.
+  The player is a medium, accessible music-disc control at the bottom right and
+  remains the fallback when the browser blocks autoplay.
 
 ## Last Handoff
 
-- Completed work: Phase 4 dummy login.
+- Completed work: Phase 4 dummy login and Phase 3C hero poster integration.
 - Next action: begin Phase 5 by preparing the modular mascot architecture and
   static fallback while awaiting a valid Rive animation, fallback image, and
   optional audio files.
