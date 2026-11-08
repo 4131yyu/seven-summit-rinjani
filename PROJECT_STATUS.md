@@ -7,8 +7,8 @@
 - Main coding agent: OpenAI Codex CLI
 - Main instructions: AGENTS.md
 - Primary language: Indonesian
-- Current phase: Phase 3B — Hero video integration
-- Project status: Hero MP4 integration and responsive hero composition completed; poster and destination media pending
+- Current phase: Phase 5 — Mascot architecture and fallback
+- Project status: Dummy login complete; hero poster, destination media, and mascot assets pending
 
 ## Technology Stack
 
@@ -36,7 +36,7 @@ Rive will only be added in the implementation phase that uses them.
 - [x] Phase 1 — Project audit and architecture
 - [x] Phase 2 — Dependencies, routing, and design system
 - [ ] Phase 3 — Landing page
-- [ ] Phase 4 — Dummy login
+- [x] Phase 4 — Dummy login
 - [ ] Phase 5 — Mascot architecture and fallback
 - [ ] Phase 6 — Destination gallery
 - [ ] Phase 7 — Destination detail and video
@@ -194,11 +194,27 @@ Do not rely solely on prior conversation history.
   or dependencies were added.
 - Phase 3A finalization checks passed: `npm.cmd run lint`,
   `npm.cmd run build`, and `git diff --check`.
+- Phase 3C responsive adjustment: preserved the project owner's video-focused
+  hero layout with the destination selector hidden. The hero's horizontal
+  margins now use `w-auto` to avoid width-plus-margin overflow, and the
+  intentionally large desktop text spacing scales down at smaller breakpoints.
+- Phase 3C checks passed: `npm.cmd run lint` and `npm.cmd run build`.
+- Phase 4 started: the supplied login and sign-up session references guide the
+  form's composition only. Their media is not reused as destination imagery.
+- Phase 4 completed: implemented the responsive `/login` form with visible
+  demo credentials, required-field validation, invalid-credential feedback,
+  public-browsing return link, and a minimal `sessionStorage` demo session
+  that never stores the password. No dependency was added and no sign-up route
+  was created because it is outside the specified routes.
+- Phase 4 files changed: `src/pages/LoginPage.tsx`,
+  `src/router.tsx`, and `PROJECT_STATUS.md`.
+- Phase 4 checks passed: `npm.cmd run lint`, `npm.cmd run build`,
+  `GET /login` through the Vite development server (HTTP 200), and
+  `git diff --check`.
 
 ## Last Handoff
 
-- Completed work: Phase 3A hero composition finalization and Phase 3B hero MP4
-  integration.
-- Next action: run responsive, performance, and accessibility testing for the
-  completed landing-page hero (Phase 3C), while awaiting the approved WebP
-  poster and verified destination media.
+- Completed work: Phase 4 dummy login.
+- Next action: begin Phase 5 by preparing the modular mascot architecture and
+  static fallback while awaiting a valid Rive animation, fallback image, and
+  optional audio files.

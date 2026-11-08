@@ -36,14 +36,14 @@ export function LandingPage() {
     <>
       <section aria-labelledby="hero-heading" className="relative flex min-h-svh overflow-x-clip">
         <HeroMedia destination={activeDestination} />
-        <div className="relative z-10 mx-5 flex w-full max-w-7xl flex-col px-5 pb-6 pt-28 sm:px-8 sm:pb-10 sm:pt-32 lg:px-12 lg:pt-36">
+        <div className="relative z-10 mx-4 flex w-auto max-w-7xl flex-col px-5 pb-6 pt-28 sm:mx-5 sm:px-8 sm:pb-10 sm:pt-32 lg:px-12 lg:pt-36">
           {/* <div className="flex flex-1 items-start py-10 sm:py-14"> */}
             <div className="max-w-3xl">
               <p className="text-sm font-semibold tracking-[0.2em] text-cream/80 uppercase">Seven Summit Rinjani</p>
               <h1 className="mt-4 font-display text-5xl font-semibold tracking-tight text-white sm:text-6xl lg:text-7xl xl:text-8xl" id="hero-heading">
                 Discover the Seven Summits of Rinjani
               </h1>
-              <p className="mt-70 max-w-xl text-base leading-7 text-cream/90 sm:text-lg sm:leading-8">
+              <p className="mt-32 max-w-xl text-base leading-7 text-cream/90 sm:mt-48 sm:text-lg sm:leading-8 lg:mt-70">
                 Sebuah ruang untuk mempersiapkan pengalaman eksplorasi Rinjani melalui visual dan informasi yang akan diperbarui bersama tim.
               </p>
               <button className="button-primary mt-7" onClick={scrollToGallery} type="button">Explore the Summits</button>

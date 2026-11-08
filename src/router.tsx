@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router";
 
 import { AppShell } from "./components/layout/AppShell";
 import { LandingPage } from "./pages/LandingPage";
+import { LoginPage } from "./pages/LoginPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import { RoutePlaceholderPage } from "./pages/RoutePlaceholderPage";
 
@@ -12,7 +13,7 @@ export const router = createBrowserRouter([
       { index: true, Component: LandingPage },
       {
         path: "login",
-        Component: () => <RoutePlaceholderPage title="Masuk demo" />,
+        Component: LoginPage,
       },
       {
         path: "destinations",
