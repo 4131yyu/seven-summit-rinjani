@@ -15,10 +15,10 @@ export function AppShell() {
       <a className="skip-link" href="#konten-utama">
         Lewati navigasi
       </a>
-      <header className={`z-20 inset-x-0 top-0 ${isLandingPage ? "absolute text-white" : "relative border-b border-forest/10 bg-cream/95 text-forest backdrop-blur"}`}>
+      <header className={`z-20 inset-x-0 top-0 ${isLandingPage ? "absolute border-b border-white/10 bg-charcoal/15 text-white backdrop-blur-sm" : "relative border-b border-forest/10 bg-cream/95 text-forest backdrop-blur"}`}>
         <nav
           aria-label="Navigasi utama"
-          className="flex w-full items-center gap-4 px-5 py-4 sm:px-8 lg:px-12"
+          className="mx-auto flex w-full max-w-384 items-center gap-4 px-5 py-4 sm:px-8 lg:px-12"
         >
           <NavLink className="font-display text-lg font-semibold tracking-tight" to="/">
             Seven Summit Rinjani
@@ -32,8 +32,8 @@ export function AppShell() {
             <NavLink className={`rounded-full px-3 py-2 text-sm font-semibold ${isLandingPage ? "hover:bg-white/15" : "hover:bg-forest/10"}`} to="/login">Masuk</NavLink>
             <a className="rounded-full bg-terracotta px-4 py-2 text-sm font-semibold text-white" href="#galeri-destinasi">Mulai jelajah</a>
           </div>
-          <details className="relative md:hidden">
-            <summary className="cursor-pointer rounded-full border border-current/30 px-3 py-2 text-sm font-semibold">Menu</summary>
+          <details className="relative ml-auto md:hidden">
+            <summary className="cursor-pointer rounded-full border border-current/40 bg-charcoal/20 px-3 py-2 text-sm font-semibold">Menu</summary>
             <div className="absolute right-0 mt-3 flex min-w-48 flex-col rounded-2xl bg-cream p-2 text-forest shadow-xl">
               {navigationItems.map((item) => (<a className="rounded-xl px-3 py-2 hover:bg-forest/10" href={item.href} key={item.href}>{item.label}</a>))}
               <NavLink className="rounded-xl px-3 py-2 hover:bg-forest/10" to="/login">Masuk</NavLink>

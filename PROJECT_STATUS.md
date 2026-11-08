@@ -8,7 +8,7 @@
 - Main instructions: AGENTS.md
 - Primary language: Indonesian
 - Current phase: Phase 3B — Hero video integration
-- Project status: Hero MP4 integration completed; poster and destination media pending
+- Project status: Hero MP4 integration and responsive hero composition completed; poster and destination media pending
 
 ## Technology Stack
 
@@ -113,6 +113,9 @@ Phase 2 provides a working React/Vite/TypeScript application foundation:
 - The supplied `rinjani-hero.mp4` is now served as the default hero background.
   Reduced-motion users do not render autoplay video; they receive the poster or
   the labelled fallback when the poster is absent.
+- The hero now uses a centered `max-w-7xl` container, with its placeholder
+  destination selector restored at the bottom. The landing navigation has a
+  subtle translucent layer to remain readable above supplied video footage.
 
 ## Known Issues
 
@@ -185,9 +188,17 @@ Do not rely solely on prior conversation history.
 - Hero video checks passed: production build and TypeScript check passed; Vite
   preview served `/assets/videos/hero/rinjani-hero.mp4` with HTTP 200,
   `video/mp4`, and the expected 56,271,253-byte content length.
+- Phase 3A hero composition finalization: restored the interactive placeholder
+  destination selector, repaired the hero's centered responsive layout, and
+  replaced the invalid `mt-70` class with valid responsive spacing. No assets
+  or dependencies were added.
+- Phase 3A finalization checks passed: `npm.cmd run lint`,
+  `npm.cmd run build`, and `git diff --check`.
 
 ## Last Handoff
 
-- Completed work: Phase 3B hero MP4 integration.
-- Next action: wait for an approved WebP hero poster or direction to continue
-  with another verified asset integration.
+- Completed work: Phase 3A hero composition finalization and Phase 3B hero MP4
+  integration.
+- Next action: run responsive, performance, and accessibility testing for the
+  completed landing-page hero (Phase 3C), while awaiting the approved WebP
+  poster and verified destination media.

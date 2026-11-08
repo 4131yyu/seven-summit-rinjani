@@ -34,25 +34,26 @@ export function LandingPage() {
 
   return (
     <>
-      <section aria-labelledby="hero-heading" className="relative flex min-h-svh items-start overflow-hidden">
+      <section aria-labelledby="hero-heading" className="relative flex min-h-svh overflow-x-clip">
         <HeroMedia destination={activeDestination} />
-        {/* <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-col px-5 pt-32 pb-7 sm:px-8 sm:pb-10 lg:pb-12"> */}
-        <div className="relative z-10 mx-5 w-full max-w-7xl flex-col px-5 pt-32 sm:px-8 sm:pb-10 lg:pb-12">
-          <div className="max-w-3xl">
-            <p className="text-sm font-semibold tracking-[0.2em] text-cream/80 uppercase">Seven Summit Rinjani</p>
-            <h1 className="mt-4 font-display text-5xl font-semibold tracking-tight text-white sm:text-6xl lg:text-8xl" id="hero-heading">
-              Discover the Seven Summits of Rinjani
-            </h1>
-            <p className="mt-70 max-w-xl text-base leading-7 text-cream/90 sm:text-lg">
-              Sebuah ruang untuk mempersiapkan pengalaman eksplorasi Rinjani melalui visual dan informasi yang akan diperbarui bersama tim.
-            </p>
-            <button className="button-primary mt-7" onClick={scrollToGallery} type="button">Explore the Summits</button>
-            <p className="mt-4 text-sm text-white/70">{activeDestination.statusLabel}</p>
+        <div className="relative z-10 mx-5 flex w-full max-w-7xl flex-col px-5 pb-6 pt-28 sm:px-8 sm:pb-10 sm:pt-32 lg:px-12 lg:pt-36">
+          {/* <div className="flex flex-1 items-start py-10 sm:py-14"> */}
+            <div className="max-w-3xl">
+              <p className="text-sm font-semibold tracking-[0.2em] text-cream/80 uppercase">Seven Summit Rinjani</p>
+              <h1 className="mt-4 font-display text-5xl font-semibold tracking-tight text-white sm:text-6xl lg:text-7xl xl:text-8xl" id="hero-heading">
+                Discover the Seven Summits of Rinjani
+              </h1>
+              <p className="mt-70 max-w-xl text-base leading-7 text-cream/90 sm:text-lg sm:leading-8">
+                Sebuah ruang untuk mempersiapkan pengalaman eksplorasi Rinjani melalui visual dan informasi yang akan diperbarui bersama tim.
+              </p>
+              <button className="button-primary mt-7" onClick={scrollToGallery} type="button">Explore the Summits</button>
+              <p className="mt-4 text-sm text-white/70">{activeDestination.statusLabel}</p>
+            </div>
           </div>
-          {/* <div className="mt-10 lg:mt-14">
+          {/* <div className="pt-4 sm:pt-6">
             <DestinationSelector activeDestinationId={activeDestinationId} destinations={landingDestinations} onSelect={setActiveDestinationId} />
           </div> */}
-        </div>
+        {/* </div> */}
       </section>
 
       <section className="bg-cream py-20 sm:py-28" id="tentang">
