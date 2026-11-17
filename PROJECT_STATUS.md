@@ -73,8 +73,9 @@ Rive will only be added in the implementation phase that uses them.
   MP4 and does not render separate landing-page sections.
 - `docs/references/homepage-motion-reference.mp4` guides the carousel movement.
   The `/destinations` route remains unchanged and is handled separately.
-- Carousel imagery uses the supplied project assets. Names and factual content
-  remain placeholders until verified.
+- Carousel imagery uses supplied project assets. Destination descriptions are
+  provided by the project owner and are not represented as independently
+  verified facts.
 
 ## Reference Design
 
@@ -111,6 +112,9 @@ Phase 2 provides a working React/Vite/TypeScript application foundation:
 - Centralized expected asset paths, with comments requiring components to use
   fallbacks when final files are unavailable.
 - The Homepage contains one full-screen image-backed destination carousel.
+- Login and Signup share a reference-based authentication layout. Login uses
+  the existing demo credentials and session storage; Signup performs client
+  side validation only and does not persist an account without a backend.
 - The site-wide hero MP4 and poster paths remain configured for other future
   uses, but are not rendered on the Homepage.
 - Hero media attempts the configured MP4, then the configured poster, and
@@ -121,6 +125,9 @@ Phase 2 provides a working React/Vite/TypeScript application foundation:
 - The carousel uses landscape backgrounds, portrait preview cards, a vertical
   selector, automatic and manual controls, transitions, responsive layout, and
   missing-image fallbacks.
+- `src/data/destinations.ts` stores the seven owner-provided descriptions. The
+  active carousel slide displays its name, altitude, location, and only the
+  optional details supplied for that destination.
 
 ## Known Issues
 
@@ -204,6 +211,19 @@ Do not rely solely on prior conversation history.
   public-browsing return link, and a minimal `sessionStorage` demo session
   that never stores the password. No dependency was added and no sign-up route
   was created because it is outside the specified routes.
+- Authentication visual refresh: added shared torn-paper and mountain-photo
+  layout for `/login` and `/signup`. Login retains its demo credential flow;
+  Signup validates email/password confirmation locally and reports that no
+  account was persisted. Added route navigation between both pages.
+- Authentication follow-up: added dummy Google, Facebook, and TikTok options
+  to both forms; each displays an unconnected demo notice. Both forms now
+  require an explicit policy-consent checkbox. Added autofill styling so
+  browser-saved usernames, email addresses, and passwords retain the orange
+  field background and white text.
+- Authentication form polish: moved field validation messages into normal form
+  flow to prevent overlap, replaced placeholder glyphs with matching inline
+  user/email/lock icons, and added accessible show/hide controls for passwords
+  on both Login and Signup.
 - Phase 4 files changed: `src/pages/LoginPage.tsx`,
   `src/router.tsx`, and `PROJECT_STATUS.md`.
 - Phase 4 checks passed: `npm.cmd run lint`, `npm.cmd run build`,
@@ -247,6 +267,10 @@ Do not rely solely on prior conversation history.
   destination rail, and two preview cards. The motion reference continues to
   guide background fade, card slide, and staggered text. The carousel remains
   responsive and retains reduced-motion and manual controls.
+- Owner-provided destination content is centralized in
+  `src/data/destinations.ts` and connected to the Homepage carousel. Optional
+  duration, difficulty, mountain type, temperature, and note fields are shown
+  only when supplied. No routes, page sections, or dependencies were added.
 
 ## Last Handoff
 

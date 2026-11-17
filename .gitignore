@@ -5,3 +5,6 @@ dist/
 !.env.example
 .DS_Store
 *.log
+
+# Large destination preview videos
+public/assets/videos/destinations/*.mp4
