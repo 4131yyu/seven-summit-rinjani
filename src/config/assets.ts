@@ -3,7 +3,8 @@
  * di bawah ini tidak ada atau tidak dapat dimuat.
  */
 export const assetPaths = {
-  heroVideo: "/assets/videos/hero/rinjani-hero.mp4",
+  // heroVideo: "/assets/videos/hero/rinjani-hero.mp4",
+  heroVideo: "/assets/videos/destinations/01-Rinjani.mp4",
   heroPoster: "/assets/images/hero/gunung.webp",
   backgroundMusic: encodeURI(
     "/audio/bg_music/Akbar Chalay & Mingse - Astaga Bercanda (Lirik_Lyrics) - 7clouds Indonesia.mp3",

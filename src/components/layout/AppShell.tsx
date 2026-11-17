@@ -15,13 +15,14 @@ export function AppShell() {
   const [language, setLanguage] = useState<"ID" | "EN">("ID");
   const location = useLocation();
   const isLandingPage = location.pathname === "/";
+  const isAuthPage = location.pathname === "/login" || location.pathname === "/signup";
 
   return (
     <div className="min-h-screen bg-cream text-charcoal">
-      <a className="skip-link" href="#konten-utama">
+      <a className="skip-link" href={isAuthPage ? "#auth-main" : "#konten-utama"}>
         Lewati navigasi
       </a>
-      <header className={`site-navbar z-20 ${isLandingPage ? "site-navbar-floating" : "relative border-b border-forest/10 bg-cream/95 text-forest backdrop-blur"}`}>
+      {!isAuthPage ? <header className={`site-navbar z-20 ${isLandingPage ? "site-navbar-floating" : "relative border-b border-forest/10 bg-cream/95 text-forest backdrop-blur"}`}>
         <nav
           aria-label="Navigasi utama"
           className={`site-navbar-inner mx-auto grid w-full grid-cols-[1fr_auto] items-center gap-3 ${isLandingPage ? "max-w-none px-3 py-2.5 sm:px-5 sm:py-3" : "max-w-384 px-5 py-4 sm:px-8 lg:px-12"}`}
@@ -78,8 +79,8 @@ export function AppShell() {
             </details>
           </div>
         </nav>
-      </header>
-      <main id="konten-utama">
+      </header> : null}
+      <main id={isAuthPage ? "auth-main" : "konten-utama"}>
         <Outlet />
       </main>
       <BackgroundMusic src={assetPaths.backgroundMusic} />

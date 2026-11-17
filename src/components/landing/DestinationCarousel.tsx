@@ -166,9 +166,40 @@ export function DestinationCarousel() {
             </nav>
             <div className="destination-copy-enter max-w-xl" id="active-destination" key={`copy-${activeDestination.id}`}>
               <p className="text-xs font-semibold tracking-[0.2em] text-cream/80 uppercase sm:text-sm">Destinasi {activeDestination.id}</p>
-              <h2 className="mt-2 font-display text-3xl font-semibold leading-tight text-white drop-shadow sm:text-4xl lg:text-5xl">{activeDestination.selectorLabel}</h2>
-              <p className="mt-2 text-sm leading-6 text-white drop-shadow sm:text-base">{activeDestination.description}</p>
-              <p className="mt-3 max-w-lg text-xs leading-5 text-white/85 drop-shadow sm:text-sm">Informasi resmi mengenai destinasi ini akan ditambahkan setelah diverifikasi.</p>
+              <h2 className="mt-2 font-display text-3xl font-semibold leading-tight text-white drop-shadow sm:text-4xl lg:text-5xl">{activeDestination.name}</h2>
+              <p className="mt-3 text-xs font-semibold tracking-[0.14em] text-cream/80 uppercase sm:text-sm">Ketinggian puncak</p>
+              <p className="destination-altitude mt-1 font-display text-xl font-semibold text-white drop-shadow sm:text-2xl">{activeDestination.altitude}</p>
+              <p className="mt-3 max-w-lg text-sm leading-6 text-white drop-shadow sm:text-base">{activeDestination.shortDescription}</p>
+              <dl className="destination-details mt-4 grid gap-x-5 gap-y-3 sm:grid-cols-2">
+                <div className="destination-detail-item sm:col-span-2">
+                  <dt>Lokasi</dt>
+                  <dd>{activeDestination.location}</dd>
+                </div>
+                {activeDestination.estimatedDuration ? (
+                  <div className="destination-detail-item">
+                    <dt>Estimasi waktu tempuh</dt>
+                    <dd>{activeDestination.estimatedDuration}</dd>
+                  </div>
+                ) : null}
+                {activeDestination.difficulty ? (
+                  <div className="destination-detail-item">
+                    <dt>Tingkat kesulitan</dt>
+                    <dd>{activeDestination.difficulty}</dd>
+                  </div>
+                ) : null}
+                {activeDestination.mountainType ? (
+                  <div className="destination-detail-item">
+                    <dt>Tipe gunung</dt>
+                    <dd>{activeDestination.mountainType}</dd>
+                  </div>
+                ) : null}
+                {activeDestination.temperature ? (
+                  <div className="destination-detail-item">
+                    <dt>Suhu udara</dt>
+                    <dd>{activeDestination.temperature}</dd>
+                  </div>
+                ) : null}
+              </dl>
             </div>
           </div>
 
