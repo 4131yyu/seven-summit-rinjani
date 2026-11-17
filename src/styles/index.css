@@ -102,7 +102,7 @@
 .scrollbar-hidden::-webkit-scrollbar { display: none; }
 
 .destination-carousel {
-  min-height: 40rem;
+  min-height: 100svh;
 }
 
 .destination-background {
@@ -116,8 +116,9 @@
 
 .destination-background-overlay {
   background:
-    linear-gradient(90deg, rgb(21 35 31 / 88%) 0%, rgb(21 35 31 / 67%) 42%, rgb(21 35 31 / 22%) 100%),
-    linear-gradient(0deg, rgb(21 35 31 / 52%) 0%, transparent 42%);
+    linear-gradient(90deg, rgb(21 35 31 / 64%) 0%, rgb(21 35 31 / 39%) 48%, rgb(21 35 31 / 16%) 100%),
+    linear-gradient(0deg, rgb(21 35 31 / 38%) 0%, transparent 38%),
+    linear-gradient(180deg, rgb(21 35 31 / 28%) 0%, transparent 30%);
 }
 
 .destination-background-initial { opacity: 1; }
@@ -153,11 +154,233 @@
   touch-action: pan-y;
 }
 
+.destination-selector-rail {
+  position: relative;
+  min-height: 17rem;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+}
+
+.destination-selector-rail::before {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  background: rgb(255 255 255 / 55%);
+  content: "";
+}
+
+.destination-selector-dot {
+  position: relative;
+  z-index: 1;
+  width: 0.55rem;
+  height: 0.55rem;
+  border: 1px solid rgb(255 255 255 / 75%);
+  border-radius: 9999px;
+  background: var(--color-cream);
+  transition: width 250ms ease, height 250ms ease, background-color 250ms ease, border-color 250ms ease;
+}
+
+.destination-selector-dot-active {
+  width: 0.9rem;
+  height: 0.9rem;
+  border-color: white;
+  background: var(--color-terracotta);
+}
+
+.site-navbar-floating {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  left: 1rem;
+  border: 1px solid rgb(255 255 255 / 48%);
+  border-radius: 1rem;
+  background: linear-gradient(120deg, rgb(255 255 255 / 28%), rgb(255 255 255 / 12%) 48%, rgb(255 255 255 / 20%));
+  box-shadow: 0 10px 35px rgb(15 27 25 / 20%), inset 0 1px 0 rgb(255 255 255 / 48%);
+  color: white;
+  -webkit-backdrop-filter: blur(18px) saturate(145%);
+  backdrop-filter: blur(18px) saturate(145%);
+}
+
+.site-navbar-inner {
+  position: relative;
+  min-height: 3.5rem;
+}
+
+.brand-logo-placeholder {
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  place-items: center;
+  border: 1px solid rgb(255 255 255 / 75%);
+  border-radius: 9999px;
+  background: rgb(255 255 255 / 16%);
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+}
+
+.site-navbar-links {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: 0;
+  transform: translate(-50%, -50%);
+}
+
+.navbar-link {
+  border-radius: 9999px;
+  padding: 0.55rem 0.7rem;
+  font-size: 0.82rem;
+  font-weight: 550;
+  transition: background-color 150ms ease;
+}
+
+.navbar-link:hover,
+.navbar-icon-button:hover,
+.navbar-language-button:hover {
+  background: rgb(255 255 255 / 16%);
+}
+
+.navbar-link:focus-visible,
+.navbar-icon-button:focus-visible,
+.navbar-language-button:focus-visible,
+.navbar-menu summary:focus-visible {
+  outline: 2px solid white;
+  outline-offset: 2px;
+}
+
+.site-navbar-actions {
+  min-width: 0;
+}
+
+.navbar-search {
+  display: flex;
+  height: 2.35rem;
+  align-items: center;
+  border: 1px solid transparent;
+  border-radius: 9999px;
+  transition: width 200ms ease, border-color 200ms ease, background-color 200ms ease;
+}
+
+.navbar-search-open {
+  border-color: rgb(255 255 255 / 62%);
+  background: rgb(255 255 255 / 16%);
+}
+
+.navbar-search-input {
+  width: clamp(5.5rem, 13vw, 11rem);
+  min-width: 0;
+  padding: 0 0 0 0.8rem;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: white;
+  font-size: 0.8rem;
+}
+
+.navbar-search-input::placeholder {
+  color: rgb(255 255 255 / 75%);
+}
+
+.navbar-icon-button,
+.navbar-language-button {
+  display: inline-flex;
+  min-width: 2.4rem;
+  height: 2.4rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  border: 0;
+  border-radius: 9999px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.75rem;
+  text-decoration: none;
+}
+
+.navbar-language-button {
+  padding: 0 0.5rem;
+}
+
+.navbar-language-flag {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.navbar-separator {
+  width: 1px;
+  height: 1.4rem;
+  margin: 0 0.25rem;
+  background: rgb(255 255 255 / 62%);
+}
+
+.navbar-menu > summary {
+  list-style: none;
+  cursor: pointer;
+}
+
+.navbar-menu > summary::-webkit-details-marker {
+  display: none;
+}
+
+.navbar-menu-popover {
+  position: absolute;
+  top: calc(100% + 0.75rem);
+  right: 0;
+  z-index: 30;
+  display: flex;
+  width: 13rem;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.65rem;
+  border: 1px solid rgb(255 255 255 / 70%);
+  border-radius: 1rem;
+  background: rgb(247 246 241 / 96%);
+  box-shadow: 0 1rem 2.5rem rgb(15 27 25 / 28%);
+  color: var(--color-forest);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+}
+
+.navbar-menu-title {
+  margin: 0 0 0.25rem;
+  padding: 0.55rem 0.65rem;
+  border-bottom: 1px solid rgb(23 60 53 / 12%);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.navbar-menu-popover a {
+  border-radius: 0.65rem;
+  padding: 0.6rem 0.65rem;
+  font-size: 0.85rem;
+  text-decoration: none;
+}
+
+.navbar-menu-popover a:hover,
+.navbar-menu-popover a:focus-visible {
+  background: rgb(23 60 53 / 9%);
+}
+
+.destination-selector-dot:focus-visible {
+  outline: 2px solid white;
+  outline-offset: 4px;
+}
+
+.destination-copy-caption {
+  animation-delay: 100ms;
+}
+
 .destination-card {
   position: absolute;
   top: 50%;
-  width: 68%;
-  height: 92%;
+  width: 56%;
+  height: 88%;
   overflow: hidden;
   border: 1px solid rgb(255 255 255 / 60%);
   border-radius: 1.25rem;
@@ -184,19 +407,19 @@
 }
 
 .destination-card-previous {
-  left: 0;
+  left: 2%;
   z-index: 2;
   opacity: 0.72;
   filter: brightness(0.72);
-  transform: translateY(-50%) scale(0.82);
+  transform: translateY(-50%) scale(0.8);
 }
 
 .destination-card-next {
-  right: 0;
+  right: 2%;
   z-index: 2;
   opacity: 0.72;
   filter: brightness(0.72);
-  transform: translateY(-50%) scale(0.82);
+  transform: translateY(-50%) scale(0.8);
 }
 
 .destination-card-placeholder {
@@ -231,5 +454,64 @@
   }
   .destination-card {
     transition: none !important;
+  }
+}
+
+@media (max-width: 639px) {
+  .site-navbar-floating {
+    top: 0.65rem;
+    right: 0.65rem;
+    left: 0.65rem;
+    border-radius: 0.875rem;
+  }
+
+  .site-navbar-inner {
+    gap: 0.35rem;
+  }
+
+  .site-navbar-actions {
+    gap: 0.2rem;
+  }
+
+  .navbar-search-open {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    right: 0.5rem;
+    z-index: 2;
+    background: rgb(26 40 36 / 88%);
+  }
+
+  .destination-selector-rail {
+    min-height: 14.5rem;
+  }
+
+  .destination-carousel > #seven-summit {
+    min-height: 100svh;
+    padding-top: 6.5rem;
+    padding-bottom: max(1.25rem, env(safe-area-inset-bottom));
+  }
+
+  .destination-carousel > #seven-summit > div:nth-child(2) {
+    align-content: center;
+    grid-template-rows: auto minmax(13rem, 0.8fr);
+  }
+
+  .destination-carousel > #seven-summit > div:nth-child(2) > div:first-child {
+    gap: 0.85rem;
+  }
+
+  .destination-carousel > #seven-summit > footer {
+    margin-top: 1rem;
+  }
+}
+
+@media (min-width: 640px) and (max-width: 767px) {
+  .site-navbar-floating .site-navbar-inner {
+    padding-right: 1rem;
+    padding-left: 1rem;
+  }
+
+  .site-navbar-floating .site-navbar-actions {
+    gap: 0.15rem;
   }
 }

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { NavLink, Outlet, useLocation } from "react-router";
 
 import { assetPaths } from "../../config/assets";
@@ -5,15 +6,13 @@ import { BackgroundMusic } from "./BackgroundMusic";
 
 const navigationItems = [
   { label: "Jelajah", href: "#seven-summit" },
-  { label: "Tentang", href: "#tentang" },
-  { label: "Kontak", href: "#kontak" },
+  { label: "Tentang", href: "#active-destination" },
+  { label: "Kontak", href: "#contact-placeholder" },
 ] as const;
 
-const scrollToGallery = () => {
-  document.getElementById("seven-summit")?.scrollIntoView({ behavior: "smooth" });
-};
-
 export function AppShell() {
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [language, setLanguage] = useState<"ID" | "EN">("ID");
   const location = useLocation();
   const isLandingPage = location.pathname === "/";
 
@@ -22,30 +21,62 @@ export function AppShell() {
       <a className="skip-link" href="#konten-utama">
         Lewati navigasi
       </a>
-      <header className={`z-20 inset-x-0 top-0 ${isLandingPage ? "absolute border-b border-white/10 bg-charcoal/15 text-white backdrop-blur-sm" : "relative border-b border-forest/10 bg-cream/95 text-forest backdrop-blur"}`}>
+      <header className={`site-navbar z-20 ${isLandingPage ? "site-navbar-floating" : "relative border-b border-forest/10 bg-cream/95 text-forest backdrop-blur"}`}>
         <nav
           aria-label="Navigasi utama"
-          className="mx-auto flex w-full max-w-384 items-center gap-4 px-5 py-4 sm:px-8 lg:px-12"
+          className={`site-navbar-inner mx-auto grid w-full grid-cols-[1fr_auto] items-center gap-3 ${isLandingPage ? "max-w-none px-3 py-2.5 sm:px-5 sm:py-3" : "max-w-384 px-5 py-4 sm:px-8 lg:px-12"}`}
         >
-          <NavLink className="font-display text-lg font-semibold tracking-tight" to="/">
-            Seven Summit Rinjani
+          <NavLink aria-label="Seven Summit Rinjani, beranda" className="flex shrink-0 items-center gap-2.5 font-display text-lg font-semibold tracking-tight" to="/">
+            <span aria-hidden="true" className="brand-logo-placeholder">SS</span>
+            <span className="hidden sm:inline">Seven Summit Rinjani</span>
+            <span className="sm:hidden">Seven Summit</span>
           </NavLink>
-          <div className="ml-auto hidden items-center gap-4 md:flex">
+          <div className="site-navbar-links hidden items-center justify-center gap-1 md:flex">
             {navigationItems.map((item) => (
-              <a className={`rounded-full px-3 py-2 text-sm font-medium transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terracotta ${isLandingPage ? "hover:bg-white/15" : "hover:bg-forest/10"}`} href={item.href} key={item.href}>
+              <a className="navbar-link" href={item.href} key={item.href}>
                 {item.label}
               </a>
             ))}
-            <NavLink className={`rounded-full px-3 py-2 text-sm font-semibold ${isLandingPage ? "hover:bg-white/15" : "hover:bg-forest/10"}`} to="/login">Masuk</NavLink>
-            <button className="rounded-full bg-terracotta px-4 py-2 text-sm font-semibold text-white" onClick={scrollToGallery} type="button">Mulai jelajah</button>
           </div>
-          <details className="relative ml-auto md:hidden">
-            <summary className="cursor-pointer rounded-full border border-current/40 bg-charcoal/20 px-3 py-2 text-sm font-semibold">Menu</summary>
-            <div className="absolute right-0 mt-3 flex min-w-48 flex-col rounded-2xl bg-cream p-2 text-forest shadow-xl">
-              {navigationItems.map((item) => (<a className="rounded-xl px-3 py-2 hover:bg-forest/10" href={item.href} key={item.href}>{item.label}</a>))}
-              <NavLink className="rounded-xl px-3 py-2 hover:bg-forest/10" to="/login">Masuk</NavLink>
-            </div>
-          </details>
+
+          <div className="site-navbar-actions flex items-center justify-self-end gap-1.5 sm:gap-2">
+            <form
+              className={`navbar-search ${searchOpen ? "navbar-search-open" : ""}`}
+              onSubmit={(event) => {
+                event.preventDefault();
+              }}
+            >
+              <label className="sr-only" htmlFor="site-search">Search destinations</label>
+              {searchOpen ? <input autoFocus className="navbar-search-input" id="site-search" placeholder="Search (soon)" type="search" /> : null}
+              <button aria-label={searchOpen ? "Submit search" : "Open search"} className="navbar-icon-button" onClick={() => setSearchOpen((open) => !open)} type={searchOpen ? "submit" : "button"}>
+                <svg aria-hidden="true" fill="none" height="17" viewBox="0 0 24 24" width="17"><circle cx="10.8" cy="10.8" r="6.3" stroke="currentColor" strokeWidth="1.7" /><path d="m15.5 15.5 4.2 4.2" stroke="currentColor" strokeLinecap="round" strokeWidth="1.7" /></svg>
+              </button>
+            </form>
+
+            <span aria-hidden="true" className="navbar-separator" />
+
+            <button aria-label={`Change language, currently ${language}`} className="navbar-language-button" onClick={() => setLanguage((current) => current === "ID" ? "EN" : "ID")} type="button">
+              <span aria-hidden="true" className="navbar-language-flag">{language === "ID" ? "🇮🇩" : "🇬🇧"}</span>
+              <span>{language}</span>
+            </button>
+
+            <NavLink aria-label="Profile, sign in" className="navbar-icon-button hidden sm:inline-flex" to="/login">
+              <svg aria-hidden="true" fill="none" height="18" viewBox="0 0 24 24" width="18"><circle cx="12" cy="8" r="3.3" stroke="currentColor" strokeWidth="1.6" /><path d="M5.5 20c.7-3.2 3-5 6.5-5s5.8 1.8 6.5 5" stroke="currentColor" strokeLinecap="round" strokeWidth="1.6" /></svg>
+            </NavLink>
+
+            <details className="navbar-menu relative">
+              <summary aria-label="Open navigation menu" className="navbar-icon-button">
+                <svg aria-hidden="true" fill="none" height="19" viewBox="0 0 24 24" width="19"><path d="M4 6.5h16M4 12h16M4 17.5h16" stroke="currentColor" strokeLinecap="round" strokeWidth="1.7" /></svg>
+              </summary>
+              <div className="navbar-menu-popover">
+                <p className="navbar-menu-title">Seven Summit Rinjani</p>
+                {navigationItems.map((item) => (
+                  <a href={item.href} key={item.href}>{item.label}</a>
+                ))}
+                <NavLink to="/login">Masuk</NavLink>
+              </div>
+            </details>
+          </div>
         </nav>
       </header>
       <main id="konten-utama">

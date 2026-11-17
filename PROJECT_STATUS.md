@@ -68,11 +68,11 @@ Rive will only be added in the implementation phase that uses them.
 - Primary design reference: Visit Indonesia (https://www.indonesia.travel/us/en).
   Its destination-discovery approach is inspiration only; Seven Summit Rinjani
   retains independent branding, content, and assets.
-- The landing hero is planned as a team-supplied cinematic Rinjani MP4 with a
-  WebP poster fallback. No hero media has been implemented or supplied.
-- The seven destination carousel is part of the Homepage introduction; no
-  separate Gallery section is rendered on the Homepage. The /destinations route
-  remains unchanged and is handled separately.
+- The Homepage opens directly into one full-screen destination carousel based
+  on `docs/references/homepage-final-reference.png`; it does not use the hero
+  MP4 and does not render separate landing-page sections.
+- `docs/references/homepage-motion-reference.mp4` guides the carousel movement.
+  The `/destinations` route remains unchanged and is handled separately.
 - Carousel imagery uses the supplied project assets. Names and factual content
   remain placeholders until verified.
 
@@ -110,16 +110,17 @@ Phase 2 provides a working React/Vite/TypeScript application foundation:
 - Public routes other than Homepage and login remain explicit placeholders.
 - Centralized expected asset paths, with comments requiring components to use
   fallbacks when final files are unavailable.
-- The Homepage contains the cinematic hero, introduction, outdoor experience,
-  destination carousel, FAQ, and footer.
+- The Homepage contains one full-screen image-backed destination carousel.
+- The site-wide hero MP4 and poster paths remain configured for other future
+  uses, but are not rendered on the Homepage.
 - Hero media attempts the configured MP4, then the configured poster, and
   finally a clearly labelled CSS placeholder if neither file is available.
-- The supplied `rinjani-hero.mp4` is now served as the default hero background.
-  Reduced-motion users do not render autoplay video; they receive
-  `gunung.webp`, then the labelled fallback only if the poster is unavailable.
-- The introduction contains a seven-slide carousel with landscape backgrounds,
-  portrait cards, automatic and manual controls, transitions, responsive
-  layout, and missing-image fallbacks.
+- `rinjani-hero.mp4` and `gunung.webp` remain configured and available, but the
+  current Homepage does not use them. `HeroMedia` retains reduced-motion and
+  failure fallback behavior for future use elsewhere.
+- The carousel uses landscape backgrounds, portrait preview cards, a vertical
+  selector, automatic and manual controls, transitions, responsive layout, and
+  missing-image fallbacks.
 
 ## Known Issues
 
@@ -131,7 +132,7 @@ Phase 2 provides a working React/Vite/TypeScript application foundation:
 
 1. Compare the carousel transitions with the supplied motion reference at
    desktop and mobile sizes.
-2. Review landing responsiveness, accessibility, and media performance.
+2. Review Homepage responsiveness, accessibility, and media performance.
 3. Keep destination facts as clearly labelled placeholders until verified.
 
 ## Handoff Instructions
@@ -178,7 +179,7 @@ Do not rely solely on prior conversation history.
   `src/data/landingDestinations.ts`, and `src/types/landing.ts`.
 - Phase 3A checks passed: `npm.cmd run build`, `npm.cmd run lint`, and
   `git diff --check`.
-- Hero MP4 integration completed: `HeroMedia` now suppresses autoplay when
+- Earlier hero MP4 integration completed: `HeroMedia` suppresses autoplay when
   `prefers-reduced-motion` is enabled, while retaining MP4-to-poster-to-labelled
   fallback behavior. No dependency was added and no landing-page section was
   changed.
@@ -208,7 +209,7 @@ Do not rely solely on prior conversation history.
 - Phase 4 checks passed: `npm.cmd run lint`, `npm.cmd run build`,
   `GET /login` through the Vite development server (HTTP 200), and
   `git diff --check`.
-- Phase 3C hero poster integration: verified the supplied
+- Earlier Phase 3C hero poster integration: verified the supplied
   `public/assets/images/hero/gunung.webp` and updated the centralized asset
   path. It now provides the existing HeroMedia fallback for reduced-motion and
   failed-video states.
@@ -240,10 +241,16 @@ Do not rely solely on prior conversation history.
   text, keyboard arrows, touch swipe, hidden-tab pause, reduced-motion support,
   and missing-image fallbacks. No dependency was added; slide text remains
   placeholder content.
+- Homepage reference alignment: replaced the separate hero and multi-section
+  landing page with a single-screen carousel composition. The local final
+  reference guides the navbar, full-bleed image, centered heading, left-side
+  destination rail, and two preview cards. The motion reference continues to
+  guide background fade, card slide, and staggered text. The carousel remains
+  responsive and retains reduced-motion and manual controls.
 
 ## Last Handoff
 
-- Completed work: Phase 3 landing page and Homepage carousel, Phase 4 dummy
-  login, and hero poster integration.
+- Completed work: Homepage carousel aligned to the supplied final layout and
+  motion references, Phase 4 dummy login, and hero poster integration.
 - Next action: visually compare carousel movement at desktop and mobile sizes,
   then continue the mascot phase.

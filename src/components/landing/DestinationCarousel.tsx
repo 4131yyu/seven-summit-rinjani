@@ -88,9 +88,9 @@ export function DestinationCarousel() {
 
   return (
     <section
-      aria-label="Carousel tujuh destinasi"
+      aria-label="Seven Summit Rinjani, pilihan destinasi"
       aria-roledescription="carousel"
-      className="destination-carousel relative isolate overflow-hidden rounded-[1.75rem] bg-charcoal text-white sm:rounded-[2rem]"
+      className="destination-carousel relative isolate min-h-svh overflow-hidden bg-charcoal text-white"
       onBlurCapture={(event) => {
         setHasFocus(event.currentTarget.contains(event.relatedTarget as Node | null));
       }}
@@ -150,108 +150,53 @@ export function DestinationCarousel() {
         <div className="destination-background-overlay absolute inset-0" />
       </div>
 
-      <div className="relative z-10 grid min-h-[44rem] items-center gap-8 px-5 py-8 sm:min-h-[48rem] sm:px-10 sm:py-12 lg:min-h-[42rem] lg:grid-cols-[0.92fr_1.08fr] lg:gap-5 lg:px-14">
-        <div
-          aria-atomic="true"
-          aria-live="off"
-          className="destination-copy-enter order-2 max-w-xl lg:order-1"
-          key={activeDestination.id}
-        >
-          <p className="text-xs font-semibold tracking-[0.22em] text-cream/75 uppercase">
-            Jelajahi Seven Summit
-          </p>
-          <h2 className="mt-4 font-display text-4xl font-semibold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
-            {activeDestination.selectorLabel}
-          </h2>
-          <p className="mt-5 max-w-md text-sm leading-7 text-white/85 sm:text-base sm:leading-8">
-            {activeDestination.description}
-          </p>
-          <p className="mt-4 text-xs font-medium text-cream/70">
-            Nama dan informasi destinasi menunggu verifikasi.
-          </p>
-        </div>
+      <div id="seven-summit" className="relative z-10 flex min-h-svh flex-col px-5 pb-7 pt-24 sm:px-9 sm:pb-10 sm:pt-28 lg:px-14 lg:pb-12 lg:pt-32">
+        <header className="destination-copy-enter mx-auto w-full max-w-5xl text-center" key={activeDestination.id}>
+          <p className="text-xs font-semibold tracking-[0.24em] text-white/85 uppercase sm:text-sm">Seven Summit Rinjani</p>
+          <h1 className="mt-3 font-display text-3xl font-semibold leading-tight tracking-tight text-white drop-shadow-md sm:text-5xl lg:text-6xl">Where Will You Go Next?</h1>
+          <p className="destination-copy-caption mx-auto mt-2 max-w-2xl text-xs leading-5 text-white/90 drop-shadow sm:text-sm">Explore the mountain destinations and choose where your journey begins.</p>
+        </header>
 
-        <div
-          aria-label={`Slide ${activeIndex + 1} dari ${landingDestinations.length}`}
-          className="destination-card-stage order-1 h-[21rem] touch-pan-y sm:h-[27rem] lg:order-2 lg:h-[34rem]"
-        >
-          {visibleCards.map(({ destination, index, offset }) => {
-            const isActive = index === activeIndex;
-            const positionClass = isActive
-              ? "destination-card-active"
-              : offset < 0
-                ? "destination-card-previous"
-                : "destination-card-next";
-
-            return (
-              <button
-                aria-current={isActive ? "true" : undefined}
-                aria-label={`Tampilkan ${destination.selectorLabel}`}
-                className={`destination-card ${positionClass}`}
-                key={destination.id}
-                onClick={() => {
-                  if (!didSwipe.current) showSlide(index);
-                }}
-                tabIndex={isActive ? 0 : -1}
-                type="button"
-              >
-                {!failedImages[destination.cardImage] ? (
-                  <img
-                    alt=""
-                    className="absolute inset-0 h-full w-full object-cover"
-                    draggable={false}
-                    loading={Math.abs(offset) === 1 ? "lazy" : "eager"}
-                    onError={() => setFailedImages((images) => ({
-                      ...images,
-                      [destination.cardImage]: true,
-                    }))}
-                    src={destination.cardImage}
-                  />
-                ) : (
-                  <span aria-hidden="true" className="destination-card-placeholder absolute inset-0" />
-                )}
-                <span className="absolute inset-x-0 bottom-0 bg-linear-to-t from-charcoal/90 via-charcoal/35 to-transparent px-4 pb-5 pt-16 text-left text-sm font-semibold text-white sm:px-5 sm:text-base">
-                  {destination.selectorLabel}
-                </span>
-              </button>
-            );
-          })}
-        </div>
-
-        <div className="order-3 flex flex-wrap items-center justify-between gap-4 lg:col-span-2">
-          <div aria-label="Pilih slide destinasi" className="flex flex-wrap gap-2">
-            {landingDestinations.map((destination, index) => (
-              <button
-                aria-label={`Ke ${destination.selectorLabel}`}
-                aria-pressed={activeIndex === index}
-                className={`h-3 rounded-full transition-all focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white ${activeIndex === index ? "w-8 bg-terracotta" : "w-3 bg-white/55 hover:bg-white"}`}
-                key={destination.id}
-                onClick={() => showSlide(index)}
-                type="button"
-              />
-            ))}
+        <div className="mx-auto grid w-full max-w-7xl flex-1 items-center gap-6 pt-7 sm:pt-9 lg:grid-cols-[minmax(0,1fr)_minmax(22rem,0.95fr)] lg:gap-12">
+          <div className="flex min-w-0 items-center gap-4 sm:gap-7 lg:gap-10">
+            <nav aria-label="Pilih destinasi" className="destination-selector-rail flex shrink-0 flex-col items-center gap-1">
+              {landingDestinations.map((destination, index) => (
+                <button aria-current={activeIndex === index ? "step" : undefined} aria-label={`Pilih ${destination.selectorLabel}`} className={`destination-selector-dot ${activeIndex === index ? "destination-selector-dot-active" : ""}`} key={destination.id} onClick={() => showSlide(index)} type="button" />
+              ))}
+            </nav>
+            <div className="destination-copy-enter max-w-xl" id="active-destination" key={`copy-${activeDestination.id}`}>
+              <p className="text-xs font-semibold tracking-[0.2em] text-cream/80 uppercase sm:text-sm">Destinasi {activeDestination.id}</p>
+              <h2 className="mt-2 font-display text-3xl font-semibold leading-tight text-white drop-shadow sm:text-4xl lg:text-5xl">{activeDestination.selectorLabel}</h2>
+              <p className="mt-2 text-sm leading-6 text-white drop-shadow sm:text-base">{activeDestination.description}</p>
+              <p className="mt-3 max-w-lg text-xs leading-5 text-white/85 drop-shadow sm:text-sm">Informasi resmi mengenai destinasi ini akan ditambahkan setelah diverifikasi.</p>
+            </div>
           </div>
 
+          <div aria-label={`Kartu pilihan, slide ${activeIndex + 1} dari ${landingDestinations.length}`} className="destination-card-stage mx-auto h-[15rem] w-full max-w-[30rem] touch-pan-y sm:h-[20rem] lg:h-[22rem]">
+            {visibleCards.map(({ destination, index, offset }) => {
+              const isActive = index === activeIndex;
+              const positionClass = isActive ? "destination-card-active" : offset < 0 ? "destination-card-previous" : "destination-card-next";
+              return (
+                <button aria-current={isActive ? "true" : undefined} aria-label={`Tampilkan ${destination.selectorLabel}`} className={`destination-card ${positionClass}`} key={destination.id} onClick={() => { if (!didSwipe.current) showSlide(index); }} tabIndex={isActive ? 0 : -1} type="button">
+                  {!failedImages[destination.cardImage] ? (
+                    <img alt="" className="absolute inset-0 h-full w-full object-cover" draggable={false} loading={Math.abs(offset) === 1 ? "lazy" : "eager"} onError={() => setFailedImages((images) => ({ ...images, [destination.cardImage]: true }))} src={destination.cardImage} />
+                  ) : <span aria-hidden="true" className="destination-card-placeholder absolute inset-0" />}
+                  <span className="absolute inset-x-0 bottom-0 bg-linear-to-t from-charcoal/90 via-charcoal/35 to-transparent px-3 pb-3 pt-12 text-left text-xs font-semibold text-white sm:px-4 sm:pb-4 sm:pt-14 sm:text-sm">{destination.selectorLabel}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        <footer className="mx-auto mt-5 flex w-full max-w-7xl flex-wrap items-center justify-between gap-4 sm:mt-7">
           <div className="flex items-center gap-2">
-            <button aria-label="Destinasi sebelumnya" className="destination-control" onClick={() => showSlide(activeIndex - 1)} type="button">
-              <span aria-hidden="true">←</span>
-            </button>
-            <button aria-label="Destinasi berikutnya" className="destination-control" onClick={() => showSlide(activeIndex + 1)} type="button">
-              <span aria-hidden="true">→</span>
-            </button>
-            <button
-              aria-label={isPaused ? "Lanjutkan perpindahan otomatis" : "Jeda perpindahan otomatis"}
-              aria-pressed={isPaused}
-              className="destination-control destination-pause-control"
-              onClick={() => setIsPaused((paused) => !paused)}
-              type="button"
-            >
-              <span aria-hidden="true">{isPaused ? "▶" : "Ⅱ"}</span>
-            </button>
+            <button aria-label="Destinasi sebelumnya" className="destination-control" onClick={() => showSlide(activeIndex - 1)} type="button"><span aria-hidden="true">←</span></button>
+            <button aria-label="Destinasi berikutnya" className="destination-control" onClick={() => showSlide(activeIndex + 1)} type="button"><span aria-hidden="true">→</span></button>
+            <button aria-label={isPaused ? "Lanjutkan perpindahan otomatis" : "Jeda perpindahan otomatis"} aria-pressed={isPaused} className="destination-control destination-pause-control" onClick={() => setIsPaused((paused) => !paused)} type="button"><span aria-hidden="true">{isPaused ? "▶" : "Ⅱ"}</span></button>
           </div>
-        </div>
+          <span className="sr-only" id="contact-placeholder">Informasi kontak Seven Summit Rinjani akan ditambahkan setelah tersedia.</span>
+        </footer>
       </div>
-
       {prefersReducedMotion ? (
         <p className="sr-only" role="status">
           Perpindahan otomatis dinonaktifkan sesuai preferensi gerakan perangkat.
