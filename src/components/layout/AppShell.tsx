@@ -4,14 +4,14 @@ import { assetPaths } from "../../config/assets";
 import { BackgroundMusic } from "./BackgroundMusic";
 
 const navigationItems = [
-  { label: "Jelajah", href: "#galeri-destinasi" },
+  { label: "Jelajah", href: "#seven-summit" },
   { label: "Tentang", href: "#tentang" },
   { label: "Kontak", href: "#kontak" },
 ] as const;
 
 const scrollToGallery = () => {
-    document.getElementById("galeri-destinasi")?.scrollIntoView({ behavior: "smooth" });
-  };
+  document.getElementById("seven-summit")?.scrollIntoView({ behavior: "smooth" });
+};
 
 export function AppShell() {
   const location = useLocation();
@@ -37,7 +37,6 @@ export function AppShell() {
               </a>
             ))}
             <NavLink className={`rounded-full px-3 py-2 text-sm font-semibold ${isLandingPage ? "hover:bg-white/15" : "hover:bg-forest/10"}`} to="/login">Masuk</NavLink>
-            {/* <a className="rounded-full bg-terracotta px-4 py-2 text-sm font-semibold text-white" href="#galeri-destinasi">Mulai jelajah</a> */}
             <button className="rounded-full bg-terracotta px-4 py-2 text-sm font-semibold text-white" onClick={scrollToGallery} type="button">Mulai jelajah</button>
           </div>
           <details className="relative ml-auto md:hidden">

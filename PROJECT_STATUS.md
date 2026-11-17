@@ -7,8 +7,8 @@
 - Main coding agent: OpenAI Codex CLI
 - Main instructions: AGENTS.md
 - Primary language: Indonesian
-- Current phase: Phase 5 — Mascot architecture and fallback
-- Project status: Dummy login and hero MP4/poster integration complete; destination media and mascot assets pending
+- Current phase: Phase 3 — Public landing page and Homepage destination carousel
+- Project status: Seven image-backed carousel slides are integrated on Homepage; verified destination facts and mascot assets remain pending
 
 ## Technology Stack
 
@@ -35,10 +35,10 @@ Rive will only be added in the implementation phase that uses them.
 
 - [x] Phase 1 — Project audit and architecture
 - [x] Phase 2 — Dependencies, routing, and design system
-- [ ] Phase 3 — Landing page
+- [x] Phase 3 — Landing page
 - [x] Phase 4 — Dummy login
 - [ ] Phase 5 — Mascot architecture and fallback
-- [ ] Phase 6 — Destination gallery
+- [x] Phase 6 — Homepage destination carousel
 - [ ] Phase 7 — Destination detail and video
 - [ ] Phase 8 — Rive animation integration
 - [ ] Phase 9 — Mascot dialogue and audio
@@ -70,11 +70,11 @@ Rive will only be added in the implementation phase that uses them.
   retains independent branding, content, and assets.
 - The landing hero is planned as a team-supplied cinematic Rinjani MP4 with a
   WebP poster fallback. No hero media has been implemented or supplied.
-- The gallery must follow Rinjani introduction and tourism-experience content;
-  it must not appear immediately after the hero.
-- Phase 3A uses labelled interface placeholders only. It does not present a
-  fabricated image, video, destination name, or factual destination content as
-  authentic Rinjani material.
+- The seven destination carousel is part of the Homepage introduction; no
+  separate Gallery section is rendered on the Homepage. The /destinations route
+  remains unchanged and is handled separately.
+- Carousel imagery uses the supplied project assets. Names and factual content
+  remain placeholders until verified.
 
 ## Reference Design
 
@@ -90,9 +90,12 @@ Available asset:
 - `public/assets/videos/hero/rinjani-hero.mp4` — supplied team hero video.
 - `public/assets/images/hero/gunung.webp` — supplied team hero poster for
   reduced-motion and failed-video fallback.
+- Seven landscape backgrounds under `public/assets/images/destinations/` and
+  seven portrait cards under `public/assets/images/carausel/` — supplied
+  Homepage carousel media.
 
-No destination imagery, destination video, mascot animation, mascot image, or
-mascot voice has been confirmed yet.
+No destination-specific videos, mascot animation, mascot image, or mascot voice
+has been confirmed yet.
 
 The canonical asset guide is `docs/ASSETS_GUIDE.md`.
 
@@ -104,37 +107,32 @@ Phase 2 provides a working React/Vite/TypeScript application foundation:
 - A responsive, accessible application shell with a skip link and visible focus
   states.
 - Required URL structure for public, demo, dynamic, and unknown routes.
-- Explicit placeholder pages only; landing page content has not been built.
+- Public routes other than Homepage and login remain explicit placeholders.
 - Centralized expected asset paths, with comments requiring components to use
   fallbacks when final files are unavailable.
-- Phase 3A adds the landing-page visual structure: transparent landing navbar,
-  nearly full-viewport hero, interactive destination selector, introductory
-  sections, placeholder gallery, FAQ, and footer.
+- The Homepage contains the cinematic hero, introduction, outdoor experience,
+  destination carousel, FAQ, and footer.
 - Hero media attempts the configured MP4, then the configured poster, and
   finally a clearly labelled CSS placeholder if neither file is available.
 - The supplied `rinjani-hero.mp4` is now served as the default hero background.
   Reduced-motion users do not render autoplay video; they receive
   `gunung.webp`, then the labelled fallback only if the poster is unavailable.
-- The hero now uses a centered `max-w-7xl` container, with its placeholder
-  destination selector restored at the bottom. The landing navigation has a
-  subtle translucent layer to remain readable above supplied video footage.
+- The introduction contains a seven-slide carousel with landscape backgrounds,
+  portrait cards, automatic and manual controls, transitions, responsive
+  layout, and missing-image fallbacks.
 
 ## Known Issues
 
-- Final media assets are not supplied; all future media components need a
-  non-broken fallback.
-- No verified data exists yet for the seven destinations; factual content must
-  remain placeholder content until credible sources are provided or verified.
-- The selector uses temporary labels `Destinasi 01` through `Destinasi 07`.
-  These are UI placeholders, not official destination names.
+- No verified data exists yet for the seven destinations; labels and factual
+  content remain placeholders until credible sources are provided or verified.
+- The motion-reference MP4 still needs a visual comparison in a browser.
 
 ## Pending Tasks
 
-1. Receive and verify destination media.
-2. Replace only the relevant labelled placeholders after each asset and its
-   destination mapping has been verified.
-3. Phase 3C: perform responsive, performance, and accessibility testing.
-4. Keep destination facts as clearly labelled placeholders until verified.
+1. Compare the carousel transitions with the supplied motion reference at
+   desktop and mobile sizes.
+2. Review landing responsiveness, accessibility, and media performance.
+3. Keep destination facts as clearly labelled placeholders until verified.
 
 ## Handoff Instructions
 
@@ -218,6 +216,15 @@ Do not rely solely on prior conversation history.
   and the production build contains `gunung.webp` at the expected path and
   87,432-byte size.
 
+- Homepage carousel completion: integrated seven supplied landscape and
+  portrait image pairs into the Homepage introduction. Manual navigation,
+  autoplay, pause/resume, background fade, card slide, staggered text, keyboard,
+  touch, visibility pause, reduced-motion behavior, and image fallbacks are in
+  place. Replaced an invalid Tailwind spacing utility and centered the hero
+  content wrapper for responsive consistency.
+- Homepage carousel checks passed: `npm.cmd run lint`, `npm.cmd run build`,
+  and `git diff --check`.
+
 - Background music integration: added a global, keyboard-accessible ambient
   music control using the supplied MP3 in public/audio/bg_music. It loops only
   after an explicit visitor action because browsers can block unmuted autoplay.
@@ -227,10 +234,16 @@ Do not rely solely on prior conversation history.
 - Background music update: the app now attempts unmuted autoplay at 35% volume.
   The player is a medium, accessible music-disc control at the bottom right and
   remains the fallback when the browser blocks autoplay.
+- Homepage carousel implementation: replaced the standalone gallery section
+  with an image-backed seven-slide carousel in the introduction. Added automatic
+  and manual navigation, pause/resume, background fade, card slide, staggered
+  text, keyboard arrows, touch swipe, hidden-tab pause, reduced-motion support,
+  and missing-image fallbacks. No dependency was added; slide text remains
+  placeholder content.
 
 ## Last Handoff
 
-- Completed work: Phase 4 dummy login and Phase 3C hero poster integration.
-- Next action: begin Phase 5 by preparing the modular mascot architecture and
-  static fallback while awaiting a valid Rive animation, fallback image, and
-  optional audio files.
+- Completed work: Phase 3 landing page and Homepage carousel, Phase 4 dummy
+  login, and hero poster integration.
+- Next action: visually compare carousel movement at desktop and mobile sizes,
+  then continue the mascot phase.

@@ -50,19 +50,29 @@ Directory:
 
 public/assets/images/destinations/
 
-Expected files:
+Landscape carousel backgrounds:
 
-- summit-01.webp
-- summit-02.webp
-- summit-03.webp
-- summit-04.webp
-- summit-05.webp
-- summit-06.webp
-- summit-07.webp
+- 01-rinjani-landscape.webp
+- 02-sempana-landscape.webp
+- 03-lembah-gedong-landscape.webp
+- 04-kondo-landscape.webp
+- 05-anak-dara-landscape.webp
+- 06-pergasingan-landscape.webp
+- 07-bao-daya-landscape.webp
+
+Portrait carousel cards are stored in public/assets/images/carausel/:
+
+- 01-rinjani-potret.webp
+- 02-bukit sempana potrait.webp
+- 03-gedong potrait.webp
+- 04-kondo potrait.webp
+- 05-anak-dara-potret.webp
+- 06-pergasingan potrait.webp
+- 07-bao daya potret.webp
 
 Recommended:
 - Consistent visual quality.
-- Landscape orientation.
+- Landscape orientation for backgrounds and portrait orientation for cards.
 - WebP format.
 - Appropriate alt text.
 - Each image must correspond to the correct destination.

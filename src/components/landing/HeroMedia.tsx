@@ -1,22 +1,16 @@
 import { useEffect, useState } from "react";
 
-import type { LandingDestination } from "../../types/landing";
-
 type HeroMediaProps = {
-  destination: LandingDestination;
+  videoSrc: string;
+  posterSrc: string;
 };
 
-export function HeroMedia({ destination }: HeroMediaProps) {
+export function HeroMedia({ videoSrc, posterSrc }: HeroMediaProps) {
   const [videoFailed, setVideoFailed] = useState(false);
   const [posterFailed, setPosterFailed] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(() =>
     typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches,
   );
-
-  useEffect(() => {
-    setVideoFailed(false);
-    setPosterFailed(false);
-  }, [destination.id]);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -27,7 +21,7 @@ export function HeroMedia({ destination }: HeroMediaProps) {
     return () => mediaQuery.removeEventListener("change", updatePreference);
   }, []);
 
-  const showVideo = Boolean(destination.videoSrc) && !videoFailed && !prefersReducedMotion;
+  const showVideo = Boolean(videoSrc) && !videoFailed && !prefersReducedMotion;
   const showPoster = !showVideo;
   const showPlaceholder = showPoster && posterFailed;
 
@@ -43,10 +37,10 @@ export function HeroMedia({ destination }: HeroMediaProps) {
           muted
           onError={() => setVideoFailed(true)}
           playsInline
-          poster={destination.posterSrc}
+          poster={posterSrc}
           preload="metadata"
         >
-          <source src={destination.videoSrc} type="video/mp4" />
+          <source src={videoSrc} type="video/mp4" />
         </video>
       ) : null}
 
@@ -55,7 +49,7 @@ export function HeroMedia({ destination }: HeroMediaProps) {
           alt=""
           className="absolute inset-0 h-full w-full object-cover"
           onError={() => setPosterFailed(true)}
-          src={destination.posterSrc}
+          src={posterSrc}
         />
       ) : null}
 
