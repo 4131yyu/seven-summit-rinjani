@@ -7,8 +7,8 @@
 - Main coding agent: OpenAI Codex CLI
 - Main instructions: AGENTS.md
 - Primary language: Indonesian
-- Current phase: Phase 3 — Public landing page and Homepage destination carousel
-- Project status: Seven image-backed carousel slides are integrated on Homepage; verified destination facts and mascot assets remain pending
+- Current phase: Phase 12 — Payment success demo
+- Project status: Homepage menggunakan tampilan full-screen DestinationCarousel sebagai tampilan pembuka, dilanjutkan Transition, Explore, About, Contact, dan Footer. Login/Signup dan Carousel tidak diubah; pemeriksaan visual lintas perangkat masih perlu dilakukan.
 
 ## Technology Stack
 
@@ -28,8 +28,9 @@
 - @types/react 19.3.0
 - @types/react-dom 19.3.0
 
-Future dependencies such as React Hook Form, Zod, Lucide, Motion, Zustand, and
-Rive will only be added in the implementation phase that uses them.
+Added for the booking form: React Hook Form 7.92.0, Zod 4.6.7, and
+@hookform/resolvers 7.0.7. Other planned dependencies will only be added in
+the implementation phase that uses them.
 
 ## Phase Checklist
 
@@ -42,13 +43,50 @@ Rive will only be added in the implementation phase that uses them.
 - [ ] Phase 7 — Destination detail and video
 - [ ] Phase 8 — Rive animation integration
 - [ ] Phase 9 — Mascot dialogue and audio
-- [ ] Phase 10 — Booking form
-- [ ] Phase 11 — Simulated checkout
-- [ ] Phase 12 — Payment success
+- [x] Phase 10 — Booking form
+- [x] Phase 11 — Simulated checkout
+- [x] Phase 12 — Payment success
 - [ ] Phase 13 — Responsive and accessibility audit
 - [ ] Phase 14 — Final testing and documentation
 
 ## Important Decisions
+
+### Keputusan desain Homepage terbaru
+
+- Klarifikasi pemilik terbaru: tampilan DestinationCarousel yang sudah ada
+  adalah tampilan Homepage/Landing Page yang digunakan. Jangan gunakan atau
+  tampilkan HeroSection baru di Homepage; Carousel menjadi bagian pembuka
+  setelah Navbar.
+- Urutan implementasi saat ini: Navbar, DestinationCarousel, Transition
+  Section, Explore / Jelajah, About, Contact, Footer.
+- HeroSection component yang sempat dibuat pada implementasi awal tidak
+  dipasang di Homepage. Jangan mengubah desain Carousel untuk menambahkan Hero
+  terpisah.
+- Tidak ada section Reviews/Ulasan.
+- Desain Login dan Signup yang sudah disepakati dipertahankan.
+- Desain Carousel yang sudah ada dipertahankan selama penambahan section.
+- Explore wajib mengikuti referensi khusus
+  `docs/references/explore-reference.png`; jangan mengganti konsep atau
+  membuat alternatif desain. Referensi adalah file baru yang belum dilacak di
+  Git dan tidak boleh diubah atau dihapus.
+- Transition, About, Contact, dan Footer boleh dikembangkan secara kreatif,
+  dengan konsistensi identitas visual Seven Summit Rinjani dan responsivitas.
+- Rencana navbar Homepage: sticky; transparan/glass di atas Carousel, lalu solid atau
+  semi-transparan ketika halaman di-scroll.
+- Transition mengantar pengunjung dari Carousel ke Explore dengan pengantar
+  singkat dan tombol Mulai Jelajah yang menggulir ke section Explore.
+- Explore merupakan section Homepage, bukan halaman terpisah. Jangan
+  mengembalikan Gallery terpisah atau menambahkan Reviews.
+
+### Riwayat keputusan desain yang diperbarui
+
+- Catatan terdahulu yang menyebut Homepage hanya satu carousel layar penuh
+  berdasarkan `docs/references/homepage-final-reference.png` merekam keputusan
+  dan implementasi sebelumnya. Catatan itu bukan lagi spesifikasi akhir
+  Homepage; carousel tetap dipertahankan sebagai satu bagian dari susunan baru.
+- Rencana terdahulu yang menempatkan pengenalan Rinjani dan pengalaman
+  pariwisata sebelum galeri telah digantikan oleh urutan Homepage terbaru di
+  atas. Riwayat pengerjaan sebelumnya tetap tercatat di Latest Work Log.
 
 - Landing page is public.
 - Login is optional for browsing.
@@ -68,9 +106,11 @@ Rive will only be added in the implementation phase that uses them.
 - Primary design reference: Visit Indonesia (https://www.indonesia.travel/us/en).
   Its destination-discovery approach is inspiration only; Seven Summit Rinjani
   retains independent branding, content, and assets.
-- The Homepage opens directly into one full-screen destination carousel based
-  on `docs/references/homepage-final-reference.png`; it does not use the hero
-  MP4 and does not render separate landing-page sections.
+- Historical implementation decision: the Homepage opened directly into one
+  full-screen destination carousel based on
+  `docs/references/homepage-final-reference.png`. This has been superseded by
+  the latest multi-section Homepage structure documented above; preserve the
+  carousel design and implement the remaining sections around it.
 - `docs/references/homepage-motion-reference.mp4` guides the carousel movement.
   The `/destinations` route remains unchanged and is handled separately.
 - Carousel imagery uses supplied project assets. Destination descriptions are
@@ -91,16 +131,41 @@ Available asset:
 - `public/assets/videos/hero/rinjani-hero.mp4` — supplied team hero video.
 - `public/assets/images/hero/gunung.webp` — supplied team hero poster for
   reduced-motion and failed-video fallback.
+- `public/assets/images/logo/Logo-7-Summits.png` and
+  `public/assets/images/logo/Logo-7-Summits-BLACK.png` — Navbar wordmarks for
+  glass and solid states respectively.
 - Seven landscape backgrounds under `public/assets/images/destinations/` and
   seven portrait cards under `public/assets/images/carausel/` — supplied
-  Homepage carousel media.
+  Homepage carousel media. Inspect and reuse these existing assets and the
+  centralized destination data for Explore where appropriate; do not recreate
+  them without a specific technical reason.
+- `docs/references/explore-reference.png` — owner-supplied Explore section
+  design reference; currently untracked in Git. Preserve the file unchanged.
 
-No destination-specific videos, mascot animation, mascot image, or mascot voice
-has been confirmed yet.
+Seven destination video files are present under
+`public/assets/videos/destinations/`. No mascot animation, image, or voice has
+been confirmed yet.
 
 The canonical asset guide is `docs/ASSETS_GUIDE.md`.
 
 ## Current Implementation
+
+### Kondisi aktual Homepage
+
+- `src/pages/LandingPage.tsx` renders `DestinationCarousel` followed by the
+  new Homepage sections. The Carousel remains a full-screen composition and
+  uses `#seven-summit`; the Navbar is rendered by `AppShell`.
+- Homepage now renders the existing full-screen DestinationCarousel first,
+  followed by Transition, Explore, About, Contact, and Footer. Explore uses
+  the existing destination array and portrait assets. Search, difficulty,
+  duration, altitude, trail-status, and quick-recommendation controls filter
+  the cards; trail status is randomly assigned for the demo and is labelled as
+  non-operational. Cards show short difficulty and duration summaries.
+- Homepage navigation now targets Explore, About, and Contact; its navbar is
+  sticky and changes from glass over the Carousel to a cream surface while
+  scrolling.
+- Login and Signup pages exist and share the previously agreed authentication
+  design. Retain them unchanged during Homepage work.
 
 Phase 2 provides a working React/Vite/TypeScript application foundation:
 
@@ -108,39 +173,52 @@ Phase 2 provides a working React/Vite/TypeScript application foundation:
 - A responsive, accessible application shell with a skip link and visible focus
   states.
 - Required URL structure for public, demo, dynamic, and unknown routes.
-- Public routes other than Homepage and login remain explicit placeholders.
+- The gallery route remains a placeholder. Destination detail, booking,
+  checkout, and payment-success routes render their current demo flows.
 - Centralized expected asset paths, with comments requiring components to use
   fallbacks when final files are unavailable.
-- The Homepage contains one full-screen image-backed destination carousel.
+- The Homepage opens with the existing full-screen image-backed carousel,
+  followed by new Homepage sections.
 - Login and Signup share a reference-based authentication layout. Login uses
   the existing demo credentials and session storage; Signup performs client
   side validation only and does not persist an account without a backend.
-- The site-wide hero MP4 and poster paths remain configured for other future
-  uses, but are not rendered on the Homepage.
 - Hero media attempts the configured MP4, then the configured poster, and
   finally a clearly labelled CSS placeholder if neither file is available.
-- `rinjani-hero.mp4` and `gunung.webp` remain configured and available, but the
-  current Homepage does not use them. `HeroMedia` retains reduced-motion and
-  failure fallback behavior for future use elsewhere.
+- `HeroMedia` retains reduced-motion and media-failure fallback behavior; it is
+  not rendered by the active Homepage composition.
 - The carousel uses landscape backgrounds, portrait preview cards, a vertical
   selector, automatic and manual controls, transitions, responsive layout, and
   missing-image fallbacks.
 - `src/data/destinations.ts` stores the seven owner-provided descriptions. The
   active carousel slide displays its name, altitude, location, and only the
   optional details supplied for that destination.
+- `/destinations/:slug` renders a responsive, centered video preview with
+  controls, a destination poster fallback, and the available destination
+  description and facts. Its return link points to Explore; the booking CTA
+  points to the existing booking placeholder route.
 
 ## Known Issues
 
-- No verified data exists yet for the seven destinations; labels and factual
-  content remain placeholders until credible sources are provided or verified.
+- Most destination details are owner-provided and still require verification.
+  Rinjani's minimum two-day trekking duration follows TNGR guidance; its
+  difficulty badge is a demo label requested by the owner.
+- Explore trail statuses are randomly generated demo values. They do not
+  describe the actual current opening or closure of any route.
 - The motion-reference MP4 still needs a visual comparison in a browser.
+- Destination records currently contain short descriptions rather than full
+  long-form descriptions, gallery images, or dedicated safety information;
+  the detail page only displays available data. Booking remains a placeholder.
 
 ## Pending Tasks
 
-1. Compare the carousel transitions with the supplied motion reference at
-   desktop and mobile sizes.
-2. Review Homepage responsiveness, accessibility, and media performance.
-3. Keep destination facts as clearly labelled placeholders until verified.
+1. Visually review the new Homepage sections and sticky navigation at desktop,
+   tablet, and mobile sizes; preserve the existing Carousel and auth pages.
+2. Review the carousel against `docs/references/homepage-motion-reference.mp4`
+   at desktop and mobile sizes, while keeping the existing carousel design.
+3. Review Homepage responsiveness, accessibility, section navigation, and
+   media performance after implementation.
+4. Keep destination facts clearly identified as owner-provided or placeholder
+   content until verified; do not present unverified claims as facts.
 
 ## Handoff Instructions
 
@@ -156,6 +234,60 @@ Before continuing:
 Do not rely solely on prior conversation history.
 
 ## Latest Work Log
+
+- Destination detail implementation: connected Explore card detail links to
+  `/destinations/:slug`, mapped each destination to its supplied MP4 and
+  landscape poster, and implemented a responsive video/detail page with
+  controls, failure fallback, available factual fields, return-to-Explore, and
+  booking CTA. No new dependency was added.
+- Destination detail checks passed: `npm.cmd run lint`, `npm.cmd run build`,
+  and `git diff --check`. Full long-form destination content and booking flow
+  remain pending.
+- Detail navigation polish: Explore's Lihat Detail link now has a capsule
+  button style matching the adjacent action; entering a destination detail
+  route resets scroll to the page top immediately. Checks passed: lint, build,
+  and `git diff --check`.
+- Destination preview autoplay trial: the detail-page video now requests
+  muted autoplay while retaining player controls and inline playback. Carousel
+  and background music behavior were not changed.
+- Detail return and navbar section links now navigate to the Homepage hash and
+  smooth-scroll to Explore, About, Contact, or the Carousel anchor after the
+  Homepage is mounted. Reduced-motion preference disables smooth animation.
+
+- Navbar logo update: replaced the text/initials placeholder with supplied
+  logo assets. The white logo appears over the initial glass Homepage navbar;
+  the black logo appears after scrolling and on solid navbar routes. Logo links
+  return to the `#seven-summit` carousel anchor.
+- Explore section alignment: adjusted the layout to follow
+  `docs/references/explore-reference.png`, including its search field, quick
+  recommendations, difficulty/duration/altitude/trail filter groups, portrait
+  destination cards, labels, and two placeholder action buttons. Popularity
+  and trail-status controls remain unavailable because no supporting data is
+  present. The action buttons have no navigation behavior yet.
+
+- Homepage sections implementation: added a Hero using the existing hero
+  media component, an introduction ahead of the existing carousel, Transition,
+  Explore, About, Contact, and Footer. Explore reuses centralized destination
+  content and supplied portrait cards, with search and filters based only on
+  fields available in the data. No Login, Signup, or Carousel component was
+  modified. Navbar anchors now target the Homepage sections and the Homepage
+  navbar becomes sticky with a scroll state.
+- Homepage implementation checks passed: `npm.cmd run lint`,
+  `npm.cmd run build`, and `git diff --check`. Visual responsive review remains
+  pending.
+- Homepage composition adjustment: removed the new Hero and introductory
+  section from the active Homepage render after the owner clarified that the
+  existing full-screen Carousel is the Landing Page. Transition, Explore,
+  About, Contact, and Footer follow the Carousel. Login, Signup, and the
+  Carousel component remain unchanged.
+- Homepage responsive follow-up: destination cards now wrap altitude and
+  difficulty labels rather than clipping them; card content adapts to narrow
+  grid columns, and Carousel stage sizing has tablet/mobile adjustments.
+  Section anchors use smooth scrolling, with reduced-motion preference
+  respected. Login, Signup, and `DestinationCarousel.tsx` were not modified.
+- Responsive follow-up checks passed: `npm.cmd run lint`,
+  `npm.cmd run build`, and `git diff --check`. Visual device-size inspection
+  remains pending.
 
 - Initial project specification prepared.
 - Phase 1 completed: project audit found a documentation-only workspace with no
@@ -274,7 +406,113 @@ Do not rely solely on prior conversation history.
 
 ## Last Handoff
 
-- Completed work: Homepage carousel aligned to the supplied final layout and
-  motion references, Phase 4 dummy login, and hero poster integration.
-- Next action: visually compare carousel movement at desktop and mobile sizes,
-  then continue the mascot phase.
+- Explore filters and cards: enabled the Buka/Tutup checkboxes and assign a
+  randomized 4/3 split when the Explore section mounts; the assignment stays
+  stable during filtering and is labelled demo on the cards and filter. Added
+  concise difficulty and duration badges for all seven destinations. Rinjani
+  displays the owner-requested demo difficulty Extreme and a minimum two-day
+  trekking-duration summary per TNGR guidance. Replaced the disabled Populer
+  quick filter with Puncak tertinggi so it uses altitude data without claiming
+  unverified popularity.
+- Explore filter files changed: `src/components/landing/HomepageSections.tsx`,
+  `src/data/destinations.ts`, `src/types/destination.ts`,
+  `src/styles/index.css`, and `PROJECT_STATUS.md`.
+- Explore filter checks passed: `npm.cmd run lint`, `npm.cmd run build`, and
+  `git diff --check`. The production bundle remains about 523 kB and triggers
+  Vite's chunk-size warning.
+- Global scrollbar polish: made the page scrollbar thin with a transparent
+  track and a semi-transparent glossy green/cream thumb. Firefox receives the
+  native thin/color treatment; WebKit browsers receive the gradient and hover
+  styling. The scrollbar remains visible and usable.
+- Scrollbar files changed: `src/styles/index.css` and `PROJECT_STATUS.md`.
+- Scrollbar checks passed: `npm.cmd run lint`, `npm.cmd run build`, and
+  `git diff --check`. Vite still reports the existing approximately 522 kB
+  JavaScript chunk-size warning.
+- Payment success scroll follow-up: `/payment/success` resets scroll to the top
+  on entry so its heading and summary begin in a consistent position. The
+  return action now navigates to `/#seven-summit`; the existing hash-scroll
+  behavior places the visitor at the top of the Landing Page carousel.
+- Scroll follow-up files changed: `src/pages/PaymentSuccessPage.tsx` and
+  `PROJECT_STATUS.md`.
+- Scroll follow-up checks passed: `npm.cmd run lint`, `npm.cmd run build`, and
+  `git diff --check`. The production bundle is about 522 kB; Vite reports its
+  configured 500 kB chunk-size warning.
+- Payment success page: the checkout confirmation modal now leads to
+  `/payment/success`, which reads a validated summary from `sessionStorage`.
+  It displays the demo reference, destination, customer/contact details, trip
+  date and duration, participant names/count, guide count, payment method,
+  itemized demo amount, total, confirmation time, and SIMULATED status. The
+  page has one action to return to the Landing Page and no navbar/back button.
+  The confirmation modal also has a direct continue action and auto-continues
+  after a short delay. Selecting the return action clears the demo session.
+- Payment success files changed: `src/pages/PaymentSuccessPage.tsx`,
+  `src/pages/CheckoutPage.tsx`, `src/data/demoPayment.ts`, `src/router.tsx`,
+  `src/components/layout/AppShell.tsx`, `src/styles/index.css`, and
+  `PROJECT_STATUS.md`.
+- Payment success checks passed: `npm.cmd run lint`, `npm.cmd run build`, and
+  `git diff --check`. The production bundle is about 522 kB and triggers the
+  Vite chunk-size warning.
+- Simulated checkout implementation: `/checkout` now validates the saved
+  session booking, displays destination/trip details, and lets the user select
+  cash, debit, or credit without collecting payment credentials. Demo totals
+  use clearly labelled illustrative rates of Rp175.000 per participant and
+  Rp250.000 per guide. The Pay action shows an animated confirmation and then
+  continues to `/payment/success`; no transaction is processed. Invalid or
+  missing session data displays a recovery path to Explore.
+- Checkout files changed: `src/pages/CheckoutPage.tsx`, `src/router.tsx`,
+  `src/components/layout/AppShell.tsx`, `src/styles/index.css`, and
+  `PROJECT_STATUS.md`.
+- Checkout checks passed: `npm.cmd run lint`, `npm.cmd run build`, and
+  `git diff --check`. The production bundle is about 514 kB and Vite reports
+  its configured 500 kB chunk-size warning.
+- Booking guide control follow-up: replaced the guide checkbox and numeric
+  field with one dropdown containing Tanpa guide, 1 guide, 3 guide, and 5
+  guide. The selected count is validated, shown in the trip summary, and stored
+  with the demo booking.
+- Guide dropdown files changed: `src/pages/BookingPage.tsx`,
+  `src/styles/index.css`, and `PROJECT_STATUS.md`.
+- Guide dropdown checks passed: `npm.cmd run lint`, `npm.cmd run build`, and
+  `git diff --check`. The build retains its existing bundle-size warning.
+- Booking page follow-up: added the destination portrait image above the name
+  in the trip summary card. Added a required duration select based only on
+  `estimatedDuration` already recorded for each destination; Sempana offers
+  its documented normal-hike and 2-day/1-night camping descriptions. Rinjani
+  has no duration value, so the select is disabled and clearly says the
+  information is unavailable. The selected duration is validated and saved
+  with the demo booking.
+- Booking follow-up files changed: `src/pages/BookingPage.tsx`,
+  `src/styles/index.css`, and `PROJECT_STATUS.md`.
+- Booking follow-up checks passed: `npm.cmd run lint`, `npm.cmd run build`,
+  and `git diff --check`. The production build still reports a bundle above
+  500 kB.
+- Explore card booking action now routes directly to `/booking/:slug`. The
+  destination preview video now loops continuously. Destination Detail and
+  Booking routes hide the global navbar and show one glossy back-to-Explore
+  control at the top left. Their content has no second back button; the
+  primary orange action is centered and enlarged.
+- Focused-route navigation files changed: `src/components/layout/AppShell.tsx`,
+  `src/pages/DestinationDetailPage.tsx`, `src/pages/BookingPage.tsx`,
+  `src/styles/index.css`, and `PROJECT_STATUS.md`.
+- Focused-route navigation checks passed: `npm.cmd run lint`,
+  `npm.cmd run build`, and `git diff --check`.
+- Completed work: Homepage opens with the existing full-screen Carousel,
+  followed by Transition and the new content sections, including basic Explore
+  search/filters;
+  existing Carousel and Login/Signup implementations remain intact.
+- Booking form demo: replaced the `/booking/:slug` placeholder with a
+  responsive trip form. It validates contact details, future trip date, solo
+  or group participant names, guide preference/count, and optional notes using
+  React Hook Form and Zod. It stores a valid demo request in `sessionStorage`
+  and navigates to `/checkout`; no real request, availability, fee, or booking
+  is created. The checkout route is now implemented as a simulated flow.
+- Booking form files changed: `src/pages/BookingPage.tsx`, `src/router.tsx`,
+  `src/styles/index.css`, `package.json`, `package-lock.json`, and
+  `PROJECT_STATUS.md`.
+- Booking form dependencies added: `react-hook-form` 7.92.0, `zod` 4.6.7,
+  and `@hookform/resolvers` 7.0.7.
+- Booking form checks passed: `npm.cmd run lint`, `npm.cmd run build`, and
+  `git diff --check`. The production build reports a JavaScript chunk slightly
+  above 500 kB; code splitting can be considered if the app grows.
+- Next action: visually review the booking, checkout, and payment success
+  flows at desktop, tablet, and mobile sizes, then continue the remaining
+  mascot and final responsive/accessibility phases.
