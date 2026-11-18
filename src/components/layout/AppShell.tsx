@@ -1,42 +1,88 @@
-import { useState } from "react";
-import { NavLink, Outlet, useLocation } from "react-router";
+import { useEffect, useState, type MouseEvent } from "react";
+import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router";
 
 import { assetPaths } from "../../config/assets";
 import { BackgroundMusic } from "./BackgroundMusic";
 
 const navigationItems = [
-  { label: "Jelajah", href: "#seven-summit" },
-  { label: "Tentang", href: "#active-destination" },
-  { label: "Kontak", href: "#contact-placeholder" },
+  { label: "Jelajah", href: "#explore" },
+  { label: "Tentang", href: "#about" },
+  { label: "Kontak", href: "#contact" },
 ] as const;
 
 export function AppShell() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [language, setLanguage] = useState<"ID" | "EN">("ID");
+  const [hasScrolled, setHasScrolled] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   const isLandingPage = location.pathname === "/";
   const isAuthPage = location.pathname === "/login" || location.pathname === "/signup";
+  const isPaymentFlowPage = location.pathname === "/checkout" || location.pathname === "/payment/success";
+  const isFocusedPage = /^\/(destinations|booking)\/[^/]+$/.test(location.pathname);
+
+  useEffect(() => {
+    const onScroll = () => setHasScrolled(window.scrollY > 32);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    if (location.pathname !== "/" || !location.hash) return;
+
+    const sectionId = decodeURIComponent(location.hash.slice(1));
+    const frame = window.requestAnimationFrame(() => {
+      document.getElementById(sectionId)?.scrollIntoView({
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+        block: "start",
+      });
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, [location.hash, location.pathname]);
+
+  const sectionHref = (href: string) => isLandingPage ? href : `/${href}`;
+  const scrollToSection = (sectionId: string) => {
+    document.getElementById(sectionId)?.scrollIntoView({
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+      block: "start",
+    });
+  };
+  const handleSectionNavigation = (event: MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+
+    event.preventDefault();
+    const sectionId = href.slice(href.indexOf("#") + 1);
+    if (isLandingPage && location.hash === `#${sectionId}`) {
+      scrollToSection(sectionId);
+      return;
+    }
+    navigate(href);
+  };
 
   return (
     <div className="min-h-screen bg-cream text-charcoal">
       <a className="skip-link" href={isAuthPage ? "#auth-main" : "#konten-utama"}>
         Lewati navigasi
       </a>
-      {!isAuthPage ? <header className={`site-navbar z-20 ${isLandingPage ? "site-navbar-floating" : "relative border-b border-forest/10 bg-cream/95 text-forest backdrop-blur"}`}>
+      {!isAuthPage && !isFocusedPage && !isPaymentFlowPage ? <header className={`site-navbar z-20 ${isLandingPage ? `site-navbar-floating ${hasScrolled ? "site-navbar-scrolled" : ""}` : "relative border-b border-forest/10 bg-cream/95 text-forest backdrop-blur"}`}>
         <nav
           aria-label="Navigasi utama"
           className={`site-navbar-inner mx-auto grid w-full grid-cols-[1fr_auto] items-center gap-3 ${isLandingPage ? "max-w-none px-3 py-2.5 sm:px-5 sm:py-3" : "max-w-384 px-5 py-4 sm:px-8 lg:px-12"}`}
         >
-          <NavLink aria-label="Seven Summit Rinjani, beranda" className="flex shrink-0 items-center gap-2.5 font-display text-lg font-semibold tracking-tight" to="/">
-            <span aria-hidden="true" className="brand-logo-placeholder">SS</span>
-            <span className="hidden sm:inline">Seven Summit Rinjani</span>
-            <span className="sm:hidden">Seven Summit</span>
-          </NavLink>
+          <Link aria-label="Seven Summit Rinjani, kembali ke carousel" className="site-brand-link" onClick={(event) => handleSectionNavigation(event, sectionHref("#seven-summit"))} to={sectionHref("#seven-summit")}>
+            <img
+              alt="Seven Summit Rinjani"
+              className="site-brand-logo"
+              src={isLandingPage && !hasScrolled ? assetPaths.logoLight : assetPaths.logoDark}
+            />
+          </Link>
           <div className="site-navbar-links hidden items-center justify-center gap-1 md:flex">
             {navigationItems.map((item) => (
-              <a className="navbar-link" href={item.href} key={item.href}>
+              <Link className="navbar-link" onClick={(event) => handleSectionNavigation(event, sectionHref(item.href))} to={sectionHref(item.href)} key={item.href}>
                 {item.label}
-              </a>
+              </Link>
             ))}
           </div>
 
@@ -72,7 +118,7 @@ export function AppShell() {
               <div className="navbar-menu-popover">
                 <p className="navbar-menu-title">Seven Summit Rinjani</p>
                 {navigationItems.map((item) => (
-                  <a href={item.href} key={item.href}>{item.label}</a>
+                  <Link onClick={(event) => handleSectionNavigation(event, sectionHref(item.href))} to={sectionHref(item.href)} key={item.href}>{item.label}</Link>
                 ))}
                 <NavLink to="/login">Masuk</NavLink>
               </div>
@@ -80,6 +126,7 @@ export function AppShell() {
           </div>
         </nav>
       </header> : null}
+      {isFocusedPage ? <div className="focused-route-header"><Link aria-label="Kembali ke Jelajah" className="focused-route-back" to="/#explore"><span aria-hidden="true">←</span> Kembali ke Jelajah</Link></div> : null}
       <main id={isAuthPage ? "auth-main" : "konten-utama"}>
         <Outlet />
       </main>

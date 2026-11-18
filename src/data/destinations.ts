@@ -7,6 +7,9 @@ const imagesById = Object.fromEntries(
     { background: backgroundImage, card: cardImage },
   ]),
 );
+const videosById = Object.fromEntries(
+  assetPaths.destinationVideos.map(({ id, src }) => [id, src]),
+);
 
 export const destinations: Destination[] = [
   {
@@ -16,9 +19,16 @@ export const destinations: Destination[] = [
     selectorLabel: "Gunung Rinjani",
     shortDescription: "Stratovolcano aktif dengan kaldera raksasa seluas sekitar 6 x 8,5 km.",
     altitude: "3.726 mdpl (Puncak Dewi Anjani)",
+    // TNGR states that trekking objectives including Pelawangan, Segara Anak, and Rinjani Peak require at least two days.
+    // https://www.rinjaninationalpark.id/ebook/831b5b80-b702-11ed-afe8-ff8f37b3b9d5/download
+    estimatedDuration: "Minimal 2 hari untuk kegiatan pendakian menuju Pelawangan, Danau Segara Anak, dan Puncak Rinjani.",
+    estimatedDurationLabel: "Min. 2 hari · rute trekking TNGR",
+    difficulty: "Ekstrem (label demo sesuai arahan pemilik)",
     location: "Meliputi wilayah Kabupaten Lombok Timur, Lombok Tengah, dan Lombok Utara, NTB.",
     backgroundImage: imagesById["01"].background,
     cardImage: imagesById["01"].card,
+    previewVideo: videosById["01"],
+    videoPoster: imagesById["01"].background,
     mountainType: "Stratovolcano aktif dengan kaldera raksasa seluas sekitar 6 x 8,5 km.",
     temperature: "Bervariasi antara 10°C hingga 20°C di area perkemahan, dan dapat turun hingga mendekati 0°C–5°C di puncak pada dini hari.",
   },
@@ -32,7 +42,10 @@ export const destinations: Destination[] = [
     location: "Desa Sembalun Bumbung, Kecamatan Sembalun, Kabupaten Lombok Timur.",
     backgroundImage: imagesById["02"].background,
     cardImage: imagesById["02"].card,
+    previewVideo: videosById["02"],
+    videoPoster: imagesById["02"].background,
     estimatedDuration: "Sekitar 4 hingga 6 jam pendakian normal untuk mencapai puncak (atau 2 hari 1 malam jika berkemah).",
+    estimatedDurationLabel: "4–6 jam naik · camping 2H1M",
     difficulty: "Menengah hingga cukup menantang (trek panjang dengan kontur terjal dan punggungan terbuka).",
   },
   {
@@ -45,7 +58,10 @@ export const destinations: Destination[] = [
     location: "Desa Sembalun Bumbung, Kecamatan Sembalun, Kabupaten Lombok Timur.",
     backgroundImage: imagesById["03"].background,
     cardImage: imagesById["03"].card,
+    previewVideo: videosById["03"],
+    videoPoster: imagesById["03"].background,
     estimatedDuration: "Sekitar 2 hingga 3 jam perjalanan naik menuju puncak, dengan total waktu pulang-pergi normal sekitar 4 hingga 5 jam.",
+    estimatedDurationLabel: "2–3 jam naik · 4–5 jam PP",
     difficulty: "Menengah (trek relatif singkat dibandingkan Rinjani atau Sempana, tetapi memiliki tanjakan-tanjakan terjal yang cukup menguras tenaga).",
   },
   {
@@ -58,7 +74,10 @@ export const destinations: Destination[] = [
     location: "Kawasan Sembalun, Kecamatan Sembalun, Kabupaten Lombok Timur.",
     backgroundImage: imagesById["04"].background,
     cardImage: imagesById["04"].card,
+    previewVideo: videosById["04"],
+    videoPoster: imagesById["04"].background,
     estimatedDuration: "Sekitar 2 hingga 3 jam pendakian santai untuk mencapai puncak dari titik awal.",
+    estimatedDurationLabel: "2–3 jam naik",
     difficulty: "Mudah hingga menengah (soft trekking), dengan kemiringan jalur yang relatif landai dibandingkan bukit-bukit lain di sekitarnya.",
     internalNote: "Konfirmasi lokasi: Sembalun Lawang / perbatasan dengan Sembalun Bumbung.",
   },
@@ -72,7 +91,10 @@ export const destinations: Destination[] = [
     location: "Desa Sembalun Lawang, Kecamatan Sembalun, Kabupaten Lombok Timur.",
     backgroundImage: imagesById["05"].background,
     cardImage: imagesById["05"].card,
+    previewVideo: videosById["05"],
+    videoPoster: imagesById["05"].background,
     estimatedDuration: "Sekitar 2,5 hingga 4 jam pendakian normal untuk mencapai puncak.",
+    estimatedDurationLabel: "2,5–4 jam naik",
     difficulty: "Menengah (jalur relatif singkat dibandingkan Rinjani atau Sempana, namun didominasi tanjakan curam sejak awal hingga mendekati puncak).",
   },
   {
@@ -85,7 +107,10 @@ export const destinations: Destination[] = [
     location: "Desa Sembalun Lawang, Kecamatan Sembalun, Kabupaten Lombok Timur.",
     backgroundImage: imagesById["06"].background,
     cardImage: imagesById["06"].card,
+    previewVideo: videosById["06"],
+    videoPoster: imagesById["06"].background,
     estimatedDuration: "Sekitar 2 hingga 3 jam pendakian santai untuk mencapai puncak.",
+    estimatedDurationLabel: "2–3 jam naik",
     difficulty: "Mudah hingga menengah (jalur relatif singkat dan tertata, meski memiliki tanjakan curam di bagian awal).",
   },
   {
@@ -98,7 +123,10 @@ export const destinations: Destination[] = [
     location: "Akses masuk melalui area lapangan Desa Sembalun Bumbung (searah dengan jalur menuju Bukit Nanggi), Kecamatan Sembalun, Kabupaten Lombok Timur, dengan pos utama pada titik BAO DAYA S7S.",
     backgroundImage: imagesById["07"].background,
     cardImage: imagesById["07"].card,
+    previewVideo: videosById["07"],
+    videoPoster: imagesById["07"].background,
     estimatedDuration: "Sekitar 1,5 hingga 3 jam perjalanan naik menuju puncak (atau total sekitar 4–6 jam untuk perjalanan pulang-pergi santai).",
+    estimatedDurationLabel: "1,5–3 jam naik · 4–6 jam PP",
     difficulty: "Mudah hingga menengah (moderate), sangat ramah bagi pendaki pemula jika dibandingkan dengan jalur Bukit Bao Ritip lama maupun bukit tinggi lainnya di Sembalun.",
   },
 ];

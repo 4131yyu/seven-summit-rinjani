@@ -6,6 +6,10 @@ import { LoginPage } from "./pages/LoginPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import { RoutePlaceholderPage } from "./pages/RoutePlaceholderPage";
 import { SignupPage } from "./pages/SignupPage";
+import { DestinationDetailPage } from "./pages/DestinationDetailPage";
+import { BookingPage } from "./pages/BookingPage";
+import { CheckoutPage } from "./pages/CheckoutPage";
+import { PaymentSuccessPage } from "./pages/PaymentSuccessPage";
 
 export const router = createBrowserRouter([
   {
@@ -26,19 +30,19 @@ export const router = createBrowserRouter([
       },
       {
         path: "destinations/:slug",
-        Component: () => <RoutePlaceholderPage title="Detail destinasi" />,
+        Component: DestinationDetailPage,
       },
       {
         path: "booking/:slug",
-        Component: () => <RoutePlaceholderPage title="Pemesanan demo" />,
+        Component: BookingPage,
       },
       {
         path: "checkout",
-        Component: () => <RoutePlaceholderPage title="Checkout simulasi" />,
+        Component: CheckoutPage,
       },
       {
         path: "payment/success",
-        Component: () => <RoutePlaceholderPage title="Status pembayaran demo" />,
+        Component: PaymentSuccessPage,
       },
       { path: "*", Component: NotFoundPage },
     ],
