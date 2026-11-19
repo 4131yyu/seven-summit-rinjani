@@ -5,9 +5,9 @@
 export const assetPaths = {
   logoLight: "/assets/images/logo/Logo-7-Summits.png",
   logoDark: "/assets/images/logo/Logo-7-Summits-BLACK.png",
-  landingHeroVideo: "/assets/videos/hero/Landing-Page.mp4",
+  landingHeroVideo: "/assets/videos/destinations/05-Anakdara.mp4",
   authVideo: "/assets/videos/destinations/02-Sempana.mp4",
-  heroPoster: "/assets/images/hero/gunung.webp",
+  heroPoster: "/assets/images/hero/alternative_background.webp",
   backgroundMusic: encodeURI(
     "/audio/bg_music/Aylex-Geography.mp3",
   ),

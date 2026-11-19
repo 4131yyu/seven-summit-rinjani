@@ -38,7 +38,7 @@ export function DestinationDetailPage() {
               autoPlay
               controls
               loop
-              muted
+              muted={false}
               playsInline
               preload="metadata"
               poster={destination.videoPoster}

@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router";
 
+import { assetPaths } from "../../config/assets";
 import { destinations } from "../../data/destinations";
 
 const difficultyOptions = ["Pemula", "Menengah", "Ekstrem"] as const;
@@ -49,10 +50,11 @@ function createDemoTrailStatuses() {
 }
 
 type HomepageSectionsProps = {
+  aboutAndFooterOnly?: boolean;
   exploreOnly?: boolean;
 };
 
-export function HomepageSections({ exploreOnly = false }: HomepageSectionsProps) {
+export function HomepageSections({ aboutAndFooterOnly = false, exploreOnly = false }: HomepageSectionsProps) {
   const [query, setQuery] = useState("");
   const [selectedDifficulties, setSelectedDifficulties] = useState<string[]>([]);
   const [selectedDurations, setSelectedDurations] = useState<string[]>([]);
@@ -93,12 +95,12 @@ export function HomepageSections({ exploreOnly = false }: HomepageSectionsProps)
           <p className="section-kicker text-terracotta">Langkah berikutnya</p>
           <div className="mt-4 grid gap-8 md:grid-cols-[1fr_auto] md:items-end">
             <div><h2 className="font-display text-3xl font-semibold leading-tight sm:text-5xl">Perjalananmu dimulai dari rasa ingin tahu</h2><p className="mt-4 max-w-2xl text-sm leading-7 text-cream/80 sm:text-base">Jelajahi pilihan puncak, kenali informasi yang tersedia, lalu tentukan tujuan yang ingin kamu kenal lebih jauh.</p></div>
-            <a className="inline-flex min-h-12 items-center justify-center rounded-full bg-terracotta px-6 font-semibold text-white transition hover:bg-terracotta/90 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white" href="#explore">Mulai Jelajah <span aria-hidden="true" className="ml-2">↓</span></a>
+            <Link className="inline-flex min-h-12 items-center justify-center rounded-full bg-terracotta px-6 font-semibold text-white transition hover:bg-terracotta/90 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white" to="/explore">Mulai Jelajah <span aria-hidden="true" className="ml-2">↓</span></Link>
           </div>
         </div>
       </section> : null}
 
-      <section aria-labelledby="explore-title" className="explore-section scroll-mt-24 bg-[#f7f4eb] px-5 py-10 text-charcoal sm:px-8 sm:py-14 lg:px-12 lg:py-16" id="explore">
+      {!aboutAndFooterOnly ? <section aria-labelledby="explore-title" className="explore-section scroll-mt-24 bg-[#f7f4eb] px-5 py-10 text-charcoal sm:px-8 sm:py-14 lg:px-12 lg:py-16" id="explore">
         <div className="mx-auto max-w-7xl">
           <div className="grid gap-5 lg:grid-cols-[1.25fr_0.75fr] lg:items-end">
             <div><h2 className="font-sans text-3xl font-extrabold tracking-tight text-forest sm:text-5xl" id="explore-title">Jelajahi 7 Puncak Sembalun</h2><p className="mt-3 max-w-3xl text-sm leading-6 sm:text-base">Taklukkan 7 puncak ikonik di kawasan Sembalun, Lombok. Siapkan petualanganmu sekarang!</p></div>
@@ -142,18 +144,18 @@ export function HomepageSections({ exploreOnly = false }: HomepageSectionsProps)
             </div>
           </div>
         </div>
-      </section>
+      </section> : null}
 
       {!exploreOnly ? <>
       <section aria-labelledby="about-title" className="bg-cream px-6 py-20 sm:px-10 sm:py-28" id="about">
-        <div className="mx-auto grid max-w-6xl gap-10 md:grid-cols-[0.8fr_1.2fr] md:items-center"><div className="about-image-wrap"><img alt="Lanskap pegunungan di kawasan Sembalun" className="h-full w-full object-cover" loading="lazy" src={destinations[0].backgroundImage} /></div><div><p className="section-kicker">Tentang kami</p><h2 className="section-title mt-3" id="about-title">Mengenal Seven Summit Rinjani</h2><p className="mt-5 text-sm leading-7 text-charcoal/75 sm:text-base">Seven Summit Rinjani adalah platform pengenalan destinasi alam di kawasan Sembalun. Kami membantu pengunjung menjelajahi informasi destinasi dan merencanakan langkah awal petualangan.</p><p className="mt-3 text-sm leading-7 text-charcoal/75 sm:text-base">Informasi pendakian pada website ini merupakan konten demo dan perlu dikonfirmasi kembali sebelum perjalanan.</p></div></div>
+        <div className="mx-auto grid max-w-6xl gap-10 md:grid-cols-[0.8fr_1.2fr] md:items-center"><div className="about-image-wrap"><img alt="Lanskap pegunungan di kawasan Sembalun" className="h-full w-full object-cover" loading="lazy" src={destinations[0].backgroundImage} /></div><div><p className="section-kicker">Tentang kami</p><h2 className="section-title mt-3" id="about-title">Mengenal Seven Summit Rinjani</h2><p className="mt-5 text-sm leading-7 text-charcoal/75 sm:text-base">Seven Summit Rinjani mengajak kamu mengenal ragam lanskap dan pengalaman alam di kawasan Sembalun, Lombok. Setiap destinasi memiliki karakter dan daya tariknya sendiri—mulai dari suasana perbukitan hingga panorama pegunungan—yang memberi banyak cara untuk menikmati perjalanan di alam terbuka.</p><p className="mt-3 text-sm leading-7 text-charcoal/75 sm:text-base">Melalui website ini, kamu dapat melihat pengenalan destinasi, membaca informasi yang tersedia, dan menemukan inspirasi untuk merencanakan petualangan sesuai minatmu. Ingin mulai memilih tujuan? Jelajahi destinasi Seven Summit Rinjani dan temukan tempat yang ingin kamu kenal lebih dekat.</p><Link className="mt-6 inline-flex min-h-12 items-center justify-center rounded-full bg-terracotta px-6 font-semibold text-white transition hover:bg-terracotta/90 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-forest" to="/explore">Jelajahi Destinasi</Link></div></div>
       </section>
 
       <section aria-labelledby="contact-title" className="bg-deep-green px-6 py-16 text-white sm:px-10 sm:py-20" id="contact">
-        <div className="mx-auto grid max-w-6xl gap-8 md:grid-cols-[1fr_auto] md:items-center"><div><p className="section-kicker text-cream/75">Hubungi kami</p><h2 className="mt-3 font-display text-3xl font-semibold sm:text-4xl" id="contact-title">Ada yang ingin ditanyakan?</h2><p className="mt-3 max-w-2xl text-sm leading-6 text-white/80">Saluran kontak resmi akan ditambahkan setelah informasinya tersedia.</p></div><a className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/60 px-6 font-semibold text-white" href="mailto:info@sevensummitrinjani.example">Email (demo)</a></div>
+        <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-start"><div><p className="section-kicker text-cream/75">Hubungi kami</p><h2 className="mt-3 font-display text-3xl font-semibold sm:text-4xl" id="contact-title">Ada yang ingin ditanyakan?</h2><p className="mt-3 max-w-2xl text-sm leading-6 text-white/80">Kirim pertanyaan melalui formulir demo ini. Pesan tidak dikirim ke layanan atau alamat kontak sungguhan.</p></div><form className="grid gap-4 rounded-2xl border border-white/15 bg-white/5 p-5 sm:p-7" onSubmit={(event) => event.preventDefault()}><label className="grid gap-1.5 text-sm font-medium" htmlFor="contact-name">Nama<input autoComplete="name" className="contact-form-field" id="contact-name" name="name" placeholder="Nama kamu" required /></label><div className="grid gap-4 sm:grid-cols-2"><label className="grid gap-1.5 text-sm font-medium" htmlFor="contact-email">Email<input autoComplete="email" className="contact-form-field" id="contact-email" name="email" placeholder="nama@email.com" required type="email" /></label><label className="grid gap-1.5 text-sm font-medium" htmlFor="contact-phone">Nomor telepon<input autoComplete="tel" className="contact-form-field" id="contact-phone" name="phone" placeholder="08xxxxxxxxxx" required type="tel" /></label></div><label className="grid gap-1.5 text-sm font-medium" htmlFor="contact-question">Pertanyaan<textarea className="contact-form-field min-h-32 resize-y" id="contact-question" name="question" placeholder="Tuliskan pertanyaan kamu" required rows={4} /></label><div><button className="inline-flex min-h-12 items-center justify-center rounded-full bg-terracotta px-6 font-semibold text-white transition hover:bg-terracotta/90 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white" type="submit">Kirim Pertanyaan (Demo)</button></div></form></div>
       </section>
 
-      <footer className="bg-charcoal px-6 py-8 text-white sm:px-10"><div className="mx-auto flex max-w-7xl flex-col gap-5 sm:flex-row sm:items-center sm:justify-between"><a className="font-display text-lg font-semibold" href="#konten-utama">Seven Summit Rinjani</a><nav aria-label="Navigasi footer" className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-white/75"><a className="hover:text-white" href="#explore">Jelajah</a><a className="hover:text-white" href="#about">Tentang</a><a className="hover:text-white" href="#contact">Kontak</a></nav><p className="text-xs text-white/60">© {new Date().getFullYear()} Seven Summit Rinjani · Demo</p></div></footer>
+      <footer className="bg-charcoal px-6 py-8 text-white sm:px-10"><div className="mx-auto flex max-w-7xl flex-col gap-5 sm:flex-row sm:items-center sm:justify-between"><a aria-label="Seven Summit Rinjani, ke bagian atas" className="inline-flex w-fit rounded focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white" href="#konten-utama"><img alt="Seven Summit Rinjani" className="h-12 w-auto object-contain" src={assetPaths.logoLight} /></a><nav aria-label="Navigasi footer" className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-white/75">{aboutAndFooterOnly ? <><a className="hover:text-white" href="#about">About Us</a><a className="hover:text-white" href="#contact">Contact</a></> : <><a className="hover:text-white" href="#explore">Jelajah</a><a className="hover:text-white" href="#about">Tentang</a><a className="hover:text-white" href="#contact">Kontak</a></>}</nav><p className="text-xs text-white/60">© {new Date().getFullYear()} Seven Summit Rinjani · Demo</p></div></footer>
       </> : null}
     </>
   );
