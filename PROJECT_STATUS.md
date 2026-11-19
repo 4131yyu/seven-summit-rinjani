@@ -166,11 +166,17 @@ The canonical asset guide is `docs/ASSETS_GUIDE.md`.
 
 ### Kondisi aktual halaman
 
-- `/` renders `HeroSection` with the existing `HeroMedia`; the Landing Page
-  navbar is supplied by `AppShell` and contains only the supplied logo and a
-  Login link. BackgroundMusic is not mounted on `/`.
+- `/` renders `HeroSection` with the existing `HeroMedia` and no navbar.
+  BackgroundMusic is not mounted on `/`. On entry, a “Selamat Datang” overlay
+  appears over the blurred Hero video and fades out. After about 3.7 seconds,
+  a blurred fade transition begins; `/` redirects to `/login` at about 4.4
+  seconds without a welcome overlay on Login.
 - `/home` renders `HomePage`, which contains only the existing full-screen
   `DestinationCarousel`. Its supplied destination cards link to `/explore`.
+- `/about-us` renders the About Us page with its Explore CTA and a shared footer
+  containing only the brand logo and copyright. `/contact` renders the demo
+  contact form with the same footer. Homepage navbar links navigate to these
+  dedicated routes; About Us and Contact are not homepage sections.
 - `/explore` renders the Explore section from `HomepageSections` only. It uses
   the existing destination array and portrait assets. Search, difficulty,
   duration, altitude, trail-status, and quick-recommendation controls filter
@@ -440,6 +446,142 @@ Do not rely solely on prior conversation history.
 
 ## Last Handoff
 
+- Homepage viewport height follow-up: `/home` shell is constrained to the
+  dynamic viewport height with overflow clipped, and its main area may shrink
+  to the carousel. This prevents the navbar's layout space from creating a
+  page scrollbar; About Us and Contact remain naturally scrollable pages.
+- Files changed: `src/components/layout/AppShell.tsx` and
+  `PROJECT_STATUS.md`.
+- Checks passed: `npm.cmd run lint`, `npm.cmd run build`, and
+  `git diff --check`. Build output is 536.42 kB with the existing Vite
+  chunk-size warning.
+- Next action: visually confirm `/home` has no scrollbar at desktop and mobile
+  viewport sizes.
+
+- Page height and navbar follow-up: application shell and main content now use a
+  flexible column layout so short About Us and Contact pages keep the shared
+  footer at the bottom of the viewport. Their content sections fill available
+  space, and both routes now use the same solid navbar appearance as Explore.
+  Homepage continues to show only its full-screen Carousel.
+- Files changed: `src/components/layout/AppShell.tsx`,
+  `src/pages/AboutUsPage.tsx`, `src/pages/ContactPage.tsx`, and
+  `PROJECT_STATUS.md`.
+- Checks passed: `npm.cmd run lint`, `npm.cmd run build`, and
+  `git diff --check`. Build output is 536.39 kB with the existing Vite
+  chunk-size warning.
+- Next action: visually review footer placement and navbar consistency at
+  desktop and mobile widths.
+
+- About Us and Contact route separation: `/home` now contains only the
+  Destination Carousel. Navbar About Us and Contact links open `/about-us` and
+  `/contact`; the corresponding pages retain the existing informational copy,
+  Explore CTA, and demo form. Both pages share a footer with only the logo and
+  copyright. These routes reset to the top on entry.
+- Files changed: `src/pages/HomePage.tsx`, new
+  `src/pages/AboutUsPage.tsx`, new `src/pages/ContactPage.tsx`, new
+  `src/components/layout/BrandFooter.tsx`, `src/router.tsx`,
+  `src/components/layout/AppShell.tsx`, and `PROJECT_STATUS.md`.
+- Checks passed: `npm.cmd run lint`, `npm.cmd run build`, and
+  `git diff --check`. Build output is 536.19 kB with Vite's existing chunk-size
+  warning. No dependencies were added.
+- Next action: visually review the dedicated pages and route navigation at
+  desktop and mobile sizes.
+
+- Homepage footer refinement: replaced the text brand link with the supplied
+  light logo, limited footer navigation to About Us and Contact, and retained
+  the existing copyright line.
+- Files changed: `src/components/landing/HomepageSections.tsx` and
+  `PROJECT_STATUS.md`.
+- Checks passed: `npm.cmd run lint`, `npm.cmd run build`, and
+  `git diff --check`. Build output is 531.36 kB with Vite's existing chunk-size
+  warning.
+- Next action: visually review the footer logo and links at desktop and mobile
+  widths.
+
+- Transition CTA behavior: the Homepage divider's “Mulai Jelajah” button now
+  navigates to `/explore`, matching the About Us destination CTA.
+- Files changed: `src/components/landing/HomepageSections.tsx` and
+  `PROJECT_STATUS.md`.
+- Checks passed: `npm.cmd run lint`, `npm.cmd run build`, and
+  `git diff --check`. Build output remains 531.15 kB with Vite's chunk-size
+  warning.
+- Next action: visually confirm both Homepage Explore CTAs navigate to the
+  Explore page at its top.
+
+- Homepage About/Contact refinement: expanded the About Us introduction and
+  added a CTA to `/explore`; restored the transition divider before About Us.
+  Replaced the Contact placeholder copy with a demo form for name, email,
+  telephone, and question. It uses native required/email validation and does
+  not send data to a backend.
+- Files changed: `src/components/landing/HomepageSections.tsx`,
+  `src/styles/index.css`, and `PROJECT_STATUS.md`.
+- Checks passed: `npm.cmd run lint`, `npm.cmd run build`, and
+  `git diff --check`. Build output is 531.15 kB with the existing Vite chunk
+  size warning.
+- Next action: visually review the homepage divider and Contact form at
+  desktop and mobile widths.
+
+- Explore navbar controls and search contrast: restored the search, language,
+  login, and menu controls on `/explore` while keeping its center CTA hidden.
+  Improved expanded search field, placeholder, and icon contrast on the light
+  navbar state shared by Homepage and Explore.
+- Files changed: `src/components/layout/AppShell.tsx`,
+  `src/styles/index.css`, and `PROJECT_STATUS.md`.
+- Checks passed: `npm.cmd run lint`, `npm.cmd run build`, and
+  `git diff --check`. Build output is 529.12 kB with the existing Vite chunk
+  size warning.
+- Next action: visually review navbar controls and search contrast at desktop
+  and mobile widths.
+
+- Homepage logo behavior: clicking the logo while already on `/home` now
+  smoothly scrolls to the page top; reduced-motion preferences use an instant
+  scroll. From other routes, the logo continues to navigate to `/home` at top.
+- Files changed: `src/components/layout/AppShell.tsx` and
+  `PROJECT_STATUS.md`.
+- Checks passed: `npm.cmd run lint`, `npm.cmd run build`, and
+  `git diff --check`. Build output is 529.15 kB with the existing Vite chunk
+  size warning.
+- Next action: visually confirm logo scrolling from the About Us and Contact
+  sections.
+
+- Navigation scroll follow-up: entering `/explore` from the Homepage Jelajah
+  CTA and returning to `/home` with the logo now reset the viewport to the top.
+  Hash links to About Us and Contact retain their section scroll behavior.
+- Files changed: `src/components/layout/AppShell.tsx` and
+  `PROJECT_STATUS.md`.
+- Checks passed: `npm.cmd run lint`, `npm.cmd run build`, and
+  `git diff --check`. Build output is 528.89 kB with the existing Vite chunk
+  size warning.
+- Next action: visually confirm top-of-page navigation and section links.
+
+- Homepage CTA follow-up: Jelajah click now navigates to `/explore`; About Us
+  uses smooth scrolling to its section, including after a route/hash update;
+  Contact now renders on `/home` alongside About Us and the footer. Explore
+  keeps its logo-only navbar behavior.
+- Follow-up files changed: `src/components/layout/AppShell.tsx`,
+  `src/components/landing/HomepageSections.tsx`, and `PROJECT_STATUS.md`.
+- Checks passed: `npm.cmd run lint`, `npm.cmd run build`, and
+  `git diff --check`. Build output remains 528.75 kB and Vite reports its
+  existing 500 kB chunk-size warning.
+- Next action: visually confirm homepage CTA scroll/navigation and Contact
+  rendering at desktop and mobile widths.
+
+- Homepage navbar and content follow-up: `/home` now renders About Us, Contact,
+  and the existing footer after the Destination Carousel. The centered homepage
+  navbar links are Jelajah (`/explore`), About Us (`/home#about`), and Contact
+  (`/home#contact`). Explore hides its centered CTA and other navbar actions;
+  the logo links back to `/home`.
+- Files changed for this follow-up: `src/components/layout/AppShell.tsx`,
+  `src/pages/HomePage.tsx`, and `PROJECT_STATUS.md`. Existing local edits in
+  other files were preserved.
+- Checks passed: `npm.cmd run lint`, `npm.cmd run build`, and
+  `git diff --check`. The production bundle is 528.64 kB and Vite reports its
+  configured 500 kB chunk-size warning. No dependency was added.
+- Known issue: `/home` and `/explore` navbar layout should still receive a
+  visual review at mobile and desktop sizes.
+- Next action: visually review the revised homepage and Explore navbar, then
+  continue the remaining responsive and accessibility audit.
+
 - Explore filters and cards: enabled the Buka/Tutup checkboxes and assign a
   randomized 4/3 split when the Explore section mounts; the assignment stays
   stable during filtering and is labelled demo on the cards and filter. Added
@@ -547,6 +689,16 @@ Do not rely solely on prior conversation history.
 - Booking form checks passed: `npm.cmd run lint`, `npm.cmd run build`, and
   `git diff --check`. The production build reports a JavaScript chunk slightly
   above 500 kB; code splitting can be considered if the app grows.
+- Landing transition refinement: the welcome greeting now appears on initial
+  entry to `/`, with a 600 ms fade over the blurred background. A separate
+  700 ms blurred fade begins before the automatic redirect to `/login` at about
+  4.4 seconds; Login itself does not show the greeting. Reduced-motion
+  preferences disable the visual transitions.
+- Landing transition files changed: `src/pages/LandingPage.tsx` and
+  `src/styles/index.css`.
+- Landing transition checks passed: `npm.cmd run lint`, `npm.cmd run build`,
+  and `git diff --check`. The production build still reports a JavaScript
+  chunk above 500 kB.
 - Next action: visually review Landing Page, Homepage Carousel, and Explore
   at desktop, tablet, and mobile sizes, then continue remaining mascot and
   final responsive/accessibility work.
