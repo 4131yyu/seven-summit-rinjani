@@ -48,7 +48,11 @@ function createDemoTrailStatuses() {
   return Object.fromEntries(shuffled.map((destination, index) => [destination.slug, index < 4 ? "Buka" : "Tutup"]));
 }
 
-export function HomepageSections() {
+type HomepageSectionsProps = {
+  exploreOnly?: boolean;
+};
+
+export function HomepageSections({ exploreOnly = false }: HomepageSectionsProps) {
   const [query, setQuery] = useState("");
   const [selectedDifficulties, setSelectedDifficulties] = useState<string[]>([]);
   const [selectedDurations, setSelectedDurations] = useState<string[]>([]);
@@ -83,7 +87,7 @@ export function HomepageSections() {
 
   return (
     <>
-      <section className="transition-section relative overflow-hidden bg-forest px-6 py-20 text-cream sm:px-10 sm:py-28">
+      {!exploreOnly ? <section className="transition-section relative overflow-hidden bg-forest px-6 py-20 text-cream sm:px-10 sm:py-28">
         <div aria-hidden="true" className="transition-contour" />
         <div className="relative mx-auto max-w-6xl">
           <p className="section-kicker text-terracotta">Langkah berikutnya</p>
@@ -92,7 +96,7 @@ export function HomepageSections() {
             <a className="inline-flex min-h-12 items-center justify-center rounded-full bg-terracotta px-6 font-semibold text-white transition hover:bg-terracotta/90 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white" href="#explore">Mulai Jelajah <span aria-hidden="true" className="ml-2">↓</span></a>
           </div>
         </div>
-      </section>
+      </section> : null}
 
       <section aria-labelledby="explore-title" className="explore-section scroll-mt-24 bg-[#f7f4eb] px-5 py-10 text-charcoal sm:px-8 sm:py-14 lg:px-12 lg:py-16" id="explore">
         <div className="mx-auto max-w-7xl">
@@ -140,6 +144,7 @@ export function HomepageSections() {
         </div>
       </section>
 
+      {!exploreOnly ? <>
       <section aria-labelledby="about-title" className="bg-cream px-6 py-20 sm:px-10 sm:py-28" id="about">
         <div className="mx-auto grid max-w-6xl gap-10 md:grid-cols-[0.8fr_1.2fr] md:items-center"><div className="about-image-wrap"><img alt="Lanskap pegunungan di kawasan Sembalun" className="h-full w-full object-cover" loading="lazy" src={destinations[0].backgroundImage} /></div><div><p className="section-kicker">Tentang kami</p><h2 className="section-title mt-3" id="about-title">Mengenal Seven Summit Rinjani</h2><p className="mt-5 text-sm leading-7 text-charcoal/75 sm:text-base">Seven Summit Rinjani adalah platform pengenalan destinasi alam di kawasan Sembalun. Kami membantu pengunjung menjelajahi informasi destinasi dan merencanakan langkah awal petualangan.</p><p className="mt-3 text-sm leading-7 text-charcoal/75 sm:text-base">Informasi pendakian pada website ini merupakan konten demo dan perlu dikonfirmasi kembali sebelum perjalanan.</p></div></div>
       </section>
@@ -149,6 +154,7 @@ export function HomepageSections() {
       </section>
 
       <footer className="bg-charcoal px-6 py-8 text-white sm:px-10"><div className="mx-auto flex max-w-7xl flex-col gap-5 sm:flex-row sm:items-center sm:justify-between"><a className="font-display text-lg font-semibold" href="#konten-utama">Seven Summit Rinjani</a><nav aria-label="Navigasi footer" className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-white/75"><a className="hover:text-white" href="#explore">Jelajah</a><a className="hover:text-white" href="#about">Tentang</a><a className="hover:text-white" href="#contact">Kontak</a></nav><p className="text-xs text-white/60">© {new Date().getFullYear()} Seven Summit Rinjani · Demo</p></div></footer>
+      </> : null}
     </>
   );
 }
