@@ -1,33 +1,67 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 type BackgroundMusicProps = {
+  isSuppressed?: boolean;
   src: string;
 };
 
-export function BackgroundMusic({ src }: BackgroundMusicProps) {
+export function BackgroundMusic({ isSuppressed = false, src }: BackgroundMusicProps) {
   const audioRef = useRef<HTMLAudioElement>(null);
   const hasAttemptedAutoplay = useRef(false);
+  const wasSuppressed = useRef(false);
+  const isSuppressedRef = useRef(isSuppressed);
   const [isPlaying, setIsPlaying] = useState(false);
   const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
-    const audio = audioRef.current;
+    isSuppressedRef.current = isSuppressed;
+  }, [isSuppressed]);
 
-    if (!audio || hasAttemptedAutoplay.current) return;
-
-    hasAttemptedAutoplay.current = true;
-    audio.volume = 0.35;
-
-    void audio.play().then(
-      () => setIsPlaying(true),
-      () => setIsPlaying(false),
-    );
+  const playAudio = useCallback(async (audio: HTMLAudioElement, showError = false) => {
+    try {
+      await audio.play();
+      if (isSuppressedRef.current || audio.paused) {
+        audio.pause();
+        setIsPlaying(false);
+        return;
+      }
+      setIsPlaying(true);
+    } catch {
+      if (showError) setHasError(true);
+      setIsPlaying(false);
+    }
   }, []);
 
-  const toggleMusic = async () => {
+  useEffect(() => {
     const audio = audioRef.current;
 
     if (!audio) return;
+
+    audio.volume = 0.35;
+
+    if (isSuppressed) {
+      wasSuppressed.current = true;
+      audio.pause();
+      setIsPlaying(false);
+      return;
+    }
+
+    if (!hasAttemptedAutoplay.current) {
+      hasAttemptedAutoplay.current = true;
+      void playAudio(audio);
+      return;
+    }
+
+    if (wasSuppressed.current) {
+      wasSuppressed.current = false;
+      void playAudio(audio);
+    }
+  }, [isSuppressed, playAudio]);
+
+  const toggleMusic = () => {
+    const audio = audioRef.current;
+
+    if (!audio || isSuppressed) return;
 
     if (isPlaying) {
       audio.pause();
@@ -35,26 +69,21 @@ export function BackgroundMusic({ src }: BackgroundMusicProps) {
       return;
     }
 
-    try {
-      setHasError(false);
-      await audio.play();
-      setIsPlaying(true);
-    } catch {
-      setHasError(true);
-      setIsPlaying(false);
-    }
+    setHasError(false);
+    void playAudio(audio, true);
   };
 
   return (
     <div className="fixed right-4 bottom-4 z-30 sm:right-6 sm:bottom-6">
-      <audio loop onEnded={() => setIsPlaying(false)} onError={() => setHasError(true)} preload="metadata" ref={audioRef}>
+      <audio loop muted={isSuppressed} onEnded={() => setIsPlaying(false)} onError={() => setHasError(true)} preload="metadata" ref={audioRef}>
         <source src={src} type="audio/mpeg" />
       </audio>
       <button
         aria-describedby={hasError ? "background-music-error" : undefined}
         aria-pressed={isPlaying}
-        aria-label={isPlaying ? "Matikan musik latar" : "Nyalakan musik latar"}
-        className="relative grid size-14 place-items-center overflow-hidden rounded-full border border-white/25 bg-charcoal/90 text-white shadow-lg backdrop-blur transition hover:bg-forest focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-terracotta"
+        aria-label={isSuppressed ? "Musik latar dijeda selama preview video" : isPlaying ? "Matikan musik latar" : "Nyalakan musik latar"}
+        className="relative grid size-14 place-items-center overflow-hidden rounded-full border border-white/25 bg-charcoal/90 text-white shadow-lg backdrop-blur transition hover:bg-forest focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-terracotta disabled:cursor-not-allowed disabled:opacity-50"
+        disabled={isSuppressed}
         onClick={toggleMusic}
         type="button"
       >
