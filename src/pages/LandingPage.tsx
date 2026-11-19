@@ -1,11 +1,5 @@
-import { DestinationCarousel } from "../components/landing/DestinationCarousel";
-import { HomepageSections } from "../components/landing/HomepageSections";
+import { HeroSection } from "../components/landing/HeroSection";
 
 export function LandingPage() {
-  return (
-    <>
-      <DestinationCarousel />
-      <HomepageSections />
-    </>
-  );
+  return <HeroSection />;
 }

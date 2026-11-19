@@ -5,9 +5,7 @@ import { assetPaths } from "../../config/assets";
 import { BackgroundMusic } from "./BackgroundMusic";
 
 const navigationItems = [
-  { label: "Jelajah", href: "#explore" },
-  { label: "Tentang", href: "#about" },
-  { label: "Kontak", href: "#contact" },
+  { label: "Jelajah", href: "/explore" },
 ] as const;
 
 export function AppShell() {
@@ -17,6 +15,8 @@ export function AppShell() {
   const location = useLocation();
   const navigate = useNavigate();
   const isLandingPage = location.pathname === "/";
+  const isHomePage = location.pathname === "/home";
+  const isExplorePage = location.pathname === "/explore";
   const isAuthPage = location.pathname === "/login" || location.pathname === "/signup";
   const isPaymentFlowPage = location.pathname === "/checkout" || location.pathname === "/payment/success";
   const isFocusedPage = /^\/(destinations|booking)\/[^/]+$/.test(location.pathname);
@@ -42,7 +42,7 @@ export function AppShell() {
     return () => window.cancelAnimationFrame(frame);
   }, [location.hash, location.pathname]);
 
-  const sectionHref = (href: string) => isLandingPage ? href : `/${href}`;
+  const sectionHref = (href: string) => href.startsWith("/") ? href : isLandingPage ? href : `/${href}`;
   const scrollToSection = (sectionId: string) => {
     document.getElementById(sectionId)?.scrollIntoView({
       behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
@@ -62,20 +62,32 @@ export function AppShell() {
   };
 
   return (
-    <div className="min-h-screen bg-cream text-charcoal">
+    <div className={`${isLandingPage ? "landing-page-shell h-dvh overflow-clip" : "min-h-screen"} bg-cream text-charcoal`}>
       <a className="skip-link" href={isAuthPage ? "#auth-main" : "#konten-utama"}>
         Lewati navigasi
       </a>
-      {!isAuthPage && !isFocusedPage && !isPaymentFlowPage ? <header className={`site-navbar z-20 ${isLandingPage ? `site-navbar-floating ${hasScrolled ? "site-navbar-scrolled" : ""}` : "relative border-b border-forest/10 bg-cream/95 text-forest backdrop-blur"}`}>
+      {isLandingPage ? (
+        <header className="site-navbar site-navbar-floating z-20">
+          <nav aria-label="Navigasi Landing Page" className="site-navbar-inner mx-auto grid w-full max-w-none grid-cols-[1fr_auto] items-center gap-3 px-3 py-2.5 sm:px-5 sm:py-3">
+            <Link aria-label="Seven Summit Rinjani, Landing Page" className="site-brand-link" to="/">
+              <img alt="Seven Summit Rinjani" className="site-brand-logo" src={assetPaths.logoLight} />
+            </Link>
+            <Link className="inline-flex min-h-10 items-center justify-center rounded-full border border-white/65 bg-white/15 px-5 text-sm font-semibold text-white shadow-sm backdrop-blur transition hover:bg-white/25 focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-white" to="/login">
+              Login
+            </Link>
+          </nav>
+        </header>
+      ) : null}
+      {!isAuthPage && !isFocusedPage && !isPaymentFlowPage && !isLandingPage && !isExplorePage ? <header className={`site-navbar z-20 ${isHomePage ? `site-navbar-floating ${hasScrolled ? "site-navbar-scrolled" : ""}` : "relative border-b border-forest/10 bg-cream/95 text-forest backdrop-blur"}`}>
         <nav
           aria-label="Navigasi utama"
-          className={`site-navbar-inner mx-auto grid w-full grid-cols-[1fr_auto] items-center gap-3 ${isLandingPage ? "max-w-none px-3 py-2.5 sm:px-5 sm:py-3" : "max-w-384 px-5 py-4 sm:px-8 lg:px-12"}`}
+          className={`site-navbar-inner mx-auto grid w-full grid-cols-[1fr_auto] items-center gap-3 ${isHomePage ? "max-w-none px-3 py-2.5 sm:px-5 sm:py-3" : "max-w-384 px-5 py-4 sm:px-8 lg:px-12"}`}
         >
-          <Link aria-label="Seven Summit Rinjani, kembali ke carousel" className="site-brand-link" onClick={(event) => handleSectionNavigation(event, sectionHref("#seven-summit"))} to={sectionHref("#seven-summit")}>
+          <Link aria-label="Seven Summit Rinjani, ke Homepage" className="site-brand-link" to="/home">
             <img
               alt="Seven Summit Rinjani"
               className="site-brand-logo"
-              src={isLandingPage && !hasScrolled ? assetPaths.logoLight : assetPaths.logoDark}
+              src={isHomePage && !hasScrolled ? assetPaths.logoLight : assetPaths.logoDark}
             />
           </Link>
           <div className="site-navbar-links hidden items-center justify-center gap-1 md:flex">
@@ -126,11 +138,12 @@ export function AppShell() {
           </div>
         </nav>
       </header> : null}
-      {isFocusedPage ? <div className="focused-route-header"><Link aria-label="Kembali ke Jelajah" className="focused-route-back" to="/#explore"><span aria-hidden="true">←</span> Kembali ke Jelajah</Link></div> : null}
+      {isFocusedPage ? <div className="focused-route-header"><Link aria-label="Kembali ke Jelajah" className="focused-route-back" to="/explore"><span aria-hidden="true">←</span> Kembali ke Jelajah</Link></div> : null}
+      {isExplorePage ? <div className="focused-route-header"><button aria-label="Kembali ke Homepage" className="focused-route-back" onClick={() => navigate("/home")} type="button"><span aria-hidden="true">←</span> Kembali</button></div> : null}
       <main id={isAuthPage ? "auth-main" : "konten-utama"}>
         <Outlet />
       </main>
-      <BackgroundMusic src={assetPaths.backgroundMusic} />
+      {!isLandingPage ? <BackgroundMusic src={assetPaths.backgroundMusic} /> : null}
     </div>
   );
 }

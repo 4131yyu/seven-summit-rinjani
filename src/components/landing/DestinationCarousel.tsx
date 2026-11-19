@@ -1,4 +1,5 @@
 import { type KeyboardEvent, useCallback, useEffect, useRef, useState } from "react";
+import { Link } from "react-router";
 
 import { landingDestinations } from "../../data/landingDestinations";
 
@@ -208,12 +209,12 @@ export function DestinationCarousel() {
               const isActive = index === activeIndex;
               const positionClass = isActive ? "destination-card-active" : offset < 0 ? "destination-card-previous" : "destination-card-next";
               return (
-                <button aria-current={isActive ? "true" : undefined} aria-label={`Tampilkan ${destination.selectorLabel}`} className={`destination-card ${positionClass}`} key={destination.id} onClick={() => { if (!didSwipe.current) showSlide(index); }} tabIndex={isActive ? 0 : -1} type="button">
+                <Link aria-current={isActive ? "true" : undefined} aria-label={`Jelajahi semua destinasi dari ${destination.selectorLabel}`} className={`destination-card ${positionClass} no-underline`} key={destination.id} onClick={(event) => { if (didSwipe.current) event.preventDefault(); }} to="/explore">
                   {!failedImages[destination.cardImage] ? (
                     <img alt="" className="absolute inset-0 h-full w-full object-cover" draggable={false} loading={Math.abs(offset) === 1 ? "lazy" : "eager"} onError={() => setFailedImages((images) => ({ ...images, [destination.cardImage]: true }))} src={destination.cardImage} />
                   ) : <span aria-hidden="true" className="destination-card-placeholder absolute inset-0" />}
                   <span className="absolute inset-x-0 bottom-0 bg-linear-to-t from-charcoal/90 via-charcoal/35 to-transparent px-3 pb-3 pt-12 text-left text-xs font-semibold text-white sm:px-4 sm:pb-4 sm:pt-14 sm:text-sm">{destination.selectorLabel}</span>
-                </button>
+                </Link>
               );
             })}
           </div>

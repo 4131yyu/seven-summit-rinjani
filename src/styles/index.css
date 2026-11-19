@@ -657,6 +657,23 @@ svg.auth-field-icon {
 
 .homepage-hero { scroll-margin-top: 5rem; }
 
+@media (max-height: 560px) {
+  .homepage-hero {
+    padding-top: clamp(3.5rem, 17vh, 6rem);
+    padding-bottom: clamp(0.5rem, 3vh, 1rem);
+  }
+
+  .homepage-hero h1 {
+    font-size: clamp(1.65rem, 6vh, 2.5rem);
+  }
+
+  .homepage-hero p {
+    margin-top: 1rem;
+    font-size: 0.8rem;
+    line-height: 1.25rem;
+  }
+}
+
 .summit-introduction {
   background-image: radial-gradient(ellipse at 50% 0%, rgb(200 121 88 / 10%), transparent 55%);
 }

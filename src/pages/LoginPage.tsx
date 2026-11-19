@@ -53,7 +53,7 @@ export function LoginPage() {
       // The landing page remains public if session storage is unavailable.
     }
 
-    navigate("/");
+    navigate("/home");
   };
 
   const handleSocialSelect = (provider: SocialProvider) => {
