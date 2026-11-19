@@ -8,7 +8,7 @@
 - Main instructions: AGENTS.md
 - Primary language: Indonesian
 - Current phase: Phase 12 — Payment success demo
-- Project status: Homepage menggunakan tampilan full-screen DestinationCarousel sebagai tampilan pembuka, dilanjutkan Transition, Explore, About, Contact, dan Footer. Login/Signup dan Carousel tidak diubah; pemeriksaan visual lintas perangkat masih perlu dilakukan.
+- Project status: `/` menampilkan Landing Page video, `/home` menampilkan Destination Carousel, dan `/explore` menampilkan fitur Explore. Login sukses menuju `/home`. Pemeriksaan visual lintas perangkat masih perlu dilakukan.
 
 ## Technology Stack
 
@@ -51,7 +51,21 @@ the implementation phase that uses them.
 
 ## Important Decisions
 
-### Keputusan desain Homepage terbaru
+### Arsitektur halaman terbaru
+
+- `/` adalah Landing Page dengan video hero, logo, dan tombol Login saja. Tidak
+  ada CTA Explore, musik latar, atau Destination Carousel di halaman ini.
+- `/home` adalah Homepage dan hanya merender DestinationCarousel. Desain,
+  tujuh destinasi, animasi, transisi, dan kontrol carousel dipertahankan.
+- Setiap kartu yang tampil pada carousel menuju `/explore` tanpa meneruskan
+  identitas destinasi atau navigation state.
+- `/explore` menggunakan kembali bagian Explore dari `HomepageSections` dalam
+  kondisi normal, menampilkan semua destinasi tanpa selected state.
+- `HomepageSections` dan section lama tetap ada di kode; komposisi lama tidak
+  dirender pada Landing Page, Homepage, atau halaman Explore.
+- Login sukses menuju `/home`; desain Login dan Signup tidak diubah.
+
+### Keputusan Homepage sebelumnya (riwayat)
 
 - Klarifikasi pemilik terbaru: tampilan DestinationCarousel yang sudah ada
   adalah tampilan Homepage/Landing Page yang digunakan. Jangan gunakan atau
@@ -150,20 +164,18 @@ The canonical asset guide is `docs/ASSETS_GUIDE.md`.
 
 ## Current Implementation
 
-### Kondisi aktual Homepage
+### Kondisi aktual halaman
 
-- `src/pages/LandingPage.tsx` renders `DestinationCarousel` followed by the
-  new Homepage sections. The Carousel remains a full-screen composition and
-  uses `#seven-summit`; the Navbar is rendered by `AppShell`.
-- Homepage now renders the existing full-screen DestinationCarousel first,
-  followed by Transition, Explore, About, Contact, and Footer. Explore uses
+- `/` renders `HeroSection` with the existing `HeroMedia`; the Landing Page
+  navbar is supplied by `AppShell` and contains only the supplied logo and a
+  Login link. BackgroundMusic is not mounted on `/`.
+- `/home` renders `HomePage`, which contains only the existing full-screen
+  `DestinationCarousel`. Its supplied destination cards link to `/explore`.
+- `/explore` renders the Explore section from `HomepageSections` only. It uses
   the existing destination array and portrait assets. Search, difficulty,
   duration, altitude, trail-status, and quick-recommendation controls filter
   the cards; trail status is randomly assigned for the demo and is labelled as
   non-operational. Cards show short difficulty and duration summaries.
-- Homepage navigation now targets Explore, About, and Contact; its navbar is
-  sticky and changes from glass over the Carousel to a cream surface while
-  scrolling.
 - Login and Signup pages exist and share the previously agreed authentication
   design. Retain them unchanged during Homepage work.
 
@@ -177,15 +189,16 @@ Phase 2 provides a working React/Vite/TypeScript application foundation:
   checkout, and payment-success routes render their current demo flows.
 - Centralized expected asset paths, with comments requiring components to use
   fallbacks when final files are unavailable.
-- The Homepage opens with the existing full-screen image-backed carousel,
-  followed by new Homepage sections.
+- `/` uses the separate hero-media Landing Page; `/home` contains the existing
+  full-screen image-backed carousel; `/explore` contains the existing Explore
+  controls and cards.
 - Login and Signup share a reference-based authentication layout. Login uses
   the existing demo credentials and session storage; Signup performs client
   side validation only and does not persist an account without a backend.
 - Hero media attempts the configured MP4, then the configured poster, and
   finally a clearly labelled CSS placeholder if neither file is available.
-- `HeroMedia` retains reduced-motion and media-failure fallback behavior; it is
-  not rendered by the active Homepage composition.
+- `HeroMedia` is rendered by the active Landing Page and retains reduced-motion
+  and media-failure fallback behavior.
 - The carousel uses landscape backgrounds, portrait preview cards, a vertical
   selector, automatic and manual controls, transitions, responsive layout, and
   missing-image fallbacks.
@@ -211,12 +224,11 @@ Phase 2 provides a working React/Vite/TypeScript application foundation:
 
 ## Pending Tasks
 
-1. Visually review the new Homepage sections and sticky navigation at desktop,
-   tablet, and mobile sizes; preserve the existing Carousel and auth pages.
+1. Visually review Landing Page, `/home`, and `/explore` at desktop, tablet,
+   and mobile sizes.
 2. Review the carousel against `docs/references/homepage-motion-reference.mp4`
    at desktop and mobile sizes, while keeping the existing carousel design.
-3. Review Homepage responsiveness, accessibility, section navigation, and
-   media performance after implementation.
+3. Verify Login-to-Homepage and Carousel-to-Explore navigation in a browser.
 4. Keep destination facts clearly identified as owner-provided or placeholder
    content until verified; do not present unverified claims as facts.
 
@@ -234,6 +246,28 @@ Before continuing:
 Do not rely solely on prior conversation history.
 
 ## Latest Work Log
+
+- Landing Page and route separation: `/` now renders a video-only hero with the
+  logo and Login action supplied by the route-specific AppShell navbar. Hero
+  media uses the centralized hero video path and poster fallback; background
+  music is not mounted on `/`. The existing glass navbar and background music
+  remain on `/home` with the Carousel.
+- Added `/home` for the existing DestinationCarousel and `/explore` for the
+  existing Explore UI. Carousel cards navigate to `/explore` without passing
+  destination identity. Explore is rendered without Transition, About,
+  Contact, or Footer; the original `HomepageSections` component and markup
+  remain in place.
+- Successful demo Login now navigates to `/home`. The existing Login and
+  Signup layouts and form behavior were not changed.
+- Files changed: `src/pages/LandingPage.tsx`, `src/pages/HomePage.tsx`,
+  `src/pages/ExplorePage.tsx`, `src/components/landing/HeroSection.tsx`,
+  `src/components/landing/DestinationCarousel.tsx`,
+  `src/components/landing/HomepageSections.tsx`,
+  `src/components/layout/AppShell.tsx`, `src/config/assets.ts`,
+  `src/pages/LoginPage.tsx`, `src/router.tsx`, and `PROJECT_STATUS.md`.
+- Checks passed: `npm.cmd run lint`, `npm.cmd run build`, and
+  `git diff --check`. Browser interaction and responsive visual checks remain
+  pending. Production build retains the existing >500 kB chunk-size warning.
 
 - Destination detail implementation: connected Explore card detail links to
   `/destinations/:slug`, mapped each destination to its supplied MP4 and
@@ -513,6 +547,6 @@ Do not rely solely on prior conversation history.
 - Booking form checks passed: `npm.cmd run lint`, `npm.cmd run build`, and
   `git diff --check`. The production build reports a JavaScript chunk slightly
   above 500 kB; code splitting can be considered if the app grows.
-- Next action: visually review the booking, checkout, and payment success
-  flows at desktop, tablet, and mobile sizes, then continue the remaining
-  mascot and final responsive/accessibility phases.
+- Next action: visually review Landing Page, Homepage Carousel, and Explore
+  at desktop, tablet, and mobile sizes, then continue remaining mascot and
+  final responsive/accessibility work.
