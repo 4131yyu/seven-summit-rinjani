@@ -12,6 +12,8 @@ import { DestinationDetailPage } from "./pages/DestinationDetailPage";
 import { BookingPage } from "./pages/BookingPage";
 import { CheckoutPage } from "./pages/CheckoutPage";
 import { PaymentSuccessPage } from "./pages/PaymentSuccessPage";
+import { AboutUsPage } from "./pages/AboutUsPage";
+import { ContactPage } from "./pages/ContactPage";
 
 export const router = createBrowserRouter([
   {
@@ -20,6 +22,8 @@ export const router = createBrowserRouter([
       { index: true, Component: LandingPage },
       { path: "home", Component: HomePage },
       { path: "explore", Component: ExplorePage },
+      { path: "about-us", Component: AboutUsPage },
+      { path: "contact", Component: ContactPage },
       {
         path: "login",
         Component: LoginPage,
