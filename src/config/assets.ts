@@ -5,11 +5,11 @@
 export const assetPaths = {
   logoLight: "/assets/images/logo/Logo-7-Summits.png",
   logoDark: "/assets/images/logo/Logo-7-Summits-BLACK.png",
-  // heroVideo: "/assets/videos/hero/rinjani-hero.mp4",
-  heroVideo: "/assets/videos/destinations/01-Rinjani.mp4",
+  landingHeroVideo: "/assets/videos/hero/Landing-Page.mp4",
+  authVideo: "/assets/videos/destinations/02-Sempana.mp4",
   heroPoster: "/assets/images/hero/gunung.webp",
   backgroundMusic: encodeURI(
-    "/audio/bg_music/Akbar Chalay & Mingse - Astaga Bercanda (Lirik_Lyrics) - 7clouds Indonesia.mp3",
+    "/audio/bg_music/Aylex-Geography.mp3",
   ),
   destinationCarousel: [
     {
