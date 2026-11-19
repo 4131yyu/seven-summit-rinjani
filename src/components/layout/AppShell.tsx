@@ -4,10 +4,6 @@ import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router";
 import { assetPaths } from "../../config/assets";
 import { BackgroundMusic } from "./BackgroundMusic";
 
-const navigationItems = [
-  { label: "Jelajah", href: "/explore" },
-] as const;
-
 export function AppShell() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [language, setLanguage] = useState<"ID" | "EN">("ID");
@@ -17,9 +13,18 @@ export function AppShell() {
   const isLandingPage = location.pathname === "/";
   const isHomePage = location.pathname === "/home";
   const isExplorePage = location.pathname === "/explore";
+  const isInfoPage = location.pathname === "/about-us" || location.pathname === "/contact";
+  const isDestinationDetailPage = /^\/destinations\/[^/]+$/.test(location.pathname);
   const isAuthPage = location.pathname === "/login" || location.pathname === "/signup";
   const isPaymentFlowPage = location.pathname === "/checkout" || location.pathname === "/payment/success";
   const isFocusedPage = /^\/(destinations|booking)\/[^/]+$/.test(location.pathname);
+  const navigationItems = isHomePage
+    ? [
+      { label: "Jelajah", href: "/explore" },
+      { label: "About Us", href: "/about-us" },
+      { label: "Contact", href: "/contact" },
+    ] as const
+    : [];
 
   useEffect(() => {
     const onScroll = () => setHasScrolled(window.scrollY > 32);
@@ -29,20 +34,35 @@ export function AppShell() {
   }, []);
 
   useEffect(() => {
-    if (location.pathname !== "/" || !location.hash) return;
+    if (!["/home", "/explore", "/about-us", "/contact"].includes(location.pathname)) return;
+    if (location.hash) return;
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  }, [location.pathname]);
+
+  useEffect(() => {
+    if (location.pathname !== "/home" || !location.hash) return;
 
     const sectionId = decodeURIComponent(location.hash.slice(1));
-    const frame = window.requestAnimationFrame(() => {
-      document.getElementById(sectionId)?.scrollIntoView({
+    let frame = 0;
+    let attempts = 0;
+    const scrollWhenReady = () => {
+      const section = document.getElementById(sectionId);
+      if (!section && attempts < 10) {
+        attempts += 1;
+        frame = window.requestAnimationFrame(scrollWhenReady);
+        return;
+      }
+      section?.scrollIntoView({
         behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
         block: "start",
       });
-    });
+    };
+    frame = window.requestAnimationFrame(scrollWhenReady);
 
     return () => window.cancelAnimationFrame(frame);
   }, [location.hash, location.pathname]);
 
-  const sectionHref = (href: string) => href.startsWith("/") ? href : isLandingPage ? href : `/${href}`;
+  const sectionHref = (href: string) => href;
   const scrollToSection = (sectionId: string) => {
     document.getElementById(sectionId)?.scrollIntoView({
       behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
@@ -53,46 +73,56 @@ export function AppShell() {
     if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
 
     event.preventDefault();
+    if (!href.includes("#")) {
+      navigate(href);
+      return;
+    }
     const sectionId = href.slice(href.indexOf("#") + 1);
-    if (isLandingPage && location.hash === `#${sectionId}`) {
+    if (isHomePage) {
+      window.history.replaceState(null, "", href);
       scrollToSection(sectionId);
       return;
     }
     navigate(href);
   };
+  const handleHomeLogoClick = (event: MouseEvent<HTMLAnchorElement>) => {
+    if (!isHomePage || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
+    window.history.replaceState(null, "", "/home");
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",
+    });
+  };
 
   return (
-    <div className={`${isLandingPage ? "landing-page-shell h-dvh overflow-clip" : isHomePage ? "homepage-shell h-dvh overflow-clip" : "min-h-screen"} bg-cream text-charcoal`}>
+    <div className={`${isLandingPage ? "landing-page-shell h-dvh overflow-clip" : isHomePage ? "homepage-shell h-dvh overflow-hidden flex flex-col" : "min-h-screen flex flex-col"} bg-cream text-charcoal`}>
       <a className="skip-link" href={isAuthPage ? "#auth-main" : "#konten-utama"}>
         Lewati navigasi
       </a>
       {isLandingPage ? (
-        <header className="site-navbar site-navbar-floating z-20">
-          <nav aria-label="Navigasi Landing Page" className="site-navbar-inner mx-auto grid w-full max-w-none grid-cols-[1fr_auto] items-center gap-3 px-3 py-2.5 sm:px-5 sm:py-3">
+        <header className="site-navbar site-navbar-floating site-navbar-hoverable z-20">
+          <nav aria-label="Identitas Seven Summit Rinjani" className="site-navbar-inner mx-auto flex w-full max-w-none items-center px-3 py-2.5 sm:px-5 sm:py-3">
             <Link aria-label="Seven Summit Rinjani, Landing Page" className="site-brand-link" to="/">
-              <img alt="Seven Summit Rinjani" className="site-brand-logo" src={assetPaths.logoLight} />
-            </Link>
-            <Link className="inline-flex min-h-10 items-center justify-center rounded-full border border-white/65 bg-white/15 px-5 text-sm font-semibold text-white shadow-sm backdrop-blur transition hover:bg-white/25 focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-white" to="/login">
-              Login
+              <img alt="Seven Summit Rinjani" className="site-brand-logo site-brand-logo-light" src={assetPaths.logoLight} />
+              <img aria-hidden="true" className="site-brand-logo site-brand-logo-dark" src={assetPaths.logoDark} />
             </Link>
           </nav>
         </header>
       ) : null}
-      {!isAuthPage && !isFocusedPage && !isPaymentFlowPage && !isLandingPage && !isExplorePage ? <header className={`site-navbar z-20 ${isHomePage ? `site-navbar-floating ${hasScrolled ? "site-navbar-scrolled" : ""}` : "relative border-b border-forest/10 bg-cream/95 text-forest backdrop-blur"}`}>
+      {!isAuthPage && !isFocusedPage && !isPaymentFlowPage && !isLandingPage ? <header className={`site-navbar z-20 ${isHomePage ? `site-navbar-floating site-navbar-hoverable ${hasScrolled ? "site-navbar-scrolled" : ""}` : isExplorePage || isInfoPage ? "site-navbar-hoverable site-navbar-scrolled relative border-b border-forest/10 bg-cream/95 text-forest backdrop-blur" : "relative border-b border-forest/10 bg-cream/95 text-forest backdrop-blur"}`}>
         <nav
           aria-label="Navigasi utama"
           className={`site-navbar-inner mx-auto grid w-full grid-cols-[1fr_auto] items-center gap-3 ${isHomePage ? "max-w-none px-3 py-2.5 sm:px-5 sm:py-3" : "max-w-384 px-5 py-4 sm:px-8 lg:px-12"}`}
         >
-          <Link aria-label="Seven Summit Rinjani, ke Homepage" className="site-brand-link" to="/home">
-            <img
-              alt="Seven Summit Rinjani"
-              className="site-brand-logo"
-              src={isHomePage && !hasScrolled ? assetPaths.logoLight : assetPaths.logoDark}
-            />
+          <Link aria-label="Seven Summit Rinjani, ke Homepage" className="site-brand-link" onClick={handleHomeLogoClick} to="/home">
+            <img alt="Seven Summit Rinjani" className="site-brand-logo site-brand-logo-light" src={assetPaths.logoLight} />
+            <img aria-hidden="true" className="site-brand-logo site-brand-logo-dark" src={assetPaths.logoDark} />
           </Link>
-          <div className="site-navbar-links hidden items-center justify-center gap-1 md:flex">
+          <div className={`site-navbar-links hidden items-center justify-center gap-1 ${isHomePage ? "md:flex" : ""}`}>
             {navigationItems.map((item) => (
-              <Link className="navbar-link" onClick={(event) => handleSectionNavigation(event, sectionHref(item.href))} to={sectionHref(item.href)} key={item.href}>
+              <Link aria-current={item.href === "/explore" && isExplorePage ? "page" : undefined} className="navbar-link navbar-cta-link" onClick={(event) => handleSectionNavigation(event, sectionHref(item.href))} to={sectionHref(item.href)} key={item.href}>
                 {item.label}
               </Link>
             ))}
@@ -130,7 +160,7 @@ export function AppShell() {
               <div className="navbar-menu-popover">
                 <p className="navbar-menu-title">Seven Summit Rinjani</p>
                 {navigationItems.map((item) => (
-                  <Link onClick={(event) => handleSectionNavigation(event, sectionHref(item.href))} to={sectionHref(item.href)} key={item.href}>{item.label}</Link>
+                  <Link className="navbar-cta-link" onClick={(event) => handleSectionNavigation(event, sectionHref(item.href))} to={sectionHref(item.href)} key={item.href}>{item.label}</Link>
                 ))}
                 <NavLink to="/login">Masuk</NavLink>
               </div>
@@ -139,11 +169,10 @@ export function AppShell() {
         </nav>
       </header> : null}
       {isFocusedPage ? <div className="focused-route-header"><Link aria-label="Kembali ke Jelajah" className="focused-route-back" to="/explore"><span aria-hidden="true">←</span> Kembali ke Jelajah</Link></div> : null}
-      {isExplorePage ? <div className="focused-route-header"><button aria-label="Kembali ke Homepage" className="focused-route-back" onClick={() => navigate("/home")} type="button"><span aria-hidden="true">←</span> Kembali</button></div> : null}
-      <main id={isAuthPage ? "auth-main" : "konten-utama"}>
+      <main className={!isLandingPage ? `flex flex-1 flex-col ${isHomePage ? "min-h-0" : ""}` : undefined} id={isAuthPage ? "auth-main" : "konten-utama"}>
         <Outlet />
       </main>
-      {!isLandingPage ? <BackgroundMusic src={assetPaths.backgroundMusic} /> : null}
+      {!isLandingPage ? <BackgroundMusic isSuppressed={isDestinationDetailPage} src={assetPaths.backgroundMusic} /> : null}
     </div>
   );
 }
