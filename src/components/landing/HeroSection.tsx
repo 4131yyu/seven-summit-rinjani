@@ -3,10 +3,10 @@ import { HeroMedia } from "./HeroMedia";
 
 export function HeroSection() {
   return (
-    <section aria-labelledby="landing-hero-title" className="homepage-hero relative isolate flex h-dvh min-h-0 items-center overflow-hidden bg-charcoal px-6 py-24 text-white sm:px-8 lg:px-12">
+    <section aria-labelledby="landing-hero-title" className="homepage-hero relative isolate flex h-dvh min-h-0 items-center overflow-hidden bg-charcoal px-4 py-24 text-white sm:px-6 lg:px-8">
       <HeroMedia posterSrc={assetPaths.heroPoster} videoSrc={assetPaths.landingHeroVideo} />
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-linear-to-r from-charcoal/35 via-charcoal/15 to-transparent" />
-      <div className="relative z-10 mx-auto w-full max-w-7xl">
+      <div className="relative z-10 mx-0 w-full max-w-7xl">
         <div className="max-w-2xl">
           <p className="inline-flex rounded-full border border-white/20 bg-charcoal/30 px-4 py-2 text-xs font-semibold text-white shadow-sm backdrop-blur-sm sm:text-sm">
             Your Home Above the Clouds
