@@ -2,6 +2,8 @@ import { createBrowserRouter } from "react-router";
 
 import { AppShell } from "./components/layout/AppShell";
 import { LandingPage } from "./pages/LandingPage";
+import { HomePage } from "./pages/HomePage";
+import { ExplorePage } from "./pages/ExplorePage";
 import { LoginPage } from "./pages/LoginPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import { RoutePlaceholderPage } from "./pages/RoutePlaceholderPage";
@@ -16,6 +18,8 @@ export const router = createBrowserRouter([
     Component: AppShell,
     children: [
       { index: true, Component: LandingPage },
+      { path: "home", Component: HomePage },
+      { path: "explore", Component: ExplorePage },
       {
         path: "login",
         Component: LoginPage,
