@@ -1378,11 +1378,9 @@ svg.auth-field-icon {
   }
 }
 
-/* Keep the carousel's own section at least as tall as the visible viewport.
-   The parent may grow with its content, but the following section never
-   participates in the carousel's background area. */
+/* Keep the Homepage carousel within one dynamic viewport. */
 .destination-carousel,
 .destination-carousel > #seven-summit {
-  min-height: 100vh;
-  min-height: 100dvh;
+  height: 100dvh;
+  min-height: 0;
 }

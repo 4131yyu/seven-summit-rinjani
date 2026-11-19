@@ -91,7 +91,7 @@ export function DestinationCarousel() {
     <section
       aria-label="Seven Summit Rinjani, pilihan destinasi"
       aria-roledescription="carousel"
-      className="destination-carousel relative isolate min-h-svh overflow-hidden bg-charcoal text-white"
+      className="destination-carousel relative isolate h-dvh min-h-0 overflow-hidden bg-charcoal text-white"
       onBlurCapture={(event) => {
         setHasFocus(event.currentTarget.contains(event.relatedTarget as Node | null));
       }}
@@ -151,7 +151,7 @@ export function DestinationCarousel() {
         <div className="destination-background-overlay absolute inset-0" />
       </div>
 
-      <div id="seven-summit" className="relative z-10 flex min-h-svh flex-col px-5 pb-7 pt-24 sm:px-9 sm:pb-10 sm:pt-28 lg:px-14 lg:pb-12 lg:pt-32">
+      <div id="seven-summit" className="relative z-10 flex h-full min-h-0 flex-col px-5 pb-7 pt-24 sm:px-9 sm:pb-10 sm:pt-28 lg:px-14 lg:pb-12 lg:pt-32">
         <header className="destination-copy-enter mx-auto w-full max-w-5xl text-center" key={activeDestination.id}>
           <p className="text-xs font-semibold tracking-[0.24em] text-white/85 uppercase sm:text-sm">Seven Summit Rinjani</p>
           <h1 className="mt-3 font-display text-3xl font-semibold leading-tight tracking-tight text-white drop-shadow-md sm:text-5xl lg:text-6xl">Where Will You Go Next?</h1>

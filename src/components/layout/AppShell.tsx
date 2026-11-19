@@ -62,7 +62,7 @@ export function AppShell() {
   };
 
   return (
-    <div className={`${isLandingPage ? "landing-page-shell h-dvh overflow-clip" : "min-h-screen"} bg-cream text-charcoal`}>
+    <div className={`${isLandingPage ? "landing-page-shell h-dvh overflow-clip" : isHomePage ? "homepage-shell h-dvh overflow-clip" : "min-h-screen"} bg-cream text-charcoal`}>
       <a className="skip-link" href={isAuthPage ? "#auth-main" : "#konten-utama"}>
         Lewati navigasi
       </a>
