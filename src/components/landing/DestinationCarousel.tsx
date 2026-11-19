@@ -3,7 +3,7 @@ import { Link } from "react-router";
 
 import { landingDestinations } from "../../data/landingDestinations";
 
-const AUTOPLAY_DELAY = 6500;
+const AUTOPLAY_DELAY = 1500;
 const FADE_DURATION = 800;
 
 export function DestinationCarousel() {
@@ -204,7 +204,7 @@ export function DestinationCarousel() {
             </div>
           </div>
 
-          <div aria-label={`Kartu pilihan, slide ${activeIndex + 1} dari ${landingDestinations.length}`} className="destination-card-stage mx-auto h-[15rem] w-full max-w-[30rem] touch-pan-y sm:h-[20rem] lg:h-[22rem]">
+          <div aria-label={`Kartu pilihan, slide ${activeIndex + 1} dari ${landingDestinations.length}`} className="destination-card-stage mx-auto w-full max-w-[30rem] touch-pan-y">
             {visibleCards.map(({ destination, index, offset }) => {
               const isActive = index === activeIndex;
               const positionClass = isActive ? "destination-card-active" : offset < 0 ? "destination-card-previous" : "destination-card-next";
