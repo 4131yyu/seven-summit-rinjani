@@ -34,7 +34,7 @@ export function AuthLayout({ children, title }: AuthLayoutProps) {
           poster={assetPaths.heroPoster}
           preload="metadata"
         >
-          <source src={assetPaths.heroVideo} type="video/mp4" />
+          <source src={assetPaths.authVideo} type="video/mp4" />
         </video>
       ) : null}
       <div aria-hidden="true" className="auth-background-overlay" />
