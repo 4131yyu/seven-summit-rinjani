@@ -7,4 +7,7 @@ dist/
 *.log
 
 # Large destination preview videos
+public/assets/videos/destinations/Video_ID/*.mp4
+public/assets/videos/destinations/Video_EN/*.mp4
 public/assets/videos/destinations/*.mp4
+public/assets/videos/bg_video/*.mp4
