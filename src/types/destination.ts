@@ -8,7 +8,7 @@ export type Destination = {
   location: string;
   backgroundImage: string;
   cardImage: string;
-  previewVideo?: string;
+  previewVideos?: { ID: string; EN: string };
   videoPoster?: string;
   mountainType?: string;
   temperature?: string;

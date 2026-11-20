@@ -9,8 +9,8 @@ export function DestinationDetailPage() {
   const { language, t } = useLanguage();
   const { slug } = useParams();
   const destination = destinations.find((item) => item.slug === slug);
-  const [videoFailed, setVideoFailed] = useState(false);
-  const [posterFailed, setPosterFailed] = useState(false);
+  const [videoFailureKey, setVideoFailureKey] = useState<string | null>(null);
+  const [posterFailureKey, setPosterFailureKey] = useState<string | null>(null);
 
   useLayoutEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
@@ -26,6 +26,10 @@ export function DestinationDetailPage() {
   }
 
   const displayDestination = localizeDestination(destination, language);
+  const previewVideo = destination.previewVideos?.[language];
+  const previewKey = `${destination.slug}-${language}`;
+  const videoFailed = videoFailureKey === previewKey;
+  const posterFailed = posterFailureKey === previewKey;
 
   return (
     <article className="destination-detail-page" aria-labelledby="destination-detail-title">
@@ -37,25 +41,26 @@ export function DestinationDetailPage() {
 
       <section className="destination-video-section" aria-label={`${t("detail.video")} ${destination.name}`}>
         <div className="destination-video-frame">
-          {!videoFailed && destination.previewVideo ? (
+          {!videoFailed && previewVideo ? (
             <video
               aria-label={`${t("detail.video")} ${destination.name}`}
               autoPlay
               controls
+              key={previewKey}
               loop
               muted={false}
               playsInline
               preload="metadata"
               poster={destination.videoPoster}
-              onError={() => setVideoFailed(true)}
+              onError={() => setVideoFailureKey(previewKey)}
             >
-              <source src={destination.previewVideo} type="video/mp4" />
+              <source src={previewVideo} type="video/mp4" />
               {t("detail.video.unsupported")}
             </video>
           ) : !posterFailed && destination.videoPoster ? (
             <img
               alt={`${t("detail.video")} ${destination.name}`}
-              onError={() => setPosterFailed(true)}
+              onError={() => setPosterFailureKey(previewKey)}
               src={destination.videoPoster}
             />
           ) : (

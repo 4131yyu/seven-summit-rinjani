@@ -5,8 +5,8 @@
 export const assetPaths = {
   logoLight: "/assets/images/logo/Logo-7-Summits.png",
   logoDark: "/assets/images/logo/Logo-7-Summits-BLACK.png",
-  landingHeroVideo: "/assets/videos/destinations/05-Anakdara.mp4",
-  authVideo: "/assets/videos/destinations/02-Sempana.mp4",
+  landingHeroVideo: "/assets/videos/bg_video/05-Anakdara.mp4",
+  authVideo: "/assets/videos/bg_video/02-Sempana.mp4",
   heroPoster: "/assets/images/hero/alternative_background.webp",
   backgroundMusic: encodeURI(
     "/audio/bg_music/Aylex-Geography.mp3",
@@ -49,13 +49,41 @@ export const assetPaths = {
     },
   ],
   destinationVideos: [
-    { id: "01", src: "/assets/videos/destinations/01-Rinjani.mp4" },
-    { id: "02", src: "/assets/videos/destinations/02-Sempana.mp4" },
-    { id: "03", src: "/assets/videos/destinations/03-Gedong.mp4" },
-    { id: "04", src: "/assets/videos/destinations/04-Kondo.mp4" },
-    { id: "05", src: "/assets/videos/destinations/05-Anakdara.mp4" },
-    { id: "06", src: "/assets/videos/destinations/06-Pergasingan.mp4" },
-    { id: "07", src: "/assets/videos/destinations/07-Baodaya.mp4" },
+    {
+      id: "01",
+      ID: "/assets/videos/destinations/Video_ID/01-Rinjani.mp4",
+      EN: "/assets/videos/destinations/Video_EN/01-Rinjani.mp4",
+    },
+    {
+      id: "02",
+      ID: "/assets/videos/destinations/Video_ID/02-Sempana.mp4",
+      EN: "/assets/videos/destinations/Video_EN/02-Sempana.mp4",
+    },
+    {
+      id: "03",
+      ID: "/assets/videos/destinations/Video_ID/03-gedong.mp4",
+      EN: "/assets/videos/destinations/Video_EN/03-Lembah-Gedong.mp4",
+    },
+    {
+      id: "04",
+      ID: "/assets/videos/destinations/Video_ID/04-kondo.mp4",
+      EN: "/assets/videos/destinations/Video_EN/04-Bukit-Kondo.mp4",
+    },
+    {
+      id: "05",
+      ID: "/assets/videos/destinations/Video_ID/05-Anakdara.mp4",
+      EN: "/assets/videos/destinations/Video_EN/05-Anakdara.mp4",
+    },
+    {
+      id: "06",
+      ID: "/assets/videos/destinations/Video_ID/06-pergasingan.mp4",
+      EN: "/assets/videos/destinations/Video_EN/06-Pergasingan.mp4",
+    },
+    {
+      id: "07",
+      ID: "/assets/videos/destinations/Video_ID/07-bao-daya.mp4",
+      EN: "/assets/videos/destinations/Video_EN/07-Baodaya.mp4",
+    },
   ],
   mascotFallback: "/assets/mascot/animations/mascot-fallback.webp",
   mascotRive: "/assets/mascot/animations/mascot-main.riv",

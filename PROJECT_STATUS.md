@@ -894,3 +894,16 @@ Do not rely solely on prior conversation history.
 
 - Centered the booking history page title within its max-width by centering the title element and its text.
 - Checks passed: npm.cmd run lint and git diff --check.
+
+### Destination detail videos by language
+
+- Replaced the destination detail preview video mapping with explicit Indonesian
+  and English file paths for all seven destinations. The active language now
+  selects the matching video, and changing destination or language remounts the
+  video element and resets its failure fallback state.
+- Changed `src/config/assets.ts`, `src/types/destination.ts`,
+  `src/data/destinations.ts`, `src/pages/DestinationDetailPage.tsx`, and this
+  status log. Existing `.gitignore` changes were left intact.
+- Checks passed: `npm.cmd run lint`, `npm.cmd run build`, and
+  `git diff --check`. Vite continues to report the existing bundle-size warning
+  above 500 kB. Confirmed all 14 destination video files exist and are nonempty.
