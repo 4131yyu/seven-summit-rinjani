@@ -9,11 +9,12 @@ import { NotFoundPage } from "./pages/NotFoundPage";
 import { RoutePlaceholderPage } from "./pages/RoutePlaceholderPage";
 import { SignupPage } from "./pages/SignupPage";
 import { DestinationDetailPage } from "./pages/DestinationDetailPage";
-import { BookingPage } from "./pages/BookingPage";
 import { CheckoutPage } from "./pages/CheckoutPage";
 import { PaymentSuccessPage } from "./pages/PaymentSuccessPage";
 import { AboutUsPage } from "./pages/AboutUsPage";
 import { ContactPage } from "./pages/ContactPage";
+import { BookingWizardPage } from "./pages/BookingWizardPage";
+import { BookingHistoryPage } from "./pages/BookingHistoryPage";
 
 export const router = createBrowserRouter([
   {
@@ -24,6 +25,7 @@ export const router = createBrowserRouter([
       { path: "explore", Component: ExplorePage },
       { path: "about-us", Component: AboutUsPage },
       { path: "contact", Component: ContactPage },
+      { path: "booking-history", Component: BookingHistoryPage },
       {
         path: "login",
         Component: LoginPage,
@@ -42,7 +44,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "booking/:slug",
-        Component: BookingPage,
+        Component: BookingWizardPage,
       },
       {
         path: "checkout",

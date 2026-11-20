@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
 import { HeroSection } from "../components/landing/HeroSection";
+import { useLanguage } from "../i18n/LanguageProvider";
 
 export function LandingPage() {
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const [isWelcomeVisible, setIsWelcomeVisible] = useState(false);
   const [isWelcomeLeaving, setIsWelcomeLeaving] = useState(false);
@@ -38,8 +40,8 @@ export function LandingPage() {
           className={`landing-welcome-overlay${isWelcomeLeaving ? " landing-welcome-leaving" : " landing-welcome-visible"}`}
         >
           <div className="landing-welcome-copy">
-            <p>Seven Summit Rinjani</p>
-            <h2>Selamat Datang</h2>
+            <p>{t("landing.brand")}</p>
+            <h2>{t("landing.welcome")}</h2>
           </div>
         </div>
       ) : null}

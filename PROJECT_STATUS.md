@@ -32,6 +32,9 @@ Added for the booking form: React Hook Form 7.92.0, Zod 4.6.7, and
 @hookform/resolvers 7.0.7. Other planned dependencies will only be added in
 the implementation phase that uses them.
 
+Anime.js 4.5.0 is used for visual transitions in the destination carousel and
+booking wizard; React continues to own navigation, form state, and flow logic.
+
 ## Phase Checklist
 
 - [x] Phase 1 — Project audit and architecture
@@ -166,13 +169,23 @@ The canonical asset guide is `docs/ASSETS_GUIDE.md`.
 
 ### Kondisi aktual halaman
 
-- `/` renders `HeroSection` with the existing `HeroMedia` and no navbar.
-  BackgroundMusic is not mounted on `/`. On entry, a “Selamat Datang” overlay
+- `/` renders `HeroSection` with the existing `HeroMedia` and navbar.
+  BackgroundMusic starts by attempting autoplay on entry; its toggle is hidden
+  on `/`, and the same audio instance remains mounted across the delayed
+  redirect to `/login`. If autoplay is blocked, the first pointer or keyboard
+  interaction retries playback. On entry, a “Selamat Datang” overlay
   appears over the blurred Hero video and fades out. After about 3.7 seconds,
   a blurred fade transition begins; `/` redirects to `/login` at about 4.4
   seconds without a welcome overlay on Login.
 - `/home` renders `HomePage`, which contains only the existing full-screen
   `DestinationCarousel`. Its supplied destination cards link to `/explore`.
+  The navbar bell opens `/booking-history` and displays the saved-entry count.
+- `/booking-history` lists successful demo payment summaries persisted in
+  browser `localStorage`; each entry can expand to show booking and payment
+  details. Records are validated and deduplicated by reference. They are local
+  to the browser and are not server-backed or official reservation evidence.
+  Its navbar forces the black logo variant for contrast against the cream
+  background.
 - `/about-us` renders the About Us page with its Explore CTA and a shared footer
   containing only the brand logo and copyright. `/contact` renders the demo
   contact form with the same footer. Homepage navbar links navigate to these
@@ -218,6 +231,10 @@ Phase 2 provides a working React/Vite/TypeScript application foundation:
 
 ## Known Issues
 
+- Booking history is stored only in this browser's `localStorage`; it is not
+  linked to an account or synchronized to a server/device.
+- Background music autoplay depends on browser policy; if blocked until user
+  interaction, playback retries on the first pointer or keyboard input.
 - Most destination details are owner-provided and still require verification.
   Rinjani's minimum two-day trekking duration follows TNGR guidance; its
   difficulty badge is a demo label requested by the owner.
@@ -253,11 +270,51 @@ Do not rely solely on prior conversation history.
 
 ## Latest Work Log
 
+- Booking-history navbar logo: the `/booking-history` route now displays the
+  black logo variant at all times to match its light navbar background. Other
+  routes retain their existing logo behavior. Checks passed: `npm.cmd run
+  lint` and `git diff --check`.
+
+- Booking history: successful confirmations from both the booking wizard and
+  legacy checkout now append validated summaries to browser `localStorage`,
+  deduplicated by payment reference. Added `/booking-history` with expandable
+  booking/payment details and an empty state. The Homepage navbar bell links to
+  the page and shows the number of saved entries; same-tab and cross-tab updates
+  refresh the count. Returning from payment success clears checkout session
+  data only; the history persists. UI labels the records as simulated.
+- Booking-history files changed: `src/data/demoPayment.ts`,
+  `src/pages/BookingHistoryPage.tsx`, `src/pages/CheckoutPage.tsx`,
+  `src/pages/BookingWizardPage.tsx`, `src/components/layout/AppShell.tsx`,
+  `src/router.tsx`, `src/styles/index.css`, and `PROJECT_STATUS.md`.
+- Booking-history checks passed: `npm.cmd run lint`, `npm.cmd run build`, and
+  `git diff --check`. Build still reports the existing JavaScript bundle-size
+  warning (589.16 kB over the 500 kB threshold). Browser interaction checks
+  remain pending.
+
+- Anime.js visual transitions: the carousel background, destination copy, and
+  active-card image now animate through Anime.js. All card areas retain their
+  existing `/explore` links and show a visible “Lihat semua destinasi” cue.
+  The booking wizard panel and active progress marker also use Anime.js;
+  route logic, form values, and step flow remain React-controlled. Animations
+  are skipped for `prefers-reduced-motion`, and Anime scopes are reverted when
+  dependencies change or components unmount. CSS keyframe animations that
+  previously targeted carousel backgrounds and copy were removed to avoid
+  competing animation systems.
+- Anime.js files changed: `package.json`, `package-lock.json`,
+  `src/components/landing/DestinationCarousel.tsx`,
+  `src/components/layout/BookingProgressHeader.tsx`,
+  `src/pages/BookingWizardPage.tsx`, `src/styles/index.css`, and
+  `PROJECT_STATUS.md`.
+- Anime.js checks passed: `npm.cmd run lint`, `npm.cmd run build`, and
+  `git diff --check`. Vite reports a 581.91 kB JavaScript chunk, above its
+  configured 500 kB warning threshold; browser visual checks remain pending.
+
 - Landing Page and route separation: `/` now renders a video-only hero with the
   logo and Login action supplied by the route-specific AppShell navbar. Hero
-  media uses the centralized hero video path and poster fallback; background
-  music is not mounted on `/`. The existing glass navbar and background music
-  remain on `/home` with the Carousel.
+  media uses the centralized hero video path and poster fallback. Background
+  music is attempted on `/`, without its toggle visible there, and continues
+  through the redirect to Login; the music control remains on `/home` with the
+  Carousel.
 - Added `/home` for the existing DestinationCarousel and `/explore` for the
   existing Explore UI. Carousel cards navigate to `/explore` without passing
   destination identity. Explore is rendered without Transition, About,
@@ -445,6 +502,60 @@ Do not rely solely on prior conversation history.
   only when supplied. No routes, page sections, or dependencies were added.
 
 ## Last Handoff
+
+- Booking readability and payment-method details: increased wizard, invoice,
+  payment-option, and payment-success typography with responsive sizes. Removed
+  the notice above the payment method list. Selecting bank transfer reveals a
+  visibly fake `DEMO-VA` reference; selecting QRIS reveals a labeled,
+  non-scannable QR-style illustration with no payment data; selecting e-wallet
+  shows a masked demo number instead of collecting the user's real wallet
+  phone number. Removed the redundant side summary card from Payment Success;
+  the invoice content remains the source of trip and payment details.
+- Files changed: `src/pages/BookingWizardPage.tsx`,
+  `src/pages/PaymentSuccessPage.tsx`, `src/styles/index.css`, and
+  `PROJECT_STATUS.md`.
+- Checks passed: `npm.cmd run lint`, `npm.cmd run build`, and
+  `git diff --check`. Build output is 543.66 kB with Vite's chunk-size warning.
+- Next action: visually review payment-method details, enlarged text, and the
+  success invoice at desktop, tablet, and mobile widths.
+
+- Booking wizard visual refinements: the progress header now spans the full
+  viewport with content inset from both edges. Form panels are wider and taller
+  across stages, and the side summary uses the prior image/title/description
+  card style while retaining current package and demo price details. Payment
+  confirmation now appears as a focused dialog over the blurred payment stage
+  for 3.6 seconds before navigating to the completion page. The completion page
+  shows step 5 progress and a side summary. Both success return actions now go
+  to `/home` and say “Kembali ke Homepage”.
+- Files changed: new `src/components/layout/BookingProgressHeader.tsx`,
+  `src/pages/BookingWizardPage.tsx`, `src/pages/PaymentSuccessPage.tsx`,
+  `src/styles/index.css`, and `PROJECT_STATUS.md`.
+- Checks passed: `npm.cmd run lint`, `npm.cmd run build`, and
+  `git diff --check`. Build output is 543.33 kB with Vite's chunk-size warning.
+- Known issue: visual review at desktop and mobile sizes remains outstanding.
+- Next action: inspect all wizard stages, the blurred success dialog, and the
+  completion page in a browser at desktop and mobile widths.
+
+- Booking flow redesign from `docs/references/pesan-izin-&-guide-01.jpeg` to
+  `-05.jpeg`: `/booking/:slug` now uses five stages—Paket & Jadwal, Data
+  Pendaki, Invoice, Pembayaran, and Selesai—with a destination/price summary.
+  Participant count controls the number of optional member data forms. Invoice
+  and payment choices are demo-only and do not show real bank credentials or
+  process a transaction. The success animation remains and redirects to
+  `/payment/success` after 3.6 seconds, with an immediate continue button.
+- Files changed: new `src/pages/BookingWizardPage.tsx`,
+  `src/components/layout/AppShell.tsx`, `src/data/demoPayment.ts`,
+  `src/pages/CheckoutPage.tsx`, `src/pages/PaymentSuccessPage.tsx`,
+  `src/router.tsx`, `src/styles/index.css`, and `PROJECT_STATUS.md`. Existing
+  `BookingPage.tsx` remains in the repository but is no longer used by the
+  booking route.
+- Checks passed: `npm.cmd run lint`, `npm.cmd run build`, and
+  `git diff --check`. Build output is 540.86 kB with Vite's chunk-size warning.
+- Known limitation: package options and demo prices use only existing
+  destination duration data and illustrative rates; no real availability,
+  permit, or payment information is integrated.
+- Next action: visually review all five booking stages at desktop and mobile
+  sizes, including the participant-count form behavior and success delay.
 
 - Homepage viewport height follow-up: `/home` shell is constrained to the
   dynamic viewport height with overflow clipped, and its main area may shrink
@@ -702,3 +813,84 @@ Do not rely solely on prior conversation history.
 - Next action: visually review Landing Page, Homepage Carousel, and Explore
   at desktop, tablet, and mobile sizes, then continue remaining mascot and
   final responsive/accessibility work.
+
+## Latest Work Log
+
+### Bahasa Indonesia / English toggle
+
+- Added shared `LanguageProvider` state with `ID` and `EN`, persisted in
+  `localStorage`; it sets the document language and formats dates, numbers,
+  and IDR amounts using the selected locale.
+- Added a central bilingual dictionary and English destination copy. Integrated
+  translations in the navbar, Landing Page, carousel, About/Contact, auth
+  pages, Explore filters/cards, destination details, booking progress and
+  wizard, checkout, payment success, booking history, and 404 page.
+- The toggle remains in the shared navbar. Focused flows that hide the navbar
+  use the saved language across routes and reloads.
+- Language implementation files include `src/i18n/`, `src/main.tsx`, shared
+  layout/auth/landing components, `src/pages/`, and
+  `src/components/layout/BookingProgressHeader.tsx`.
+
+### Follow-up: mixed-language labels and buttons
+
+- Corrected the navbar About and Contact CTAs to `Tentang Kami` and `Kontak`
+  in Indonesian, and `About Us` and `Contact` in English.
+- Connected the remaining visible CTA and button labels in authentication,
+  destination exploration, booking, payment selection, invoices, checkout,
+  success, and booking history to the translation dictionary.
+- Localized destination descriptions, hiking durations, image alt text,
+  simulated status, payment method names, date formats, and elevation units.
+  Proper destination names and user-entered values remain unchanged.
+- Latest checks passed: `npm.cmd run lint`, `npm.cmd run build`, and
+  `git diff --check`. Vite continues to report a JavaScript bundle above
+  500 kB.
+- Next action: visually review both languages on desktop and mobile.
+
+### Language toggle on Login and Signup
+
+- Added an `ID | EN` selector to the brand row inside the form panel on Login
+  and Signup. It stays within the panel and does not overlap the hero image.
+- The selector uses the shared language setting and browser persistence. Login
+  and Signup validation/social notices are now rendered from translation keys so
+  they update immediately when the language changes.
+- Changed `AuthLanguageToggle.tsx`, `LoginPage.tsx`, `SignupPage.tsx`,
+  `translations.ts`, and auth-specific styles in `src/styles/index.css`.
+- Checks passed: `npm.cmd run lint`, `npm.cmd run build`, and
+  `git diff --check`. The production build still reports the existing bundle
+  size warning above 500 kB.
+
+### Popup kebijakan Login and Signup
+
+- Replaced the inline policy links with an accessible dialog trigger on both
+  auth forms. The dialog explains the privacy policy and terms of use in both
+  Indonesian and English, matching the selected site language.
+- The popup closes from its Close button, Escape key, or clicking the backdrop;
+  it locks background scrolling and returns focus to the trigger when closed.
+  Rendering through a portal keeps it above the clipped auth panel and hero.
+- Changed `AuthPolicyDialog.tsx`, `LoginPage.tsx`, `SignupPage.tsx`,
+  `translations.ts`, auth-specific styles in `src/styles/index.css`, and this
+  status log.
+- Checks passed: `npm.cmd run lint`, `npm.cmd run build`, and
+  `git diff --check`. Vite continues to report the existing bundle-size warning
+  above 500 kB.
+
+### English locale clarification
+
+- Confirmed the existing English copy uses U.S. spelling; no British spellings
+  were found in the translation dictionary or auth screens. The English locale
+  already formats dates and numbers using `en-US`.
+- Set the document language to `en-US` while English is selected and made the
+  auth toggle's English option identify itself as `English (United States)`.
+- Checks passed: `npm.cmd run lint`, `npm.cmd run build`, and
+  `git diff --check`. The build still reports the bundle-size warning above
+  500 kB.
+
+### Navbar English flag
+
+- Updated the navbar language toggle to show the United States flag for English; Indonesian still shows the Indonesia flag.
+- Checks passed: `npm.cmd run lint` and `git diff --check`.
+
+### Booking history title alignment
+
+- Centered the booking history page title within its max-width by centering the title element and its text.
+- Checks passed: npm.cmd run lint and git diff --check.

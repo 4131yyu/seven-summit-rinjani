@@ -3,6 +3,8 @@ import { Link } from "react-router";
 
 import { assetPaths } from "../../config/assets";
 import { destinations } from "../../data/destinations";
+import { useLanguage } from "../../i18n/LanguageProvider";
+import { localizeDestination } from "../../i18n/destinationTranslations";
 
 const difficultyOptions = ["Pemula", "Menengah", "Ekstrem"] as const;
 const durationOptions = ["Day Hike/Tektok", "Camping 2H1M", "Ekspedisi"] as const;
@@ -22,13 +24,13 @@ function matchesDifficulty(difficulty: string | undefined, category: string) {
   return value.includes("ekstrem");
 }
 
-function shortDifficultyLabel(difficulty: string | undefined) {
-  if (!difficulty) return "Info menyusul";
-  const value = difficulty.toLocaleLowerCase("id");
-  if (value.includes("ekstrem")) return "Ekstrem";
-  if (value.includes("mudah") && value.includes("menengah")) return "Mudah–menengah";
-  if (value.includes("mudah")) return "Pemula";
-  return "Menengah";
+function shortDifficultyLabel(difficulty: string | undefined, language: "ID" | "EN", t: ReturnType<typeof useLanguage>["t"]) {
+  if (!difficulty) return t("explore.infoSoon");
+  const value = difficulty.toLocaleLowerCase(language === "ID" ? "id" : "en");
+  if (value.includes("ekstrem") || value.includes("extreme")) return t("explore.difficulty.extreme");
+  if ((value.includes("mudah") || value.includes("easy")) && (value.includes("menengah") || value.includes("moderate"))) return t("explore.difficulty.easyMedium");
+  if (value.includes("mudah") || value.includes("easy")) return t("explore.difficulty.beginner");
+  return t("explore.difficulty.medium");
 }
 
 function matchesDuration(duration: string | undefined, category: string) {
@@ -55,6 +57,7 @@ type HomepageSectionsProps = {
 };
 
 export function HomepageSections({ aboutAndFooterOnly = false, exploreOnly = false }: HomepageSectionsProps) {
+  const { language, t, formatNumber } = useLanguage();
   const [query, setQuery] = useState("");
   const [selectedDifficulties, setSelectedDifficulties] = useState<string[]>([]);
   const [selectedDurations, setSelectedDurations] = useState<string[]>([]);
@@ -70,8 +73,10 @@ export function HomepageSections({ aboutAndFooterOnly = false, exploreOnly = fal
 
   const filteredDestinations = useMemo(() => destinations.filter((destination) => {
     const trailStatus = demoTrailStatuses[destination.slug];
-    const searchable = `${destination.name} ${destination.shortDescription} ${destination.location} ${destination.altitude} ${destination.difficulty ?? ""} ${destination.estimatedDuration ?? ""} ${trailStatus}`.toLocaleLowerCase("id");
-    if (query.trim() && !searchable.includes(query.trim().toLocaleLowerCase("id"))) return false;
+    const localized = localizeDestination(destination, language);
+    const visibleStatus = language === "EN" ? (trailStatus === "Buka" ? "Open" : "Closed") : trailStatus;
+    const searchable = `${destination.name} ${localized.shortDescription} ${localized.location} ${destination.altitude} ${localized.difficulty ?? ""} ${localized.estimatedDuration ?? ""} ${visibleStatus}`.toLocaleLowerCase(language === "ID" ? "id" : "en");
+    if (query.trim() && !searchable.includes(query.trim().toLocaleLowerCase(language === "ID" ? "id" : "en"))) return false;
     const altitude = altitudeValue(destination.altitude);
     if (altitude !== null && (altitude < minimumAltitude || altitude > maximumAltitude)) return false;
     if (selectedDifficulties.length && !selectedDifficulties.some((item) => matchesDifficulty(destination.difficulty, item))) return false;
@@ -81,7 +86,7 @@ export function HomepageSections({ aboutAndFooterOnly = false, exploreOnly = fal
     if (recommendation === "Pemula" && !matchesDifficulty(destination.difficulty, "Pemula")) return false;
     if (recommendation === "Tantangan" && !/(menengah|menantang|curam|ekstrem)/.test(destination.difficulty?.toLocaleLowerCase("id") ?? "")) return false;
     return true;
-  }), [demoTrailStatuses, highestAltitudeIds, maximumAltitude, minimumAltitude, query, recommendation, selectedDifficulties, selectedDurations, selectedTrailStatuses]);
+  }), [demoTrailStatuses, highestAltitudeIds, language, maximumAltitude, minimumAltitude, query, recommendation, selectedDifficulties, selectedDurations, selectedTrailStatuses]);
 
   const toggleSelection = (value: string, selection: string[], update: (next: string[]) => void) => {
     update(selection.includes(value) ? selection.filter((item) => item !== value) : [...selection, value]);
@@ -92,10 +97,10 @@ export function HomepageSections({ aboutAndFooterOnly = false, exploreOnly = fal
       {!exploreOnly ? <section className="transition-section relative overflow-hidden bg-forest px-6 py-20 text-cream sm:px-10 sm:py-28">
         <div aria-hidden="true" className="transition-contour" />
         <div className="relative mx-auto max-w-6xl">
-          <p className="section-kicker text-terracotta">Langkah berikutnya</p>
+          <p className="section-kicker text-terracotta">{t("explore.next")}</p>
           <div className="mt-4 grid gap-8 md:grid-cols-[1fr_auto] md:items-end">
-            <div><h2 className="font-display text-3xl font-semibold leading-tight sm:text-5xl">Perjalananmu dimulai dari rasa ingin tahu</h2><p className="mt-4 max-w-2xl text-sm leading-7 text-cream/80 sm:text-base">Jelajahi pilihan puncak, kenali informasi yang tersedia, lalu tentukan tujuan yang ingin kamu kenal lebih jauh.</p></div>
-            <Link className="inline-flex min-h-12 items-center justify-center rounded-full bg-terracotta px-6 font-semibold text-white transition hover:bg-terracotta/90 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white" to="/explore">Mulai Jelajah <span aria-hidden="true" className="ml-2">↓</span></Link>
+            <div><h2 className="font-display text-3xl font-semibold leading-tight sm:text-5xl">{t("explore.nextHeading")}</h2><p className="mt-4 max-w-2xl text-sm leading-7 text-cream/80 sm:text-base">{t("explore.nextCopy")}</p></div>
+            <Link className="inline-flex min-h-12 items-center justify-center rounded-full bg-terracotta px-6 font-semibold text-white transition hover:bg-terracotta/90 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white" to="/explore">{t("explore.start")} <span aria-hidden="true" className="ml-2">↓</span></Link>
           </div>
         </div>
       </section> : null}
@@ -103,44 +108,45 @@ export function HomepageSections({ aboutAndFooterOnly = false, exploreOnly = fal
       {!aboutAndFooterOnly ? <section aria-labelledby="explore-title" className="explore-section scroll-mt-24 bg-[#f7f4eb] px-5 py-10 text-charcoal sm:px-8 sm:py-14 lg:px-12 lg:py-16" id="explore">
         <div className="mx-auto max-w-7xl">
           <div className="grid gap-5 lg:grid-cols-[1.25fr_0.75fr] lg:items-end">
-            <div><h2 className="font-sans text-3xl font-extrabold tracking-tight text-forest sm:text-5xl" id="explore-title">Jelajahi 7 Puncak Sembalun</h2><p className="mt-3 max-w-3xl text-sm leading-6 sm:text-base">Taklukkan 7 puncak ikonik di kawasan Sembalun, Lombok. Siapkan petualanganmu sekarang!</p></div>
-            <label className="explore-search"><span className="sr-only">Cari destinasi</span><input onChange={(event) => setQuery(event.target.value)} placeholder="Cari puncak, jalur, atau ketinggian..." type="search" value={query} /><span aria-hidden="true">⌕</span></label>
+            <div><h2 className="font-sans text-3xl font-extrabold tracking-tight text-forest sm:text-5xl" id="explore-title">{t("explore.heading")}</h2><p className="mt-3 max-w-3xl text-sm leading-6 sm:text-base">{t("explore.intro")}</p></div>
+            <label className="explore-search"><span className="sr-only">{t("explore.search.label")}</span><input onChange={(event) => setQuery(event.target.value)} placeholder={t("explore.search.placeholder")} type="search" value={query} /><span aria-hidden="true">⌕</span></label>
           </div>
           <div className="mt-4 flex flex-col gap-2 lg:ml-auto lg:w-[calc(75%-1.5rem)] lg:flex-row lg:items-center lg:justify-between">
-            <p className="text-sm">Quick rekomendasi saringan filter:</p>
-            <div aria-label="Quick rekomendasi saringan filter" className="flex flex-wrap gap-1.5">
-              {recommendations.map((item) => <button aria-pressed={recommendation === item} className={`rounded-full px-4 py-2 text-sm transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terracotta ${recommendation === item ? "bg-forest text-white" : "text-charcoal hover:bg-forest/10"}`} key={item} onClick={() => setRecommendation(item)} type="button">{item}</button>)}
+            <p className="text-sm">{t('explore.quick.label') + ':'}</p>
+            <div aria-label={t("explore.quick.label")} className="flex flex-wrap gap-1.5">
+              {recommendations.map((item) => <button aria-pressed={recommendation === item} className={`rounded-full px-4 py-2 text-sm transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terracotta ${recommendation === item ? "bg-forest text-white" : "text-charcoal hover:bg-forest/10"}`} key={item} onClick={() => setRecommendation(item)} type="button">{item === "Semua" ? t("explore.quick.all") : item === "Puncak tertinggi" ? t("explore.quick.highest") : item === "Pemula" ? t("explore.quick.beginner") : t("explore.quick.challenge")}</button>)}
             </div>
           </div>
           <div className="mt-5 grid gap-4 lg:grid-cols-[14rem_minmax(0,1fr)]">
-            <aside aria-label="Filter pencarian" className="explore-filters">
-              <h3 className="border-b border-forest/15 pb-3 text-lg font-bold">Filter Pencarian</h3>
-              <fieldset className="explore-filter-group"><legend>Tingkat Kesulitan</legend>{difficultyOptions.map((item) => <label key={item}><input checked={selectedDifficulties.includes(item)} onChange={() => toggleSelection(item, selectedDifficulties, setSelectedDifficulties)} type="checkbox" />{item}</label>)}</fieldset>
-              <fieldset className="explore-filter-group"><legend>Durasi Pendakian</legend>{durationOptions.map((item) => <label key={item}><input checked={selectedDurations.includes(item)} onChange={() => toggleSelection(item, selectedDurations, setSelectedDurations)} type="checkbox" />{item}</label>)}</fieldset>
-              <fieldset className="explore-filter-group"><legend>Ketinggian (mdpl)</legend><div className="explore-range-controls"><input aria-label="Ketinggian minimum" max={maximumAltitude - 100} min="1000" onChange={(event) => setMinimumAltitude(Number(event.target.value))} step="100" type="range" value={minimumAltitude} /><input aria-label="Ketinggian maksimum" max="4000" min={minimumAltitude + 100} onChange={(event) => setMaximumAltitude(Number(event.target.value))} step="100" type="range" value={maximumAltitude} /></div><div className="explore-range-labels"><span>{minimumAltitude.toLocaleString("id-ID")} mdpl</span><span>{maximumAltitude.toLocaleString("id-ID")} mdpl</span></div></fieldset>
-              <fieldset className="explore-filter-group"><legend>Status Jalur (demo)</legend>{trailStatusOptions.map((status) => <label key={status}><input checked={selectedTrailStatuses.includes(status)} onChange={() => toggleSelection(status, selectedTrailStatuses, setSelectedTrailStatuses)} type="checkbox" />{status}</label>)}<p>Status diacak untuk demo, bukan informasi operasional aktual.</p></fieldset>
+            <aside aria-label={t("explore.filter.search")} className="explore-filters">
+              <h3 className="border-b border-forest/15 pb-3 text-lg font-bold">{t('explore.filter.heading')}</h3>
+              <fieldset className="explore-filter-group"><legend>{t("explore.filter.difficulty")}</legend>{difficultyOptions.map((item) => <label key={item}><input checked={selectedDifficulties.includes(item)} onChange={() => toggleSelection(item, selectedDifficulties, setSelectedDifficulties)} type="checkbox" />{item === "Pemula" ? t("explore.quick.beginner") : item === "Menengah" ? t("explore.difficulty.medium") : t("explore.difficulty.extreme")}</label>)}</fieldset>
+              <fieldset className="explore-filter-group"><legend>{t("explore.filter.duration")}</legend>{durationOptions.map((item) => <label key={item}><input checked={selectedDurations.includes(item)} onChange={() => toggleSelection(item, selectedDurations, setSelectedDurations)} type="checkbox" />{item === "Day Hike/Tektok" ? t("explore.duration.dayHike") : item === "Camping 2H1M" ? t("explore.duration.camping") : t("explore.duration.expedition")}</label>)}</fieldset>
+              <fieldset className="explore-filter-group"><legend>{t("explore.filter.altitude")}</legend><div className="explore-range-controls"><input aria-label={t("explore.filter.minAltitude")} max={maximumAltitude - 100} min="1000" onChange={(event) => setMinimumAltitude(Number(event.target.value))} step="100" type="range" value={minimumAltitude} /><input aria-label={t("explore.filter.maxAltitude")} max="4000" min={minimumAltitude + 100} onChange={(event) => setMaximumAltitude(Number(event.target.value))} step="100" type="range" value={maximumAltitude} /></div><div className="explore-range-labels"><span>{formatNumber(minimumAltitude)} m a.s.l.</span><span>{formatNumber(maximumAltitude)} m a.s.l.</span></div></fieldset>
+              <fieldset className="explore-filter-group"><legend>{t("explore.filter.trail")}</legend>{trailStatusOptions.map((status) => <label key={status}><input checked={selectedTrailStatuses.includes(status)} onChange={() => toggleSelection(status, selectedTrailStatuses, setSelectedTrailStatuses)} type="checkbox" />{status === "Buka" ? t("explore.trail.open") : t("explore.trail.closed")}</label>)}<p>{t("explore.trail.note")}</p></fieldset>
             </aside>
             <div className="min-w-0">
-              <div className="mb-3 flex flex-wrap items-center justify-between gap-3"><h3 className="text-xl font-bold">Puncak Puncak</h3><span aria-live="polite" className="text-sm text-charcoal/65">{filteredDestinations.length} destinasi</span></div>
+              <div className="mb-3 flex flex-wrap items-center justify-between gap-3"><h3 className="text-xl font-bold">{t("explore.cards.heading")}</h3><span aria-live="polite" className="text-sm text-charcoal/65">{formatNumber(filteredDestinations.length)} {t("explore.destinationCount")}</span></div>
               <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
                 {filteredDestinations.map((destination) => {
                   const trailStatus = demoTrailStatuses[destination.slug];
+                  const displayDestination = localizeDestination(destination, language);
                   return <article className="explore-card" key={destination.id}>
-                  <div className="explore-card-image-wrap"><img alt={`Pemandangan ${destination.name}`} className="explore-card-image" loading="lazy" onError={(event) => { event.currentTarget.style.visibility = "hidden"; }} src={destination.cardImage} /></div>
+                  <div className="explore-card-image-wrap"><img alt={`${language === "ID" ? "Pemandangan" : "View of"} ${destination.name}`} className="explore-card-image" loading="lazy" onError={(event) => { event.currentTarget.style.visibility = "hidden"; }} src={destination.cardImage} /></div>
                   <div className="explore-card-content">
                     <h4 className="font-display text-lg font-semibold leading-tight text-charcoal">{destination.name}</h4>
                     <span className="explore-card-altitude">{destination.altitude}</span>
                     <div className="explore-card-labels">
-                      <span className={`difficulty-label difficulty-${matchesDifficulty(destination.difficulty, "Pemula") ? "beginner" : matchesDifficulty(destination.difficulty, "Ekstrem") ? "extreme" : "medium"}`}>{shortDifficultyLabel(destination.difficulty)}</span>
-                      <span className="duration-label">{destination.estimatedDurationLabel ?? "Estimasi menyusul"}</span>
-                      <span aria-label={`Status jalur simulasi: ${trailStatus}`} className={`trail-status-label ${trailStatus === "Buka" ? "trail-status-open" : "trail-status-closed"}`}>Jalur {trailStatus} · demo</span>
+                      <span className={`difficulty-label difficulty-${matchesDifficulty(destination.difficulty, "Pemula") ? "beginner" : matchesDifficulty(destination.difficulty, "Ekstrem") ? "extreme" : "medium"}`}>{shortDifficultyLabel(displayDestination.difficulty, language, t)}</span>
+                      <span className="duration-label">{displayDestination.estimatedDurationLabel ?? t("explore.estimatedSoon")}</span>
+                      <span aria-label={`${t("explore.trail.aria")}: ${trailStatus === "Buka" ? t("explore.trail.open") : t("explore.trail.closed")}`} className={`trail-status-label ${trailStatus === "Buka" ? "trail-status-open" : "trail-status-closed"}`}>{t("explore.trail.label")}: {trailStatus === "Buka" ? t("explore.trail.open") : t("explore.trail.closed")} · {t("explore.demo")}</span>
                     </div>
-                    <div className="explore-card-actions"><Link className="explore-detail-button" to={`/destinations/${destination.slug}`}>Lihat Detail</Link><Link className="explore-booking-button" to={`/booking/${destination.slug}`}>Pesan Izin / Guide</Link></div>
+                    <div className="explore-card-actions"><Link className="explore-detail-button" to={`/destinations/${destination.slug}`}>{t('explore.detail')}</Link><Link className="explore-booking-button" to={`/booking/${destination.slug}`}>{t('explore.book')}</Link></div>
                   </div>
                 </article>;
                 })}
               </div>
-              {filteredDestinations.length === 0 ? <p className="rounded-2xl border border-forest/15 bg-white p-8 text-center text-sm">Belum ada destinasi yang cocok. Coba kata pencarian atau filter lain.</p> : null}
+              {filteredDestinations.length === 0 ? <p className="rounded-2xl border border-forest/15 bg-white p-8 text-center text-sm">{t('explore.empty')}</p> : null}
             </div>
           </div>
         </div>

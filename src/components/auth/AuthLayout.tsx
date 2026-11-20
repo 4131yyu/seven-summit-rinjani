@@ -1,6 +1,7 @@
 import { useEffect, useState, type ReactNode } from "react";
 
 import { assetPaths } from "../../config/assets";
+import { useLanguage } from "../../i18n/LanguageProvider";
 
 type AuthLayoutProps = {
   children: ReactNode;
@@ -8,6 +9,7 @@ type AuthLayoutProps = {
 };
 
 export function AuthLayout({ children, title }: AuthLayoutProps) {
+  const { t } = useLanguage();
   const [videoFailed, setVideoFailed] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(() =>
     typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches,
@@ -42,7 +44,7 @@ export function AuthLayout({ children, title }: AuthLayoutProps) {
         <div aria-hidden="true" className="auth-paper-texture" />
         <div className="auth-form-content">{children}</div>
       </div>
-      <p className="auth-visual-title" aria-hidden="true">YOUR HOME ABOVE<br />THE CLOUDS</p>
+      <p className="auth-visual-title" aria-hidden="true">{t("auth.visual.title").split("\n").map((line, index) => <span className="block" key={index}>{line}</span>)}</p>
     </section>
   );
 }

@@ -1,3 +1,5 @@
+import { useLanguage } from "../../i18n/LanguageProvider";
+
 type AuthFieldIconProps = {
   kind: "email" | "password" | "username";
 };
@@ -35,9 +37,10 @@ type PasswordVisibilityButtonProps = {
 };
 
 export function PasswordVisibilityButton({ visible, onToggle }: PasswordVisibilityButtonProps) {
+  const { t } = useLanguage();
   return (
     <button
-      aria-label={visible ? "Sembunyikan password" : "Tampilkan password"}
+      aria-label={visible ? t("auth.password.hide") : t("auth.password.show")}
       aria-pressed={visible}
       className="auth-password-toggle"
       onClick={onToggle}

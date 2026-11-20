@@ -2,10 +2,11 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 type BackgroundMusicProps = {
   isSuppressed?: boolean;
+  showControls?: boolean;
   src: string;
 };
 
-export function BackgroundMusic({ isSuppressed = false, src }: BackgroundMusicProps) {
+export function BackgroundMusic({ isSuppressed = false, showControls = true, src }: BackgroundMusicProps) {
   const audioRef = useRef<HTMLAudioElement>(null);
   const hasAttemptedAutoplay = useRef(false);
   const wasSuppressed = useRef(false);
@@ -49,7 +50,16 @@ export function BackgroundMusic({ isSuppressed = false, src }: BackgroundMusicPr
     if (!hasAttemptedAutoplay.current) {
       hasAttemptedAutoplay.current = true;
       void playAudio(audio);
-      return;
+      const resumeAfterInteraction = () => {
+        if (!audio.paused || isSuppressedRef.current) return;
+        void playAudio(audio);
+      };
+      window.addEventListener("pointerdown", resumeAfterInteraction);
+      window.addEventListener("keydown", resumeAfterInteraction);
+      return () => {
+        window.removeEventListener("pointerdown", resumeAfterInteraction);
+        window.removeEventListener("keydown", resumeAfterInteraction);
+      };
     }
 
     if (wasSuppressed.current) {
@@ -74,11 +84,11 @@ export function BackgroundMusic({ isSuppressed = false, src }: BackgroundMusicPr
   };
 
   return (
-    <div className="fixed right-4 bottom-4 z-30 sm:right-6 sm:bottom-6">
+    <div className={showControls ? "fixed right-4 bottom-4 z-30 sm:right-6 sm:bottom-6" : "sr-only"}>
       <audio loop muted={isSuppressed} onEnded={() => setIsPlaying(false)} onError={() => setHasError(true)} preload="metadata" ref={audioRef}>
         <source src={src} type="audio/mpeg" />
       </audio>
-      <button
+      {showControls ? <button
         aria-describedby={hasError ? "background-music-error" : undefined}
         aria-pressed={isPlaying}
         aria-label={isSuppressed ? "Musik latar dijeda selama preview video" : isPlaying ? "Matikan musik latar" : "Nyalakan musik latar"}
@@ -90,8 +100,8 @@ export function BackgroundMusic({ isSuppressed = false, src }: BackgroundMusicPr
         <span aria-hidden="true" className="absolute inset-2 rounded-full border border-cream/35" />
         <span aria-hidden="true" className="absolute size-3 rounded-full bg-terracotta" />
         <span aria-hidden="true" className="relative text-lg leading-none">♫</span>
-      </button>
-      {hasError ? (
+      </button> : null}
+      {hasError && showControls ? (
         <p className="mt-2 max-w-56 rounded-xl bg-charcoal/90 px-3 py-2 text-xs leading-5 text-white" id="background-music-error">
           Musik latar tidak dapat diputar pada perangkat ini.
         </p>
