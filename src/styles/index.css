@@ -1928,3 +1928,123 @@ svg.auth-field-icon {
   .payment-success-details dt { font-size: 0.76rem; }
   .payment-success-details dd { font-size: 0.78rem; }
 }
+
+/* Responsive safeguards for compact screens, short viewports, and long labels. */
+@media (max-width: 767px) {
+  .site-navbar-links { display: none !important; }
+}
+
+@media (min-width: 761px) and (max-width: 1050px) {
+  .auth-panel { width: min(68%, 42rem); padding-right: clamp(2rem, 5vw, 3.5rem); padding-left: clamp(2rem, 5vw, 3.5rem); }
+}
+
+.auth-page { overflow-x: hidden; overflow-y: auto; }
+
+.destination-carousel > #seven-summit > div:nth-child(2) {
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.destination-carousel > #seven-summit > div:nth-child(2)::-webkit-scrollbar { display: none; }
+
+.destination-video-frame { max-height: 70vh; max-height: 70svh; }
+.about-image-wrap { aspect-ratio: 16 / 10; min-height: clamp(14rem, 34vw, 28rem); }
+
+@media (max-width: 639px) {
+  .destination-carousel > #seven-summit {
+    padding-top: clamp(5rem, 11svh, 6.5rem);
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+  .destination-carousel > #seven-summit > header h1 { font-size: clamp(1.5rem, 6vw, 2.15rem); }
+  .destination-carousel > #seven-summit > header p:last-child { font-size: 0.7rem; line-height: 1.4; }
+  .destination-carousel > #seven-summit > div:nth-child(2) { gap: 0.8rem; padding-top: 0.65rem; }
+  .destination-carousel > #seven-summit > div:nth-child(2) > div:first-child { flex-direction: column; align-items: stretch; gap: 0.65rem; }
+  .destination-selector-rail { width: 100%; min-height: 0; flex-direction: row; justify-content: center; gap: 0.75rem; padding: 0.25rem 0; }
+  .destination-selector-rail::before { top: 50%; right: 0; bottom: auto; left: 0; width: auto; height: 1px; transform: translateY(-50%); }
+  .destination-details { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.5rem; margin-top: 0.75rem; }
+  .destination-detail-item:first-child { grid-column: 1 / -1; }
+  .destination-card-stage { height: clamp(10rem, 25svh, 15rem); }
+  .destination-carousel > #seven-summit > footer { margin-top: 0.65rem; }
+  .destination-detail-page { padding: 5rem 1rem 3rem; }
+  .destination-video-section { margin-top: 1.5rem; }
+  .destination-video-frame { border-radius: 0.85rem; }
+  .destination-video-notice { right: 0.5rem; bottom: 0.5rem; left: 0.5rem; padding: 0.5rem 0.6rem; font-size: 0.72rem; }
+  .explore-card-actions button,.explore-card-actions a { font-size: 0.68rem; }
+}
+
+@media (max-height: 580px) and (min-width: 640px) {
+  .destination-carousel > #seven-summit { padding-top: 4.5rem; padding-bottom: 0.75rem; }
+  .destination-carousel > #seven-summit > header h1 { margin-top: 0.25rem; font-size: clamp(1.7rem, 4vw, 2.5rem); }
+  .destination-carousel > #seven-summit > header p:last-child { display: none; }
+  .destination-carousel > #seven-summit > div:nth-child(2) { grid-template-columns: minmax(0, 1fr) minmax(15rem, 0.8fr); gap: 1rem; padding-top: 0.5rem; }
+  .destination-carousel > #seven-summit > div:nth-child(2) > div:first-child { align-items: flex-start; gap: 0.75rem; }
+  .destination-selector-rail { min-height: 10rem; }
+  .destination-card-stage { height: clamp(10rem, 31svh, 13rem); }
+  .destination-carousel > #seven-summit > footer { margin-top: 0.5rem; }
+}
+
+@media (max-height: 500px) and (max-width: 639px) {
+  .destination-carousel > #seven-summit { padding-top: 4.5rem; padding-bottom: 0.5rem; }
+  .destination-carousel > #seven-summit > header h1 { margin-top: 0.2rem; font-size: 1.4rem; }
+  .destination-carousel > #seven-summit > header p:last-child { display: none; }
+  .destination-carousel > #seven-summit > div:nth-child(2) { grid-template-columns: minmax(0, 1fr) minmax(8rem, 0.75fr); grid-template-rows: minmax(0, 1fr); gap: 0.65rem; padding-top: 0.4rem; }
+  .destination-carousel > #seven-summit > div:nth-child(2) > div:first-child { min-width: 0; gap: 0.25rem; }
+  .destination-selector-rail,.destination-details { display: none; }
+  .destination-card-stage { height: clamp(8.5rem, 38svh, 11.5rem); }
+  .destination-carousel > #seven-summit > footer { margin-top: 0.35rem; }
+}
+
+@media (max-width: 900px) {
+  .booking-wizard-header { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 0.5rem; }
+  .booking-stepper { min-width: 0; gap: clamp(0.35rem, 1vw, 0.75rem); }
+  .booking-stepper-item small { display: none; }
+  .booking-stepper-current small { display: block; max-width: 7rem; white-space: normal; line-height: 1.2; }
+  .booking-wizard-layout { min-width: 0; }
+  .booking-wizard-summary dd,.booking-wizard-summary dt { min-width: 0; overflow-wrap: anywhere; }
+}
+
+@media (max-width: 700px) {
+  .booking-wizard-header { grid-template-areas: "title close" "steps steps"; grid-template-columns: minmax(0, 1fr) auto; row-gap: 0.45rem; }
+  .booking-wizard-title { grid-area: title; min-width: 0; }
+  .booking-close-link { grid-area: close; }
+  .booking-stepper { grid-area: steps; width: 100%; justify-content: space-between; overflow-x: auto; padding: 0.15rem 0.1rem; scrollbar-width: none; }
+  .booking-stepper::-webkit-scrollbar { display: none; }
+  .booking-stepper-item { flex: 0 0 auto; }
+  .booking-stepper-current small { max-width: min(36vw, 8rem); }
+  .booking-wizard-two-fields { grid-template-columns: minmax(0, 1fr); }
+  .booking-addon-row { align-items: flex-start; }
+  .booking-addon-row > div { min-width: 0; }
+  .booking-addon-row select { min-width: min(8.5rem, 42vw); }
+}
+
+@media (max-width: 700px) {
+  .booking-history-card-heading { align-items: flex-start; flex-wrap: wrap; }
+  .booking-history-destination { grid-template-columns: 3.75rem minmax(0, 1fr); gap: 0.65rem; }
+  .booking-history-destination > img { width: 3.75rem; height: 3.75rem; }
+  .booking-history-total { grid-column: 2; text-align: left; }
+  .booking-history-detail-grid { grid-template-columns: minmax(0, 1fr); gap: 0.7rem; }
+  .booking-history-detail-grid > section:last-child { grid-column: auto; }
+  .booking-history-detail-grid dl > div { align-items: flex-start; gap: 0.65rem; }
+  .booking-history-detail-grid dt,.booking-history-detail-grid dd { min-width: 0; overflow-wrap: anywhere; }
+}
+
+@media (max-width: 540px) {
+  .payment-success-card-top { align-items: flex-start; flex-wrap: wrap; }
+  .payment-success-details .payment-success-costs > div { grid-template-columns: minmax(0, 1fr) auto; gap: 0.5rem; }
+  .payment-success-details .payment-success-costs dd { white-space: normal; overflow-wrap: anywhere; }
+  .payment-success-details .payment-success-costs dt { min-width: 0; overflow-wrap: anywhere; }
+  .checkout-cost-lines > div { grid-template-columns: minmax(0, 1fr) auto; gap: 0.5rem; }
+  .checkout-cost-lines dt,.checkout-cost-lines dd { min-width: 0; overflow-wrap: anywhere; }
+  .checkout-grand-total dd { text-align: right; }
+}
+
+@media (max-width: 360px) {
+  .site-brand-logo { width: 5.75rem; }
+  .site-navbar-floating .site-navbar-inner { padding-right: 0.55rem; padding-left: 0.55rem; }
+  .site-navbar-actions { gap: 0; }
+  .navbar-icon-button,.navbar-language-button { min-width: 2.15rem; }
+  .navbar-language-button { gap: 0.2rem; padding-inline: 0.25rem; }
+  .navbar-separator { margin-inline: 0.1rem; }
+  .booking-stepper { gap: 0.35rem; }
+  .booking-stepper-item > span { width: 1.35rem; height: 1.35rem; }
+}

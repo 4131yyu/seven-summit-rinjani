@@ -907,3 +907,16 @@ Do not rely solely on prior conversation history.
 - Checks passed: `npm.cmd run lint`, `npm.cmd run build`, and
   `git diff --check`. Vite continues to report the existing bundle-size warning
   above 500 kB. Confirmed all 14 destination video files exist and are nonempty.
+
+### Responsive layout refinements
+
+- Added responsive safeguards for compact and short viewports across the shared
+  navbar, homepage carousel, auth forms, destination details, booking progress,
+  payment summaries, history cards, and About page image.
+- The booking stepper now shows only the active step label on narrow screens;
+  homepage carousel content can scroll inside its viewport when space is short,
+  with compact layouts for phone and tablet landscape orientations.
+- Checks passed: `npm.cmd run lint`, `npm.cmd run build`, and
+  `git diff --check`. Visual inspection at physical device sizes remains a
+  follow-up; Vite continues to report the existing bundle-size warning above
+  500 kB.
