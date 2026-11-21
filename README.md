@@ -1,90 +1,37 @@
-# Seven Summit Rinjani
-
 A frontend-only promotional website for the Seven Summit Rinjani outdoor adventure concept.
-
-## Design Direction
-
-The primary visual reference is [Visit Indonesia](https://www.indonesia.travel/us/en).
-The site adopts its overall destination-discovery approach while keeping Seven
-Summit Rinjani's own brand identity, palette, copy, and assets. The archived
-Roamly image in `docs/references/landing_reference.jpeg` is no longer the main
-reference.
-
-The future landing-page hero will use a team-supplied cinematic Rinjani MP4 and
-a WebP poster fallback. Until both final assets are supplied, no media should
-be presented as authentic Rinjani footage.
-
-## Project Features
-
-- Public landing page.
-- Dummy login.
+To introduce and promote seven mountain destinations in the Rinjani region through an interactive and informative website, while providing visitors with an engaging experience to explore destinations and try a simulated booking process.
+https://seven-summit-sembalun.netlify.app
+- Landing page.
+- Demo login.
 - Seven destination gallery.
-- Destination detail pages.
-- Destination video previews.
-- Interactive mascot using Rive.
-- Contextual mascot dialogue and optional audio.
+- Destination detail pages with video previews.
+- Interactive mascot.
 - Demo booking form.
-- Simulated checkout.
-- Simulated payment success.
-
-## Requirements
-
+- Simulated checkout and payment success.
+- React
+- TypeScript
+- Vite
+- Tailwind CSS
+- React Router
+- Rive
+- Netlify
 - Node.js
 - npm
 - Git
-- Visual Studio Code
-- OpenAI Codex CLI
-
-Check versions:
-
-```bash
-node -v
-npm -v
-git --version
 ```
-
-## Installation
-
-Clone or open the project directory.
-
-Install dependencies:
-
-```bash
 npm install
-```
-
-Start development server:
-
-```bash
 npm run dev
 ```
-
-Build production:
-
-```bash
-npm run build
 ```
-
+npm run build
+npm run preview
+```
 Run lint:
-
-```bash
+```
 npm run lint
 ```
-
-Check TypeScript:
-
-Use the script available in package.json. If no type-check script exists, configure one appropriate for the project.
-
-## Demo Login
-
-Username: visitor
-
-Password: rinjani123
-
-This is a frontend demonstration account, not production authentication.
-
-## Routes
-
+- Username: visitor
+- Password: rinjani123
 - /
 - /login
 - /destinations
@@ -92,23 +39,13 @@ This is a frontend demonstration account, not production authentication.
 - /booking/:slug
 - /checkout
 - /payment/success
+The project is deployed on Netlify using manual deployment.
 
-## Project Instructions
-
-Read AGENTS.md before development.
-
-Read PROJECT_STATUS.md before continuing an existing implementation.
-
-## Development Progress
-
-All completed phases and known issues must be recorded in PROJECT_STATUS.md.
-
-## Asset Documentation
-
-See docs/ASSETS_GUIDE.md for image, video, Rive, and audio requirements.
-
-## Important Notice
-
-Booking and payment are simulated.
-
-The website does not provide real reservation confirmation, permits, or payment processing.
+After making changes:
+1. Run npm run build.
+2. Upload the generated dist folder to Netlify.
+3. Verify the production website.
+- AGENTS.md — Development instructions.
+- PROJECT_STATUS.md — Development progress and known issues.
+- docs/ASSETS_GUIDE.md — Asset requirements.
+This is a frontend demonstration project. Authentication, booking, checkout, and payment are simulated. No real reservations, permits, or payment transactions are processed.
