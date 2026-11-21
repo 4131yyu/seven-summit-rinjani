@@ -2048,3 +2048,37 @@ svg.auth-field-icon {
   .booking-stepper { gap: 0.35rem; }
   .booking-stepper-item > span { width: 1.35rem; height: 1.35rem; }
 }
+
+/* About Us page: keep the image and copy in separate, non-overlapping tracks. */
+.about-us-page { width: 100%; min-width: 0; overflow-x: clip; }
+
+.about-us-layout {
+  display: flex;
+  width: min(100%, 72rem);
+  min-width: 0;
+  align-items: center;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  margin-inline: auto;
+}
+
+.about-us-image-wrap {
+  position: relative;
+  flex: 0 0 36%;
+  width: 36%;
+  max-width: 28rem;
+  min-width: 0;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  border-radius: 1.5rem;
+  background: var(--color-deep-green);
+}
+
+.about-us-image-wrap img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; max-width: 100%; object-fit: cover; }
+.about-us-copy { position: relative; z-index: 1; flex: 1 1 0; min-width: 0; overflow-wrap: anywhere; }
+.about-us-copy .section-title { max-width: 100%; overflow-wrap: anywhere; }
+
+@media (max-width: 800px) {
+  .about-us-layout { flex-direction: column; align-items: stretch; gap: 1.75rem; }
+  .about-us-image-wrap { flex: 0 0 auto; width: min(100%, 42rem); max-width: 100%; aspect-ratio: 16 / 9; margin-inline: auto; }
+  .about-us-copy { width: 100%; max-width: 48rem; margin-inline: auto; }
+}

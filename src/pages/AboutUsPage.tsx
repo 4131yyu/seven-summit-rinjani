@@ -8,12 +8,12 @@ export function AboutUsPage() {
   const { t } = useLanguage();
   return (
     <>
-      <section aria-labelledby="about-title" className="flex flex-1 flex-col justify-center bg-cream px-6 py-14 sm:px-10 sm:py-20">
-        <div className="mx-auto grid max-w-6xl gap-10 md:grid-cols-[0.8fr_1.2fr] md:items-center">
-          <div className="about-image-wrap">
+      <section aria-labelledby="about-title" className="about-us-page flex flex-1 flex-col justify-center bg-cream px-6 py-14 sm:px-10 sm:py-20">
+        <div className="about-us-layout">
+          <div className="about-us-image-wrap">
             <img alt={t("contact.imageAlt")} className="h-full w-full object-cover" loading="lazy" src={destinations[0].backgroundImage} />
           </div>
-          <div>
+          <div className="about-us-copy">
             <p className="section-kicker">{t("about.kicker")}</p>
             <h1 className="section-title mt-3" id="about-title">{t("about.title")}</h1>
             <p className="mt-5 text-sm leading-7 text-charcoal/75 sm:text-base">{t("about.p1")}</p>

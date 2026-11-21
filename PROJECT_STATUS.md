@@ -920,3 +920,24 @@ Do not rely solely on prior conversation history.
   `git diff --check`. Visual inspection at physical device sizes remains a
   follow-up; Vite continues to report the existing bundle-size warning above
   500 kB.
+
+### About Us image and text layout
+
+- Scoped the About Us page to a dedicated grid: image and copy sit in separate
+  desktop columns, while tablet and mobile layouts stack them. Constrained both
+  tracks and the image dimensions to prevent overlap.
+- Changed `src/pages/AboutUsPage.tsx`, the scoped About Us rules in
+  `src/styles/index.css`, and this status log.
+- Checks passed: `npm.cmd run lint`, `npm.cmd run build`, and
+  `git diff --check`. Vite continues to report the existing bundle-size warning
+  above 500 kB.
+
+### About Us overlap follow-up
+
+- Replaced the About Us grid with a scoped flex layout: the desktop image uses a
+  bounded 36% column and the text takes the remaining width; screens up to
+  800px stack the image above the text. The image is contained within its own
+  aspect-ratio box, and horizontal overflow is clipped on this page only.
+- Checks passed: `npm.cmd run lint`, `npm.cmd run build`, and
+  `git diff --check`. Vite continues to report the existing bundle-size warning
+  above 500 kB.
